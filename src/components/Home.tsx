@@ -229,9 +229,6 @@ const Home: React.FC = () => {
                         <p className="text-sm opacity-90 line-clamp-2">
                           {collection.description}
                         </p>
-                        <span className="inline-block mt-2 text-xs bg-blue-600 px-2 py-1 rounded">
-                          {collection.category}
-                        </span>
                       </div>
                     </div>
                   </Link>
@@ -258,7 +255,7 @@ const Home: React.FC = () => {
               Why Choose Quality Blinds Australia?
             </h2>
             <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-              With over 25 years of experience serving Australian homes and
+              With over 30 years of experience serving Australian homes and
               businesses, we&apos;re committed to delivering exceptional quality
               and service that exceeds expectations.
             </p>

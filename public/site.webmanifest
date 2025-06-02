@@ -1,1 +1,20 @@
- 
+{
+  "name": "Quality Blinds Australia - Premium Window Treatments",
+  "short_name": "Quality Blinds",
+  "description": "Australia's leading manufacturer of premium blinds, curtains, shutters, and awnings. Custom window treatment solutions since 1998.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-AU",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["business", "shopping", "home"]
+}

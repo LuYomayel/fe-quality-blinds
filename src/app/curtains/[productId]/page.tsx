@@ -1,10 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import ProductDetail from "@/components/ProductDetail";
 import { productData } from "@/data/productData";
 import { notFound } from "next/navigation";
-import { use } from "react";
 
 interface Product {
   id: string;
@@ -30,32 +26,33 @@ interface Product {
   specifications: Record<string, string>;
 }
 
+// Generate static params for all Curtains products
+export async function generateStaticParams() {
+  const curtainProducts = productData.filter(
+    (product) =>
+      product.id.includes("curtain") ||
+      product.name.toLowerCase().includes("curtain") ||
+      product.id.includes("sheer") ||
+      product.id.includes("veri-shade")
+  );
+
+  return curtainProducts.map((product) => ({
+    productId: product.id,
+  }));
+}
+
 export default function CurtainsProductPage({
   params,
 }: {
-  params: Promise<{ productId: string }>;
+  params: { productId: string };
 }) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const resolvedParams = use(params);
+  const foundProduct = productData.find((p) => p.id === params.productId);
 
-  useEffect(() => {
-    const foundProduct = productData.find(
-      (p) => p.id === resolvedParams.productId
-    );
-    if (foundProduct) {
-      setProduct(foundProduct as Product);
-    } else {
-      notFound();
-    }
-  }, [resolvedParams.productId]);
-
-  if (!product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Cargando...</div>
-      </div>
-    );
+  if (!foundProduct) {
+    notFound();
   }
+
+  const product = foundProduct as Product;
 
   return (
     <main className="pt-20">

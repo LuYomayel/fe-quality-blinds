@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { productData } from "@/data/productData"; // Assumes productData.ts or .js exports an array of product objects.
 import Image from "next/image";
+import Link from "next/link";
 
 type Product = {
   id: string;
@@ -27,6 +28,35 @@ type Product = {
   stock: number;
   features: string[];
   specifications: Record<string, string>;
+};
+
+// Helper function to generate the correct product route
+const getProductRoute = (productId: string): string => {
+  // Determine the main category based on product ID
+  if (productId.includes("awning")) {
+    return `/awnings/${productId}`;
+  } else if (
+    productId.includes("curtain") ||
+    productId.includes("sheer") ||
+    productId.includes("veri-shade")
+  ) {
+    return `/curtains/${productId}`;
+  } else if (productId.includes("shutter")) {
+    return `/shutters/${productId}`;
+  } else if (productId.includes("roman")) {
+    return `/blinds/roman/${productId}`;
+  } else if (productId.includes("roller")) {
+    return `/blinds/roller/${productId}`;
+  } else if (
+    productId.includes("venetian") ||
+    productId.includes("aluminium") ||
+    productId.includes("basswood")
+  ) {
+    return `/blinds/venetian/${productId}`;
+  } else {
+    // Default fallback - could be improved based on your product structure
+    return `/shop/${productId}`;
+  }
 };
 
 const categories = [
@@ -184,46 +214,105 @@ const Shop: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product, index) => (
-            <div
+            <article
               key={product.id}
-              className="relative bg-white shadow-md rounded-lg overflow-hidden group"
+              className="relative bg-white shadow-md rounded-lg overflow-hidden group hover:shadow-xl transition-all duration-300"
             >
-              {/* Product Image Container */}
-              <div className="w-full h-48 overflow-hidden">
-                <Image
-                  src={
-                    product.images[0]?.src || "/images/aluminium-shutter-1.webp"
-                  }
-                  alt={product.images[0]?.alt || product.name}
-                  width={400}
-                  height={192}
-                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                  loading={index < 3 ? "eager" : "lazy"}
-                />
-              </div>
+              <Link
+                href={getProductRoute(product.id)}
+                aria-label={`View details for ${product.name} - ${product.shortDescription}`}
+                className="block"
+              >
+                {/* Product Image Container */}
+                <div className="w-full h-48 overflow-hidden">
+                  <Image
+                    src={
+                      product.images[0]?.src ||
+                      "/images/aluminium-shutter-1.webp"
+                    }
+                    alt={`${product.name} - Premium window treatment by Quality Blinds Australia`}
+                    width={400}
+                    height={192}
+                    className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                    loading={index < 8 ? "eager" : "lazy"}
+                  />
+                </div>
 
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 z-0 bg-black/0 group-hover:bg-black/50 transition-opacity duration-200 flex items-center justify-center px-4 text-center pointer-events-none">
-                <p className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {product.shortDescription}
-                </p>
-              </div>
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 z-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center px-4 text-center">
+                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-sm mb-2">{product.shortDescription}</p>
+                    <span className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1 rounded-full transition-colors">
+                      View Details
+                    </span>
+                  </div>
+                </div>
 
-              {/* Product Name */}
-              <div className="relative z-10 p-4">
-                <h2 className="text-lg font-medium text-gray-800">
-                  {product.name}
-                </h2>
-              </div>
-            </div>
+                {/* Product Info */}
+                <div className="relative z-10 p-4 bg-white">
+                  <h2 className="text-lg font-medium text-gray-800 group-hover:text-blue-700 transition-colors">
+                    {product.name}
+                  </h2>
+
+                  {product.rating > 0 && (
+                    <div className="flex items-center mt-2">
+                      <div className="flex text-yellow-400">
+                        {[...Array(5)].map((_, i) => (
+                          <svg
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < Math.floor(product.rating)
+                                ? "text-yellow-400"
+                                : "text-gray-300"
+                            }`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <span className="text-xs text-gray-500 ml-1">
+                        ({product.rating})
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            </article>
           ))}
         </div>
 
         {/* If no products match filter */}
         {filteredProducts.length === 0 && (
-          <p className="mt-8 text-center text-gray-500">
-            No products found in this category.
-          </p>
+          <div className="text-center py-12">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">
+              No products found
+            </h3>
+            <p className="mt-1 text-gray-500">
+              No products match the selected filter. Try clearing filters or
+              selecting a different category.
+            </p>
+            <button
+              onClick={() => setActiveFilter("")}
+              className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Clear Filters
+            </button>
+          </div>
         )}
       </main>
     </div>

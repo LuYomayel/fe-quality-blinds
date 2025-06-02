@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
+import QuoteDialog from "./QuoteDialog";
 
 interface ProductImage {
   src: string;
@@ -46,12 +47,8 @@ interface ProductDetailProps {
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedVariants, setSelectedVariants] = useState({
-    width: "",
-    height: "",
-    color: "",
-  });
   const [activeTab, setActiveTab] = useState("description");
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   // Memoize breadcrumbs calculation
   const breadcrumbs = useMemo(() => {
@@ -95,11 +92,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
       { name: product.name, href: "#" },
     ];
   }, [product.id, product.name]);
-
-  //console.log(product.images);
-  const handleVariantChange = (type: string, value: string) => {
-    setSelectedVariants((prev) => ({ ...prev, [type]: value }));
-  };
 
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, index) => (
@@ -258,55 +250,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               {product.shortDescription}
             </p>
 
-            {/* Product Variants */}
-            <fieldset className="space-y-4">
-              <legend className="text-lg font-medium text-gray-900 mb-4">
-                Customization Options
-              </legend>
-              {Object.entries(product.variants).map(([type, variants]) => (
-                <div key={type} className="space-y-2">
-                  <label
-                    htmlFor={`variant-${type}`}
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </label>
-                  <select
-                    id={`variant-${type}`}
-                    name={`variant-${type}`}
-                    value={
-                      selectedVariants[type as keyof typeof selectedVariants]
-                    }
-                    onChange={(e) => handleVariantChange(type, e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    aria-describedby={`variant-${type}-description`}
-                  >
-                    <option value="">Select {type}</option>
-                    {variants.map((variant) => (
-                      <option key={variant.id} value={variant.id}>
-                        {variant.name}
-                      </option>
-                    ))}
-                  </select>
-                  <p
-                    id={`variant-${type}-description`}
-                    className="text-xs text-gray-500"
-                  >
-                    Choose your preferred {type} option for custom fitting
-                  </p>
-                </div>
-              ))}
-            </fieldset>
-
             <div className="space-y-4">
-              <Link
-                href="#contact-quality-blinds"
-                className="inline-block bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-3 rounded-md transition"
-                aria-label={`Get a quote for ${product.name}`}
+              <button
+                onClick={() => setIsQuoteModalOpen(true)}
+                className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-4 rounded-md transition text-lg"
+                aria-label={`Get a free quote for ${product.name}`}
               >
                 Get Free Quote & Consultation
-              </Link>
-              <p className="text-sm text-gray-600">
+              </button>
+              <p className="text-sm text-gray-600 text-center">
                 Free measure and quote • Professional installation • Lifetime
                 warranty
               </p>
@@ -538,6 +490,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           )}
         </section>
       </div>
+
+      {/* Quote Dialog Component */}
+      <QuoteDialog
+        isOpen={isQuoteModalOpen}
+        onClose={() => setIsQuoteModalOpen(false)}
+        productName={product.name}
+      />
     </article>
   );
 };
