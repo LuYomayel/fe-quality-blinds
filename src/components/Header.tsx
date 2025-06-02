@@ -6,7 +6,13 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import ContactForm from "./ContactForm";
 import Link from "next/link";
 
-const menuItems = [
+interface MenuItem {
+  name: string;
+  href: string;
+  subItems?: MenuItem[];
+}
+
+const menuItems: MenuItem[] = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
   { name: "Shop", href: "/shop" },
@@ -18,34 +24,95 @@ const menuItems = [
         name: "Roller Blinds",
         href: "/blinds/roller",
         subItems: [
-          { name: "Blockout", href: "/blinds/roller/blockout" },
-          { name: "Sunscreen", href: "/blinds/roller/sunscreen" },
-          { name: "Translucent", href: "/blinds/roller/translucent" },
+          {
+            name: "Blockout Roller Blinds",
+            href: "/blinds/roller/blockout-roller-blinds",
+          },
+          {
+            name: "Sunscreen Roller Blinds",
+            href: "/blinds/roller/sunscreen-roller-blinds",
+          },
+          {
+            name: "Translucent Roller Blinds",
+            href: "/blinds/roller/translucent-roller-blinds",
+          },
         ],
       },
       {
         name: "Roman Blinds",
         href: "/blinds/roman",
         subItems: [
-          { name: "Blockout", href: "/blinds/roman/blockout" },
-          { name: "Translucent", href: "/blinds/roman/translucent" },
+          {
+            name: "Blockout Roman Blinds",
+            href: "/blinds/roman/blockout-roman-blinds",
+          },
+          {
+            name: "Translucent Roman Blinds",
+            href: "/blinds/roman/translucent-roman-blinds",
+          },
         ],
       },
       {
         name: "Venetian Blinds",
         href: "/blinds/venetian",
         subItems: [
-          { name: "Cedar", href: "/blinds/venetian/cedar" },
-          { name: "Basswood", href: "/blinds/venetian/basswood" },
-          { name: "Aluminium", href: "/blinds/venetian/aluminium" },
+          {
+            name: "Aluminium Venetian Blinds",
+            href: "/blinds/venetian/aluminium-venetian-blinds",
+          },
+          {
+            name: "Basswood Venetian Blinds",
+            href: "/blinds/venetian/basswood-venetian-blinds",
+          },
         ],
       },
     ],
   },
-  { name: "Curtains", href: "/curtains" },
-  { name: "Shutters", href: "/shutters" },
-  { name: "Awnings", href: "/awnings" },
-  { name: "Other Products", href: "/other-products" },
+  {
+    name: "Curtains",
+    href: "/curtains",
+    subItems: [
+      { name: "Blockout Curtains", href: "/curtains/blockout-curtains" },
+      { name: "Sheer Curtains", href: "/curtains/sheer-curtains" },
+      { name: "Veri Shades", href: "/curtains/veri-shades" },
+    ],
+  },
+  {
+    name: "Shutters",
+    href: "/shutters",
+    subItems: [
+      { name: "ABS Shutters", href: "/shutters/abs-shutters" },
+      {
+        name: "ABS Waterproof Shutters",
+        href: "/shutters/abs-waterproof-shutters",
+      },
+      { name: "Basswood Shutters", href: "/shutters/basswood-shutters" },
+      { name: "Phoenixwood Shutters", href: "/shutters/phoenixwood-shutters" },
+    ],
+  },
+  {
+    name: "Awnings",
+    href: "/awnings",
+    subItems: [
+      { name: "Conservatory Awnings", href: "/awnings/conservatory-awnings" },
+      { name: "Folding Arm Awnings", href: "/awnings/folding-arm-awnings" },
+      { name: "Straight Drop Awnings", href: "/awnings/straight-drop-awnings" },
+      { name: "Canopy Awning", href: "/awnings/canopy-awning" },
+    ],
+  },
+  {
+    name: "Other Products",
+    href: "/other-products",
+    subItems: [
+      { name: "Louvers", href: "/other-product/louvers" },
+      {
+        name: "Polycarbonate Roofings",
+        href: "/other-product/polycarbonate-roofings",
+      },
+      { name: "Shade Sails", href: "/other-product/shade-sails" },
+      { name: "Umbrellas", href: "/other-product/umbrellas" },
+    ],
+  },
 ];
 
 export default function Header() {

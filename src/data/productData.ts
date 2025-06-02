@@ -1,94 +1,1142 @@
-export const productData = {
-  id: "blockout-roller-1",
-  name: "Blockout Roller Blind",
-  shortDescription:
-    "Our premium blockout roller blind offers complete darkness and privacy with its high-quality fabric. Perfect for bedrooms and media rooms, this blind features a smooth operation mechanism and easy installation.",
-  description:
-    "Our premium roller blind offers an exceptional solution for light and privacy control. Manufactured with high-quality materials, this blind is designed to provide total darkness, making it perfect for bedrooms, media rooms, and spaces where complete light control is essential.\n\nThe smooth and silent operation mechanism ensures effortless functionality, while the durable design ensures long-lasting performance. Installation is simple thanks to the included brackets and detailed instructions.\n\nThis roller blind combines functionality with elegance, creating a comfortable and protected environment. Its versatile design adapts perfectly to any space requiring privacy and light control, while its robust construction ensures years of reliable service. The premium finish and attention to detail in each component reflect our commitment to quality and customer satisfaction.",
-  images: [
-    {
-      src: "/blockout-roller-blind-1.webp",
-      alt: "Premium Blockout Roller Blind - Fully Extended",
-    },
-    {
-      src: "/blockout-roller-blind-2.webp",
-      alt: "Premium Blockout Roller Blind - Side View",
-    },
-    {
-      src: "/blockout-roller-blind-3.webp",
-      alt: "Premium Blockout Roller Blind - Installation Detail",
-    },
-    {
-      src: "/blockout-roller-blind-4.webp",
-      alt: "Premium Blockout Roller Blind - Mechanism",
-    },
-  ],
-  relatedProducts: [
-    {
-      id: "blockout-roller-2",
-      name: "Blockout Roller Blind",
-      image: "/blockout-roller-blind-2.webp",
-      href: "/blinds/roller/blockout",
-      shortDescription:
-        "Our premium blockout roller blind offers complete darkness and privacy with its high-quality fabric. Perfect for bedrooms and media rooms, this blind features a smooth operation mechanism and easy installation.",
-    },
-    {
-      id: "blockout-roller-3",
-      name: "Blockout Roller Blind",
-      image: "/blockout-roller-blind-3.webp",
-      href: "/blinds/roller/blockout",
-      shortDescription:
-        "Our premium blockout roller blind offers complete darkness and privacy with its high-quality fabric. Perfect for bedrooms and media rooms, this blind features a smooth operation mechanism and easy installation.",
-    },
-    {
-      id: "blockout-roller-4",
-      name: "Blockout Roller Blind",
-      image: "/blockout-roller-blind-1.webp",
-      href: "/blinds/roller/blockout",
-      shortDescription:
-        "Our premium blockout roller blind offers complete darkness and privacy with its high-quality fabric. Perfect for bedrooms and media rooms, this blind features a smooth operation mechanism and easy installation.",
-    },
-  ],
-  variants: {
-    width: [
-      { id: "w-60", name: "60cm", price: 129.99, stock: 10 },
-      { id: "w-90", name: "90cm", price: 149.99, stock: 8 },
-      { id: "w-120", name: "120cm", price: 169.99, stock: 5 },
-      { id: "w-150", name: "150cm", price: 189.99, stock: 3 },
+export const productData = [
+  {
+    id: "conservatory-awnings",
+    name: "Conservatory Awnings",
+    shortDescription:
+      "The Conservatory Awning is a fully automated and motorized shading system, controlled by remote – so you can sit back and enjoy sun protection at the touch of a button.",
+    description:
+      "The Conservatory Awning is a fully automated and motorized shading system, controlled by remote – so you can sit back and enjoy sun protection at the touch of a button. When not in use, the awnings fully retract into a discretely positioned headbox to avoid damage from the elements, while also extending the lifespan of your system. ",
+    images: [
+      {
+        src: "/images/conservatory-awning-1.webp",
+        alt: "Conservatory Awning",
+      },
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
     ],
-    height: [
-      { id: "h-60", name: "60cm", price: 0, stock: 10 },
-      { id: "h-90", name: "90cm", price: 20, stock: 8 },
-      { id: "h-120", name: "120cm", price: 40, stock: 5 },
-      { id: "h-150", name: "150cm", price: 60, stock: 3 },
+    relatedProducts: [
+      {
+        id: "folding-arm-awnings",
+        name: "Folding Arm Awnings",
+        image: "/images/folding-arm-awning-1.webp",
+        alt: "Folding Arm Awnings",
+        href: "/awnings/folding-arm-awnings",
+        shortDescription:
+          "The Conservatory Awning is a fully automated and motorized shading system, controlled by remote – so you can sit back and enjoy sun protection at the touch of a button.",
+      },
+      {
+        id: "straight-drop-awnings",
+        name: "Straight Drop Awnings",
+        image: "/images/straight-drop-awning-1.webp",
+        alt: "Straight Drop Awnings",
+        href: "/awnings/straight-drop-awnings",
+        shortDescription:
+          "The Conservatory Awning is a fully automated and motorized shading system, controlled by remote – so you can sit back and enjoy sun protection at the touch of a button.",
+      },
+      {
+        id: "canopy-awning",
+        name: "Canopy Awning",
+        image: "/images/canopy-awning-1.webp",
+        alt: "Canopy Awning",
+        href: "/awnings/canopy-awning",
+        shortDescription:
+          "The Conservatory Awning is a fully automated and motorized shading system, controlled by remote – so you can sit back and enjoy sun protection at the touch of a button.",
+      },
     ],
-    color: [
-      { id: "c-black", name: "Black", price: 0, stock: 15 },
-      { id: "c-white", name: "White", price: 0, stock: 20 },
-      { id: "c-grey", name: "Grey", price: 0, stock: 12 },
-      { id: "c-beige", name: "Beige", price: 0, stock: 10 },
-    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
   },
-  rating: 0,
-  reviewCount: 0,
-  stock: 15,
-  features: [
-    "100% blockout fabric for complete darkness",
-    "Smooth chain operation mechanism",
-    "Easy installation with included brackets",
-    "Child-safe design",
-    "UV protection",
-    "Fire retardant material",
-    "5-year warranty",
-  ],
-  specifications: {
-    Material: "Premium blockout fabric",
-    Operation: "Chain control",
-    Installation: "Inside/Outside mount",
-    Warranty: "5 years",
-    Cleaning: "Wipe with damp cloth",
-    "Child Safety": "Compliant with safety standards",
-    "UV Protection": "99% UV blocking",
-    "Fire Rating": "Fire retardant certified",
+  {
+    id: "folding-arm-awnings",
+    name: "Folding Arm Awnings",
+    shortDescription:
+      "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance.",
+    description:
+      "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance. Available in manual (gear) or motorised operation (motorisation recommended due to arm tension), constructed with high-tension triple spring arms and PVC-coated stainless steel cables. Frames are powder-coated in Dulux Duralloy range; optional wind, sun, rain, and motion sensors allow automatic operation. ",
+    images: [
+      {
+        src: "/images/folding-arm-awning.webp",
+        alt: "Folding Arm Awning",
+      },
+      {
+        src: "/images/folding-arm-awning-2.webp",
+        alt: "Folding Arm Awning 2",
+      },
+      {
+        src: "/images/folding-arm-awning-3.webp",
+        alt: "Folding Arm Awning 3",
+      },
+      {
+        src: "/images/folding-arm-awning-4.webp",
+        alt: "Folding Arm Awning 4",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "conservatory-awnings",
+        name: "Conservatory Awnings",
+        image: "/images/conservatory-awning-1.webp",
+        alt: "Conservatory Awnings",
+        href: "/awnings/conservatory-awnings",
+        shortDescription:
+          "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance.",
+      },
+      {
+        id: "straight-drop-awnings",
+        name: "Straight Drop Awnings",
+        image: "/images/straight-drop-awning-1.webp",
+        alt: "Straight Drop Awnings",
+        href: "/awnings/straight-drop-awnings",
+        shortDescription:
+          "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance.",
+      },
+      {
+        id: "canopy-awning",
+        name: "Canopy Awning",
+        image: "/images/canopy-awning-1.webp",
+        alt: "Canopy Awning",
+        href: "/awnings/canopy-awning",
+        shortDescription:
+          "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
   },
-};
+  {
+    id: "straight-drop-awnings",
+    name: "Straight Drop Awnings",
+    shortDescription:
+      "Straight Drop Awnings can be installed on the outside of a window to provide shade without interfering with interior décor.",
+    description:
+      "Straight Drop Awnings can be installed on the outside of a window to provide shade without interfering with interior décor. Available in acrylic, canvas, or sunscreen fabrics; transparent PVC option offers weather protection without obstructing views. Operated via crank (manual) or motorised; optional weather sensors (wind, sun, rain) for automatic retraction. Technical specifications: minimum width 3000 mm, projection 2000 mm, frame colour options in powder-coated finish. ",
+    images: [
+      {
+        src: "/images/straight-drop-awning-1.webp",
+        alt: "Straight Drop Awning",
+      },
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "conservatory-awnings",
+        name: "Conservatory Awnings",
+        image: "/images/conservatory-awning-1.webp",
+        alt: "Conservatory Awnings",
+        href: "/awnings/conservatory-awnings",
+        shortDescription:
+          "Straight Drop Awnings can be installed on the outside of a window to provide shade without interfering with interior décor.",
+      },
+      {
+        id: "folding-arm-awnings",
+        name: "Folding Arm Awnings",
+        image: "/images/folding-arm-awning-1.webp",
+        alt: "Folding Arm Awnings",
+        href: "/awnings/folding-arm-awnings",
+        shortDescription:
+          "Straight Drop Awnings can be installed on the outside of a window to provide shade without interfering with interior décor.",
+      },
+      {
+        id: "canopy-awning",
+        name: "Canopy Awning",
+        image: "/images/canopy-awning.webp",
+        alt: "Canopy Awning",
+        href: "/awnings/canopy-awning",
+        shortDescription:
+          "Straight Drop Awnings can be installed on the outside of a window to provide shade without interfering with interior décor.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "canopy-awning",
+    name: "Canopy Awning",
+    shortDescription:
+      "Canopy Awning is not currently listed on the Quality Blinds website; consider providing custom specifications or contacting Quality Blinds for a bespoke solution.",
+    description:
+      "Canopy Awning is not currently listed on the Quality Blinds website; consider providing custom specifications or contacting Quality Blinds for a bespoke solution. ",
+    images: [
+      {
+        src: "/images/fixed-canopy-awning-1.webp",
+        alt: "Fixed Canopy Awning",
+      },
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "conservatory-awnings",
+        name: "Conservatory Awnings",
+        image: "/images/conservatory-awning-1.webp",
+        alt: "Conservatory Awnings",
+        href: "/awnings/conservatory-awnings",
+        shortDescription:
+          "Canopy Awning is not currently listed on the Quality Blinds website; consider providing custom specifications or contacting Quality Blinds for a bespoke solution.",
+      },
+      {
+        id: "folding-arm-awnings",
+        name: "Folding Arm Awnings",
+        image: "/images/folding-arm-awnings.webp",
+        href: "/awnings/folding-arm-awnings",
+        shortDescription:
+          "Canopy Awning is not currently listed on the Quality Blinds website; consider providing custom specifications or contacting Quality Blinds for a bespoke solution.",
+      },
+      {
+        id: "straight-drop-awnings",
+        name: "Straight Drop Awnings",
+        image: "/images/straight-drop-awnings.webp",
+        href: "/awnings/straight-drop-awnings",
+        shortDescription:
+          "Canopy Awning is not currently listed on the Quality Blinds website; consider providing custom specifications or contacting Quality Blinds for a bespoke solution.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "aluminium-venetian-blinds",
+    name: "Aluminium Venetian Blinds",
+    shortDescription:
+      "Outdoor Aluminium Venetian Blinds are highly practical and versatile, made from a specialised aluminium alloy thicker than market standards for extra durability and strength.",
+    description:
+      "Outdoor Aluminium Venetian Blinds are highly practical and versatile, made from a specialised aluminium alloy thicker than market standards for extra durability and strength. Available in 25 mm and 50 mm slat widths with various material finishes—from pastels and vibrant metallic shades to wood effects and plain finishes—which are splash-proof, warp-resistant, and easy to clean, making them ideal for kitchens and bathrooms. ",
+    images: [
+      {
+        src: "/images/aluminium-venetian-blind-1.webp",
+        alt: "Aluminium Venetian Blind 1",
+      },
+      {
+        src: "/images/aluminium-venetian-blind-2.webp",
+        alt: "Aluminium Venetian Blind 2",
+      },
+      {
+        src: "/images/venetian-blind-1.webp",
+        alt: "Venetian Blind 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "basswood-venetian-blinds",
+        name: "Basswood Venetian Blinds",
+        image: "/images/basswood-venetian-blind-1.webp",
+        alt: "Basswood Venetian Blind 1",
+        href: "/blinds/basswood-venetian-blinds",
+        shortDescription:
+          "Outdoor Aluminium Venetian Blinds are highly practical and versatile, made from a specialised aluminium alloy thicker than market standards for extra durability and strength.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "basswood-venetian-blinds",
+    name: "Basswood Venetian Blinds",
+    shortDescription:
+      "Basswood Venetian Blinds are lightweight and bring natural beauty into your home, offering a full range of tints and stains to match any decor.",
+    description:
+      "Basswood Venetian Blinds are lightweight and bring natural beauty into your home, offering a full range of tints and stains to match any decor. They come in both traditional and modern styles with finishes such as satin, gloss, matt, brushed, pearlised, and perforated, and are easy to maintain and clean while remaining durable. ",
+    images: [
+      {
+        src: "/images/basswood-venetian-blind-1.webp",
+        alt: "Basswood Venetian Blind 1",
+      },
+      {
+        src: "/images/venetian-blind-1.webp",
+        alt: "Venetian Blind 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "aluminium-venetian-blinds",
+        name: "Aluminium Venetian Blinds",
+        image: "/images/aluminium-venetian-blind-1.webp",
+        alt: "Aluminium Venetian Blind 1",
+        href: "/blinds/aluminium-venetian-blinds",
+        shortDescription:
+          "Basswood Venetian Blinds are lightweight and bring natural beauty into your home, offering a full range of tints and stains to match any decor.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "blockout-roller-blinds",
+    name: "Blockout Roller Blinds",
+    shortDescription:
+      "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter.",
+    description:
+      "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter. Custom-made from thick, coated fabric designed to withstand harsh Australian climate. Can be paired with sheer curtains for a contemporary look. Available with manual or automated operation and easy cleaning; multiple fabric options include classic, modern, and textured weaves. ",
+    images: [
+      {
+        src: "/images/blockout-roller-blind-1.webp",
+        alt: "Blockout Roller Blind 1",
+      },
+      {
+        src: "/images/blockout-roller-blind-2.webp",
+        alt: "Blockout Roller Blind 2",
+      },
+      {
+        src: "/images/blockout-roller-blind-3.webp",
+        alt: "Blockout Roller Blind 3",
+      },
+      {
+        src: "/images/blockout-roller-blind-4.webp",
+        alt: "Blockout Roller Blind 4",
+      },
+      {
+        src: "/images/roller-blind-1.webp",
+        alt: "Roller Blind 1",
+      },
+      {
+        src: "/images/roller-blind-2.webp",
+        alt: "Roller Blind 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-roman-blinds",
+        name: "Blockout Roman Blinds",
+        image: "/images/blockout-roman-blind-1.webp",
+        href: "/blinds/blockout-roman-blinds",
+        shortDescription:
+          "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "blockout-roman-blinds",
+    name: "Blockout Roman Blinds",
+    shortDescription:
+      "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look.",
+    description:
+      "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look. Single-piece fabric design allows easy addition of blackout lining. Available in various fabrics including Barbados, Gala, Kew, Matrix, Metro, and Serengetti. ",
+    images: [
+      {
+        src: "/images/blockout-roman-blind-1.webp",
+        alt: "Blockout Roman Blind 1",
+      },
+      {
+        src: "/images/roman-blind-1.webp",
+        alt: "Roman Blind 1",
+      },
+      {
+        src: "/images/roman-blind-2.webp",
+        alt: "Roman Blind 2",
+      },
+      {
+        src: "/images/roman-blind-3.webp",
+        alt: "Roman Blind 3",
+      },
+      {
+        src: "/images/roman-blind-4.webp",
+        alt: "Roman Blind 4",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-roller-blinds",
+        name: "Blockout Roller Blinds",
+        image: "/images/blockout-roller-blind-1.webp",
+        href: "/blinds/blockout-roller-blinds",
+        shortDescription:
+          "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "blockout-curtains",
+    name: "Blockout Curtains",
+    shortDescription:
+      "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
+    description:
+      "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight. They reduce heat transfer through windows by up to 24 %, improving energy efficiency by keeping rooms cooler in summer and warmer in winter. Available with various colours and fabrics suited for thermal insulation and UV protection. ",
+    images: [
+      {
+        src: "/images/blockout-curtains-1.webp",
+        alt: "Blockout Curtains 1",
+      },
+      {
+        src: "/images/curtain-1.webp",
+        alt: "Curtain 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "curtains",
+        name: "Curtains",
+        image: "/images/curtain-1.webp",
+        href: "/curtains/curtains",
+        shortDescription:
+          "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
+      },
+      {
+        id: "sheer-curtains",
+        name: "Sheer Curtains",
+        image: "/images/sheer-curtain-1.webp",
+        href: "/curtains/sheer-curtains",
+        shortDescription:
+          "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
+      },
+      {
+        id: "veri-shades",
+        name: "Veri Shades",
+        image: "/images/veri-shades-curtain-1.webp",
+        href: "/curtains/veri-shades",
+        shortDescription:
+          "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "curtains",
+    name: "Curtains",
+    shortDescription:
+      "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+    description:
+      "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes. They enhance comfort and aesthetics, becoming a focal point of interior décor. ",
+    images: [
+      {
+        src: "/images/curtain-1.webp",
+        alt: "Curtain 1",
+      },
+      {
+        src: "/images/blockout-curtains-1.webp",
+        alt: "Blockout Curtains 1",
+      },
+      {
+        src: "/images/sheer-curtain-1.webp",
+        alt: "Sheer Curtain 1",
+      },
+      {
+        src: "/images/veri-shades-curtain-1.webp",
+        alt: "Veri Shades Curtain 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-curtains",
+        name: "Blockout Curtains",
+        image: "/images/blockout-curtains-1.webp",
+        href: "/curtains/blockout-curtains",
+        shortDescription:
+          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+      },
+      {
+        id: "sheer-curtains",
+        name: "Sheer Curtains",
+        image: "/images/sheer-curtain-1.webp",
+        href: "/curtains/sheer-curtains",
+        shortDescription:
+          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+      },
+      {
+        id: "veri-shades",
+        name: "Veri Shades",
+        image: "/images/veri-shades-curtain-1.webp",
+        href: "/curtains/veri-shades",
+        shortDescription:
+          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "sheer-curtains",
+    name: "Sheer Curtains",
+    shortDescription:
+      "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
+    description:
+      "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor. They offer a level of daytime privacy but become transparent at night when interior lights are on. Ideal for layering with other window treatments, they create a serene, airy atmosphere and allow soft, filtered natural light. ",
+    images: [
+      {
+        src: "/images/sheer-curtain-1.webp",
+        alt: "Sheer Curtain 1",
+      },
+      {
+        src: "/images/curtain-1.webp",
+        alt: "Curtain 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-curtains",
+        name: "Blockout Curtains",
+        image: "/images/blockout-curtains-1.webp",
+        href: "/curtains/blockout-curtains",
+        shortDescription:
+          "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
+      },
+      {
+        id: "curtains",
+        name: "Curtains",
+        image: "/images/curtain-1.webp",
+        href: "/curtains/curtains",
+        shortDescription:
+          "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
+      },
+      {
+        id: "veri-shades",
+        name: "Veri Shades",
+        image: "/images/veri-shades-curtain-1.webp",
+        href: "/curtains/veri-shades",
+        shortDescription:
+          "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "veri-shades",
+    name: "Veri Shades",
+    shortDescription:
+      "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
+    description:
+      "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds. Designed to withstand harsh Australian climate, available in Titan, Titan Forte, Titan Flex, and Millenium variants. Professional consultation, installation, and maintenance services are offered. Choose from a wide colour palette in acrylic, Dickson, and Docril fabrics for folding arm awnings. ",
+    images: [
+      {
+        src: "/images/veri-shades-curtain-1.webp",
+        alt: "Veri Shades Curtain 1",
+      },
+      {
+        src: "/images/curtain-1.webp",
+        alt: "Curtain 1",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-curtains",
+        name: "Blockout Curtains",
+        image: "/images/blockout-curtains-1.webp",
+        href: "/curtains/blockout-curtains",
+        shortDescription:
+          "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
+      },
+      {
+        id: "curtains",
+        name: "Curtains",
+        image: "/images/curtain-1.webp",
+        href: "/curtains/curtains",
+        shortDescription:
+          "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
+      },
+      {
+        id: "sheer-curtains",
+        name: "Sheer Curtains",
+        image: "/images/sheer-curtain-1.webp",
+        href: "/curtains/sheer-curtains",
+        shortDescription:
+          "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "abs-shutters",
+    name: "ABS Shutters",
+    shortDescription:
+      "ABS Shutters are made from a lightweight, hardwearing, engineered wood composite core coated with medical-grade polypropylene, UV-inhibited for fade and yellowing resistance.",
+    description:
+      "ABS Shutters are made from a lightweight, hardwearing, engineered wood composite (EWC) core coated with medical-grade polypropylene, UV-inhibited for fade and yellowing resistance. They are 100 % waterproof, with stainless steel hardware to resist corrosion, available in 23 solid colours and five louvre sizes (47 mm, 63 mm, 76 mm, 89 mm, 114 mm). Featuring an invisible Easy Tilt drive for seamless operation, they resist warping, sagging, and cupping, meeting VOC-free standards. ",
+    images: [
+      {
+        src: "/images/pvc-shutter-1.webp",
+        alt: "PVC Shutter 1",
+      },
+      {
+        src: "/images/pvc-shutter-2.webp",
+        alt: "PVC Shutter 2",
+      },
+      {
+        src: "/images/shutter-1.webp",
+        alt: "Shutter 1",
+      },
+      {
+        src: "/images/shutter-2.webp",
+        alt: "Shutter 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "abs-waterproof-shutters",
+        name: "ABS Waterproof Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-waterproof-shutters",
+        shortDescription:
+          "ABS Shutters are made from a lightweight, hardwearing, engineered wood composite core coated with medical-grade polypropylene, UV-inhibited for fade and yellowing resistance.",
+      },
+      {
+        id: "basswood-shutters",
+        name: "Basswood Shutters",
+        image: "/images/basswood-shutter-1.webp",
+        href: "/shutters/basswood-shutters",
+        shortDescription:
+          "ABS Shutters are made from a lightweight, hardwearing, engineered wood composite core coated with medical-grade polypropylene, UV-inhibited for fade and yellowing resistance.",
+      },
+      {
+        id: "phoenixwood-shutters",
+        name: "Phoenixwood Shutters",
+        image: "/images/phoenixwood-shutter.webp",
+        href: "/shutters/phoenixwood-shutters",
+        shortDescription:
+          "ABS Shutters are made from a lightweight, hardwearing, engineered wood composite core coated with medical-grade polypropylene, UV-inhibited for fade and yellowing resistance.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "abs-waterproof-shutters",
+    name: "ABS Waterproof Shutters",
+    shortDescription:
+      "ABS Waterproof Shutters are fully waterproof panels and frames, suitable for bathrooms, kitchens, and laundries.",
+    description:
+      "ABS Waterproof Shutters are fully waterproof panels and frames, suitable for bathrooms, kitchens, and laundries. Constructed from 100 % ABS for lightness and durability, with stainless steel hardware that won't rust or corrode. They feature the same elegant look as Woodlore Plus, with an invisible Easy Tilt drive, available in 23 colours and five louvre sizes (47 mm, 63 mm, 76 mm, 89 mm, 114 mm), ideal for high-traffic family environments. ",
+    images: [
+      {
+        src: "/images/pvc-shutter-1.webp",
+        alt: "PVC Shutter 1",
+      },
+      {
+        src: "/images/pvc-shutter-2.webp",
+        alt: "PVC Shutter 2",
+      },
+      {
+        src: "/images/shutter-1.webp",
+        alt: "Shutter 1",
+      },
+      {
+        src: "/images/shutter-2.webp",
+        alt: "Shutter 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "abs-shutters",
+        name: "ABS Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-shutters",
+        shortDescription:
+          "ABS Waterproof Shutters are fully waterproof panels and frames, suitable for bathrooms, kitchens, and laundries.",
+      },
+      {
+        id: "basswood-shutters",
+        name: "Basswood Shutters",
+        image: "/images/basswood-shutter-1.webp",
+        href: "/shutters/basswood-shutters",
+        shortDescription:
+          "ABS Waterproof Shutters are fully waterproof panels and frames, suitable for bathrooms, kitchens, and laundries.",
+      },
+      {
+        id: "phoenixwood-shutters",
+        name: "Phoenixwood Shutters",
+        image: "/images/phoenixwood-shutter.webp",
+        href: "/shutters/phoenixwood-shutters",
+        shortDescription:
+          "ABS Waterproof Shutters are fully waterproof panels and frames, suitable for bathrooms, kitchens, and laundries.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "basswood-shutters",
+    name: "Basswood Shutters",
+    shortDescription:
+      "Basswood Shutters are crafted from hardwood sourced from certified sustainable forests, panels made entirely of hardwood with engineered wood composite frames.",
+    description:
+      "Basswood Shutters are crafted from hardwood sourced from certified sustainable forests. Panels are made entirely of hardwood, with frames built from engineered wood composite finished with a paintable extrusion polymer coating. The panels and frames are colour-matched to premium timber shutter finishes. Available in a choice of 27 colours (plus custom options), five louvre sizes (47 mm, 63 mm, 76 mm, 89 mm, 114 mm), with wider panel specifications for expansive windows. ",
+    images: [
+      {
+        src: "/images/basswood-shutter-1.webp",
+        alt: "Basswood Shutter 1",
+      },
+      {
+        src: "/images/basswood-shutter-2.webp",
+        alt: "Basswood Shutter 2",
+      },
+      {
+        src: "/images/basswood-shutter-3.webp",
+        alt: "Basswood Shutter 3",
+      },
+      {
+        src: "/images/basswood-shutter-4.webp",
+        alt: "Basswood Shutter 4",
+      },
+      {
+        src: "/images/shutter-1.webp",
+        alt: "Shutter 1",
+      },
+      {
+        src: "/images/shutter-2.webp",
+        alt: "Shutter 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "abs-shutters",
+        name: "ABS Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-shutters",
+        shortDescription:
+          "Basswood Shutters are crafted from hardwood sourced from certified sustainable forests, panels made entirely of hardwood with engineered wood composite frames.",
+      },
+      {
+        id: "abs-waterproof-shutters",
+        name: "ABS Waterproof Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-waterproof-shutters",
+        shortDescription:
+          "Basswood Shutters are crafted from hardwood sourced from certified sustainable forests, panels made entirely of hardwood with engineered wood composite frames.",
+      },
+      {
+        id: "phoenixwood-shutters",
+        name: "Phoenixwood Shutters",
+        image: "/images/phoenixwood-shutter.webp",
+        href: "/shutters/phoenixwood-shutters",
+        shortDescription:
+          "Basswood Shutters are crafted from hardwood sourced from certified sustainable forests, panels made entirely of hardwood with engineered wood composite frames.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "phoenixwood-shutters",
+    name: "Phoenixwood Shutters",
+    shortDescription:
+      "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability.",
+    description:
+      "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability. Sustainably sourced from well-managed hardwood forests and plantations, available in 51 paint and stain colours plus custom options. Features multiple hand sanding and finishing for a fine, furniture-grade surface, wider panel options (1095 mm) for expansive views, and invisible Easy Tilt drive. Available in louvre sizes 47 mm, 63 mm, 76 mm, 89 mm, and 114 mm. ",
+    images: [
+      {
+        src: "/images/phoenixwood-shutter.webp",
+        alt: "Phoenixwood Shutter",
+      },
+      {
+        src: "/images/shutter-1.webp",
+        alt: "Shutter 1",
+      },
+      {
+        src: "/images/shutter-2.webp",
+        alt: "Shutter 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "abs-shutters",
+        name: "ABS Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-shutters",
+        shortDescription:
+          "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability.",
+      },
+      {
+        id: "abs-waterproof-shutters",
+        name: "ABS Waterproof Shutters",
+        image: "/images/pvc-shutter-1.webp",
+        href: "/shutters/abs-waterproof-shutters",
+        shortDescription:
+          "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability.",
+      },
+      {
+        id: "basswood-shutters",
+        name: "Basswood Shutters",
+        image: "/images/basswood-shutter-1.webp",
+        href: "/shutters/basswood-shutters",
+        shortDescription:
+          "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "louvers",
+    name: "Louvers",
+    shortDescription:
+      "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+    description:
+      "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows. Suitable for windows, doors, ceilings, and closet doors, they are used in shutters for fresh air and light while blocking heat and moisture. Available in various slat sizes. ",
+    images: [
+      {
+        src: "/images/shutter-1.webp",
+        alt: "Shutter 1",
+      },
+      {
+        src: "/images/shutter-2.webp",
+        alt: "Shutter 2",
+      },
+      {
+        src: "/images/roller-shutter-1.webp",
+        alt: "Roller Shutter 1",
+      },
+      {
+        src: "/images/roller-shutter-2.webp",
+        alt: "Roller Shutter 2",
+      },
+      {
+        src: "/images/roller-shutter-3.webp",
+        alt: "Roller Shutter 3",
+      },
+      {
+        src: "/images/roller-shutter-4.webp",
+        alt: "Roller Shutter 4",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "polycarbonate-roofings",
+        name: "Polycarbonate Roofings",
+        image: "/images/awning-1.webp",
+        href: "/other-product/polycarbonate-roofings",
+        shortDescription:
+          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+      },
+      {
+        id: "shade-sails",
+        name: "Shade Sails",
+        image: "/images/awning-1.webp",
+        href: "/other-product/shade-sails",
+        shortDescription:
+          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+      },
+      {
+        id: "umbrellas",
+        name: "Umbrellas",
+        image: "/images/awning-1.webp",
+        href: "/other-product/umbrellas",
+        shortDescription:
+          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "polycarbonate-roofings",
+    name: "Polycarbonate Roofings",
+    shortDescription:
+      "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+    description:
+      "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat. They come with a limited lifetime warranty and offer 99.9 % UV protection, making them an outstanding, durable, and lightweight roofing material. ",
+    images: [
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "louvers",
+        name: "Louvers",
+        image: "/images/louvers.webp",
+        href: "/other-product/louvers",
+        shortDescription:
+          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+      },
+      {
+        id: "shade-sails",
+        name: "Shade Sails",
+        image: "/images/awning-1.webp",
+        href: "/other-product/shade-sails",
+        shortDescription:
+          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+      },
+      {
+        id: "umbrellas",
+        name: "Umbrellas",
+        image: "/images/umbrellas.webp",
+        href: "/other-product/umbrellas",
+        shortDescription:
+          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "shade-sails",
+    name: "Shade Sails",
+    shortDescription:
+      "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+    description:
+      "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability. ",
+    images: [
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "louvers",
+        name: "Louvers",
+        image: "/images/louvers.webp",
+        href: "/other-product/louvers",
+        shortDescription:
+          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+      },
+      {
+        id: "polycarbonate-roofings",
+        name: "Polycarbonate Roofings",
+        image: "/images/awning-1.webp",
+        href: "/other-product/polycarbonate-roofings",
+        shortDescription:
+          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+      },
+      {
+        id: "umbrellas",
+        name: "Umbrellas",
+        image: "/images/awning-1.webp",
+        href: "/other-product/umbrellas",
+        shortDescription:
+          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+  {
+    id: "umbrellas",
+    name: "Umbrellas",
+    shortDescription:
+      "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+    description:
+      "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage. They come in 3 sizes (2.1 m × 2.1 m, 3.0 m × 3.0 m, and 3.0 m Octagonal) and may be customized with branding. Designed for cafes and restaurants with aluminium frames and high-quality cloth canopies to withstand rigours of commercial use, ideal for printing logos. ",
+    images: [
+      {
+        src: "/images/awning-1.webp",
+        alt: "Awning 1",
+      },
+      {
+        src: "/images/awning-2.webp",
+        alt: "Awning 2",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "louvers",
+        name: "Louvers",
+        image: "/images/louvers.webp",
+        href: "/other-product/louvers",
+        shortDescription:
+          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+      },
+      {
+        id: "polycarbonate-roofings",
+        name: "Polycarbonate Roofings",
+        image: "/images/awning-1.webp",
+        href: "/other-product/polycarbonate-roofings",
+        shortDescription:
+          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+      },
+      {
+        id: "shade-sails",
+        name: "Shade Sails",
+        image: "/images/awning-1.webp",
+        href: "/other-product/shade-sails",
+        shortDescription:
+          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+      },
+    ],
+    variants: {
+      width: [],
+      height: [],
+      color: [],
+    },
+    rating: 0,
+    reviewCount: 0,
+    stock: 0,
+    features: [],
+    specifications: {},
+  },
+];

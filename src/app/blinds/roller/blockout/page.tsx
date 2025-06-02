@@ -6,7 +6,7 @@ import { productData } from "@/data/productData";
 
 export default function BlockoutRollerPage() {
   return (
-    <main>
+    <main className="pt-20">
       <ProductDetail product={productData} />
     </main>
   );
