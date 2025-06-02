@@ -186,9 +186,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                           ? "border-blue-500 ring-2 ring-blue-200"
                           : "border-transparent hover:border-gray-300"
                       }`}
-                      aria-label={`View ${product.name} image ${index + 1}`}
-                      aria-pressed={selectedImage === index}
-                      role="listitem"
+                      aria-label={`View ${product.name} image ${index + 1}${
+                        selectedImage === index ? " (currently selected)" : ""
+                      }`}
                     >
                       <Image
                         src={image.src}

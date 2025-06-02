@@ -39,12 +39,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ShuttersProductPage({
+export default async function ShuttersProductPage({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }) {
-  const foundProduct = productData.find((p) => p.id === params.productId);
+  const { productId } = await params;
+  const foundProduct = productData.find((p) => p.id === productId);
 
   if (!foundProduct) {
     notFound();
