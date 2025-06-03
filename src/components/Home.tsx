@@ -70,6 +70,153 @@ const featuredCollections = [
   },
 ];
 
+// Datos de proyectos
+const projectCategories = [
+  {
+    name: "BUILDERS",
+    image: "/images/projects/builders.jpg",
+    description: "Custom solutions for residential and commercial builders",
+  },
+  {
+    name: "SCHOOLS",
+    image: "/images/projects/schools.jpg",
+    description:
+      "Safe and durable window treatments for educational facilities",
+  },
+  {
+    name: "UNIVERSITIES",
+    image: "/images/projects/universities.jpg",
+    description: "Professional installations for higher education campuses",
+  },
+  {
+    name: "ARCHITECTS/DESIGNERS",
+    image: "/images/projects/architects.jpg",
+    description: "Collaborative solutions with design professionals",
+  },
+  {
+    name: "HOSPITALS",
+    image: "/images/projects/hospitals.jpg",
+    description: "Healthcare-compliant window treatments",
+  },
+  {
+    name: "OTHER PROJECTS",
+    image: "/images/projects/other.jpg",
+    description: "Diverse commercial and specialty installations",
+  },
+];
+
+// Datos de testimonios - Agregando más reseñas para el slider
+const customerTestimonials = [
+  {
+    name: "Jackis aray",
+    date: "2021-09-28",
+    rating: 5,
+    review: "A good quality blinds showroom",
+    avatar: "J",
+  },
+  {
+    name: "Christine Spoeljar",
+    date: "2021-03-15",
+    rating: 5,
+    review:
+      "Awesome service!! We have an Issey outdoor roller blind which is still going after 11years however it started to not hold. We contacted Quality Blinds who came out twice to replac...",
+    avatar: "C",
+  },
+  {
+    name: "Anna MB",
+    date: "2021-05-07",
+    rating: 5,
+    review:
+      "So happy with our order from Quality Blinds! From quote through to install they helped us find the solution we were looking for. Great quality and great service - thank you!",
+    avatar: "A",
+  },
+  {
+    name: "Paddo Performance",
+    date: "2021-08-02",
+    rating: 5,
+    review:
+      "We needed blinds installed quite urgently to our physiotherapy clinic. I had sent it to over 10 different places and Nick from Quality Blinds got back to me immediately a...",
+    avatar: "P",
+  },
+  {
+    name: "Bradley Michael",
+    date: "2021-07-23",
+    rating: 5,
+    review:
+      "Quality Blinds is the best blinds company we have used the price and quality of the product was the the best we have had. Service they delivered before they said they...",
+    avatar: "B",
+  },
+  {
+    name: "Sarah Johnson",
+    date: "2021-06-15",
+    rating: 5,
+    review:
+      "Outstanding customer service! The team helped us choose the perfect blinds for our new home. Installation was flawless and the quality is exceptional. Highly recommended!",
+    avatar: "S",
+  },
+  {
+    name: "Mike Chen",
+    date: "2021-04-22",
+    rating: 5,
+    review:
+      "Professional service from start to finish. Great quality products and the installation team was punctual and clean. Very satisfied with our new Roman blinds.",
+    avatar: "M",
+  },
+  {
+    name: "Lisa Thompson",
+    date: "2021-05-30",
+    rating: 5,
+    review:
+      "Fantastic experience with Quality Blinds! They provided excellent advice, competitive pricing, and the finished result exceeded our expectations.",
+    avatar: "L",
+  },
+  {
+    name: "David Wilson",
+    date: "2021-03-08",
+    rating: 5,
+    review:
+      "Top-notch service and product quality. The consultation was thorough and the installation team was professional. Our venetian blinds look amazing!",
+    avatar: "D",
+  },
+  {
+    name: "Emma Roberts",
+    date: "2021-07-12",
+    rating: 5,
+    review:
+      "Couldn't be happier with our new shutters! Quality Blinds delivered exactly what they promised. Great value for money and excellent craftsmanship.",
+    avatar: "E",
+  },
+];
+
+// Datos de marcas
+const brandPartners = [
+  {
+    name: "ACMEDA",
+    logo: "/images/brands/acmeda.png",
+    description: "Premium window covering solutions",
+  },
+  {
+    name: "ALUXOR",
+    logo: "/images/brands/aluxor.png",
+    description: "Innovative awning systems",
+  },
+  {
+    name: "Carbolite",
+    logo: "/images/brands/carbolite.png",
+    description: "Quality awnings & louvres",
+  },
+  {
+    name: "ESR Blinds",
+    logo: "/images/brands/esr-blinds.png",
+    description: "Professional blind solutions",
+  },
+  {
+    name: "FOREST",
+    logo: "/images/brands/forest.png",
+    description: "Drapery hardware specialists",
+  },
+];
+
 const Home: React.FC = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -82,6 +229,269 @@ const Home: React.FC = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  // Estados para los sliders automáticos
+  const [currentCollection, setCurrentCollection] = React.useState(0);
+  const [currentProject, setCurrentProject] = React.useState(0);
+  const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
+  const [currentBrand, setCurrentBrand] = React.useState(0);
+
+  // Referencias para transiciones sin animación (para loop infinito)
+  const collectionsRef = React.useRef<HTMLDivElement>(null);
+  const projectsRef = React.useRef<HTMLDivElement>(null);
+  const brandsRef = React.useRef<HTMLDivElement>(null);
+
+  // Crear arrays infinitos duplicando elementos
+  const infiniteCollections = [
+    ...featuredCollections.slice(-3), // Últimos 3 al principio
+    ...featuredCollections,
+    ...featuredCollections.slice(0, 3), // Primeros 3 al final
+  ];
+
+  const infiniteProjects = [
+    ...projectCategories.slice(-3),
+    ...projectCategories,
+    ...projectCategories.slice(0, 3),
+  ];
+
+  const infiniteBrands = [
+    ...brandPartners.slice(-2), // Solo 2 porque hay 5 elementos
+    ...brandPartners,
+    ...brandPartners.slice(0, 2),
+  ];
+
+  // Auto-play para colecciones
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCollection((prev) => {
+        const next = prev + 1;
+        if (next > featuredCollections.length) {
+          // Salto invisible al inicio
+          setTimeout(() => {
+            if (collectionsRef.current) {
+              collectionsRef.current.style.transition = "none";
+              collectionsRef.current.style.transform = `translateX(-${
+                100 / 3
+              }%)`;
+              setTimeout(() => {
+                if (collectionsRef.current) {
+                  collectionsRef.current.style.transition = "";
+                }
+              }, 50);
+            }
+          }, 300);
+          return 1;
+        }
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-play para proyectos
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentProject((prev) => {
+        const next = prev + 1;
+        if (next > projectCategories.length) {
+          setTimeout(() => {
+            if (projectsRef.current) {
+              projectsRef.current.style.transition = "none";
+              projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
+              setTimeout(() => {
+                if (projectsRef.current) {
+                  projectsRef.current.style.transition = "";
+                }
+              }, 50);
+            }
+          }, 300);
+          return 1;
+        }
+        return next;
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-play para testimonios
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) =>
+        prev === customerTestimonials.length - 1 ? 0 : prev + 1
+      );
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-play para marcas
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBrand((prev) => {
+        const next = prev + 1;
+        if (next > brandPartners.length) {
+          setTimeout(() => {
+            if (brandsRef.current) {
+              brandsRef.current.style.transition = "none";
+              brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
+              setTimeout(() => {
+                if (brandsRef.current) {
+                  brandsRef.current.style.transition = "";
+                }
+              }, 50);
+            }
+          }, 300);
+          return 1;
+        }
+        return next;
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Funciones de navegación manual
+  const nextCollection = () => {
+    setCurrentCollection((prev) => {
+      const next = prev + 1;
+      if (next > featuredCollections.length) {
+        setTimeout(() => {
+          if (collectionsRef.current) {
+            collectionsRef.current.style.transition = "none";
+            collectionsRef.current.style.transform = `translateX(-${100 / 3}%)`;
+            setTimeout(() => {
+              if (collectionsRef.current) {
+                collectionsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return 1;
+      }
+      return next;
+    });
+  };
+
+  const prevCollection = () => {
+    setCurrentCollection((prev) => {
+      const next = prev - 1;
+      if (next < 0) {
+        setTimeout(() => {
+          if (collectionsRef.current) {
+            collectionsRef.current.style.transition = "none";
+            collectionsRef.current.style.transform = `translateX(-${
+              featuredCollections.length * (100 / 3)
+            }%)`;
+            setTimeout(() => {
+              if (collectionsRef.current) {
+                collectionsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return featuredCollections.length;
+      }
+      return next;
+    });
+  };
+
+  const nextProject = () => {
+    setCurrentProject((prev) => {
+      const next = prev + 1;
+      if (next > projectCategories.length) {
+        setTimeout(() => {
+          if (projectsRef.current) {
+            projectsRef.current.style.transition = "none";
+            projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
+            setTimeout(() => {
+              if (projectsRef.current) {
+                projectsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return 1;
+      }
+      return next;
+    });
+  };
+
+  const prevProject = () => {
+    setCurrentProject((prev) => {
+      const next = prev - 1;
+      if (next < 0) {
+        setTimeout(() => {
+          if (projectsRef.current) {
+            projectsRef.current.style.transition = "none";
+            projectsRef.current.style.transform = `translateX(-${
+              projectCategories.length * (100 / 3)
+            }%)`;
+            setTimeout(() => {
+              if (projectsRef.current) {
+                projectsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return projectCategories.length;
+      }
+      return next;
+    });
+  };
+
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) =>
+      prev === customerTestimonials.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) =>
+      prev === 0 ? customerTestimonials.length - 1 : prev - 1
+    );
+  };
+
+  const nextBrand = () => {
+    setCurrentBrand((prev) => {
+      const next = prev + 1;
+      if (next > brandPartners.length) {
+        setTimeout(() => {
+          if (brandsRef.current) {
+            brandsRef.current.style.transition = "none";
+            brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
+            setTimeout(() => {
+              if (brandsRef.current) {
+                brandsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return 1;
+      }
+      return next;
+    });
+  };
+
+  const prevBrand = () => {
+    setCurrentBrand((prev) => {
+      const next = prev - 1;
+      if (next < 0) {
+        setTimeout(() => {
+          if (brandsRef.current) {
+            brandsRef.current.style.transition = "none";
+            brandsRef.current.style.transform = `translateX(-${
+              brandPartners.length * (100 / 3)
+            }%)`;
+            setTimeout(() => {
+              if (brandsRef.current) {
+                brandsRef.current.style.transition = "";
+              }
+            }, 50);
+          }
+        }, 300);
+        return brandPartners.length;
+      }
+      return next;
+    });
+  };
 
   return (
     <>
@@ -166,14 +576,14 @@ const Home: React.FC = () => {
         </div>
       </motion.section>
 
-      <div className="bg-white max-w-7xl mx-auto px-4">
+      <div className="bg-white w-full">
         {/* Featured Collections */}
         <section
           id="featured-collections"
           className="py-16"
           aria-labelledby="collections-heading"
         >
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-[80%] mx-auto px-4">
             <motion.h2
               id="collections-heading"
               initial={{ opacity: 0, y: 20 }}
@@ -188,55 +598,221 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto"
+              className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto"
             >
               Discover our comprehensive range of premium blinds, curtains,
               shutters, and awnings. Each product is custom-made to fit your
               windows perfectly with professional installation guaranteed.
             </motion.p>
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              role="list"
-            >
-              {featuredCollections.map((collection, index) => (
-                <motion.article
-                  key={collection.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  role="listitem"
+
+            {/* Collections Slider */}
+            <div className="relative">
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevCollection}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Colección anterior"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <Link
-                    href={collection.link}
-                    aria-label={`Learn more about ${collection.name} - ${collection.description}`}
-                  >
-                    <div className="relative aspect-square overflow-hidden">
-                      <Image
-                        src={collection.image}
-                        alt={`Premium ${collection.name} by Quality Blinds Australia - ${collection.description}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading={index < 3 ? "eager" : "lazy"}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                        <h3 className="text-xl font-bold mb-2">
-                          {collection.name}
-                        </h3>
-                        <p className="text-sm opacity-90 line-clamp-2">
-                          {collection.description}
-                        </p>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={nextCollection}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Siguiente colección"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <div className="overflow-hidden px-12">
+                <motion.div
+                  ref={collectionsRef}
+                  className="flex"
+                  animate={{ x: `${-(currentCollection + 3) * (100 / 3)}%` }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  {infiniteCollections.map((collection, index) => (
+                    <motion.article
+                      key={`${collection.name}-${index}`}
+                      className="w-1/3 flex-shrink-0 px-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: (index % 3) * 0.1 }}
+                    >
+                      <div className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                        <Link
+                          href={collection.link}
+                          aria-label={`Learn more about ${collection.name} - ${collection.description}`}
+                        >
+                          <div className="relative aspect-[4/3] overflow-hidden">
+                            <Image
+                              src={collection.image}
+                              alt={`Premium ${collection.name} by Quality Blinds Australia - ${collection.description}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                              <h3 className="text-lg font-bold mb-2">
+                                {collection.name}
+                              </h3>
+                              <p className="text-sm opacity-90 line-clamp-2">
+                                {collection.description}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
                       </div>
-                    </div>
-                  </Link>
-                </motion.article>
-              ))}
+                    </motion.article>
+                  ))}
+                </motion.div>
+              </div>
             </div>
           </div>
         </section>
+
+        {/* Our Projects Section */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="py-16 bg-gray-50"
+          aria-labelledby="projects-heading"
+        >
+          <div className="w-[80%] mx-auto px-4">
+            <motion.h2
+              id="projects-heading"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
+            >
+              OUR PROJECTS
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto"
+            >
+              We proudly serve diverse sectors with tailored window treatment
+              solutions, from residential builders to major institutions across
+              Australia.
+            </motion.p>
+
+            {/* Projects Slider */}
+            <div className="relative">
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevProject}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Proyecto anterior"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={nextProject}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Siguiente proyecto"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <div className="overflow-hidden px-12">
+                <motion.div
+                  ref={projectsRef}
+                  className="flex"
+                  animate={{ x: `${-(currentProject + 3) * (100 / 3)}%` }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  {infiniteProjects.map((project, index) => (
+                    <motion.div
+                      key={`${project.name}-${index}`}
+                      className="w-1/3 flex-shrink-0 px-3"
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: (index % 3) * 0.1 }}
+                    >
+                      <div className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+                          <Image
+                            src={project.image}
+                            alt={`${project.name} - ${project.description}`}
+                            fill
+                            sizes="33vw"
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                          <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-20">
+                            <h3 className="text-lg font-bold mb-2 tracking-wide">
+                              {project.name}
+                            </h3>
+                            <p className="text-sm opacity-90 leading-relaxed">
+                              {project.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
 
         {/* Why Choose Quality Blinds */}
         <motion.section
@@ -244,17 +820,17 @@ const Home: React.FC = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="py-16 bg-gray-50 rounded-2xl"
+          className="py-16"
           aria-labelledby="benefits-heading"
         >
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-[80%] mx-auto px-4">
             <h2
               id="benefits-heading"
               className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
             >
               Why Choose Quality Blinds Australia?
             </h2>
-            <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto">
               With over 30 years of experience serving Australian homes and
               businesses, we&apos;re committed to delivering exceptional quality
               and service that exceeds expectations.
@@ -331,6 +907,285 @@ const Home: React.FC = () => {
           </div>
         </motion.section>
 
+        {/* Customer Testimonials */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="py-16 bg-gray-50"
+          aria-labelledby="testimonials-heading"
+        >
+          <div className="w-[80%] mx-auto px-4">
+            <motion.h2
+              id="testimonials-heading"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
+            >
+              What Our Customers Are Saying
+            </motion.h2>
+
+            {/* Google Rating Summary */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-12"
+            >
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="font-semibold text-gray-900">4.4 de 5</span>
+              </div>
+              <p className="text-gray-600">
+                Basado en {customerTestimonials.length} reseñas de Google
+              </p>
+            </motion.div>
+
+            {/* Testimonials Slider */}
+            <div className="relative">
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevTestimonial}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Reseña anterior"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={nextTestimonial}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Siguiente reseña"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <div className="overflow-hidden px-12">
+                <motion.div
+                  className="flex"
+                  animate={{ x: `${-currentTestimonial * 100}%` }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  {customerTestimonials.map((testimonial, index) => (
+                    <div
+                      key={`${testimonial.name}-${index}`}
+                      className="w-full flex-shrink-0 px-4"
+                    >
+                      <motion.div
+                        className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow max-w-3xl mx-auto"
+                        whileHover={{ y: -5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {/* Google Logo and Stars */}
+                        <div className="flex items-center justify-center gap-3 mb-6">
+                          <div className="flex items-center gap-2">
+                            <svg className="w-8 h-8" viewBox="0 0 24 24">
+                              <path
+                                fill="#4285F4"
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                              />
+                              <path
+                                fill="#34A853"
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                              />
+                              <path
+                                fill="#FBBC05"
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                              />
+                              <path
+                                fill="#EA4335"
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                              />
+                            </svg>
+                            <span className="text-base font-medium text-gray-600">
+                              Google
+                            </span>
+                          </div>
+                          <div className="flex">
+                            {[...Array(testimonial.rating)].map((_, i) => (
+                              <svg
+                                key={i}
+                                className="w-5 h-5 text-yellow-400 fill-current"
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Review Text */}
+                        <p className="text-gray-700 text-lg mb-6 leading-relaxed text-center italic">
+                          &ldquo;{testimonial.review}&rdquo;
+                        </p>
+
+                        {/* Customer Info */}
+                        <div className="flex items-center justify-center gap-4">
+                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-blue-600 font-bold text-lg">
+                              {testimonial.avatar}
+                            </span>
+                          </div>
+                          <div className="text-center">
+                            <div className="font-semibold text-gray-900 text-lg">
+                              {testimonial.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {testimonial.date}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Brands Section */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="py-16"
+          aria-labelledby="brands-heading"
+        >
+          <div className="w-[80%] mx-auto px-4">
+            <motion.h2
+              id="brands-heading"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
+            >
+              Brands
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto"
+            >
+              We offer finest brands in our store
+            </motion.p>
+
+            {/* Brands Slider */}
+            <div className="relative">
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevBrand}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Marca anterior"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={nextBrand}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                aria-label="Siguiente marca"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <div className="overflow-hidden px-12">
+                <motion.div
+                  ref={brandsRef}
+                  className="flex"
+                  animate={{ x: `${-(currentBrand + 2) * (100 / 3)}%` }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  {infiniteBrands.map((brand, index) => (
+                    <motion.div
+                      key={`${brand.name}-${index}`}
+                      className="w-1/3 flex-shrink-0 px-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: (index % 3) * 0.1 }}
+                    >
+                      <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                        <div className="text-center">
+                          {/* Placeholder para el logo - reemplazar con las imágenes reales */}
+                          <div className="h-16 w-full bg-gray-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-gray-50 transition-colors">
+                            <span className="text-gray-500 text-sm font-medium">
+                              {brand.name}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-600">
+                            {brand.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
         {/* Contact Form */}
         <motion.section
           initial={{ opacity: 0 }}
@@ -341,14 +1196,14 @@ const Home: React.FC = () => {
           className="py-16"
           aria-labelledby="contact-heading"
         >
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-[80%] mx-auto px-4">
             <h2
               id="contact-heading"
               className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
             >
               Get Your Free Consultation Today
             </h2>
-            <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto">
               Ready to transform your space? Contact our experts for a free
               in-home consultation and quote. We&apos;ll help you choose the
               perfect window treatments for your needs and budget.
