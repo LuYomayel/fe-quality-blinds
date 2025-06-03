@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import QuoteDialog from "./QuoteDialog";
 
 interface ProductImage {
@@ -49,6 +50,65 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [visibleThumbnails, setVisibleThumbnails] = useState(4);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const mainImageRef = useRef<HTMLDivElement>(null);
+  const thumbnailsContainerRef = useRef<HTMLDivElement>(null);
+
+  // Calcular tamaños responsive
+  const getThumbnailSize = () => {
+    if (containerWidth === 0) return 80;
+
+    // Responsive thumbnail sizes
+    if (containerWidth < 640) return 60; // mobile
+    if (containerWidth < 1024) return 70; // tablet
+    return 80; // desktop
+  };
+
+  const thumbnailSize = getThumbnailSize();
+  const gap = 12; // gap entre miniaturas
+  const arrowSpace = 64; // espacio para las flechas (32px cada lado)
+
+  // Calcular cuántas miniaturas caben
+  useEffect(() => {
+    const calculateVisibleThumbnails = () => {
+      if (containerWidth === 0) return;
+
+      const availableWidth = containerWidth - arrowSpace;
+      const thumbnailWithGap = thumbnailSize + gap;
+      const maxThumbnails = Math.floor(
+        (availableWidth + gap) / thumbnailWithGap
+      );
+
+      setVisibleThumbnails(
+        Math.max(1, Math.min(maxThumbnails, product.images?.length || 0))
+      );
+    };
+
+    calculateVisibleThumbnails();
+  }, [containerWidth, thumbnailSize, product.images?.length]);
+
+  // Medir el ancho del contenedor
+  useEffect(() => {
+    const measureContainer = () => {
+      if (mainImageRef.current) {
+        setContainerWidth(mainImageRef.current.offsetWidth);
+      }
+    };
+
+    measureContainer();
+    window.addEventListener("resize", measureContainer);
+
+    return () => window.removeEventListener("resize", measureContainer);
+  }, []);
+
+  // Reset thumbnail index when visible thumbnails change
+  useEffect(() => {
+    setThumbnailStartIndex(0);
+  }, [visibleThumbnails]);
 
   // Memoize breadcrumbs calculation
   const breadcrumbs = useMemo(() => {
@@ -105,6 +165,28 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     ));
   };
 
+  const handleThumbnailScroll = (direction: "left" | "right") => {
+    if (!product.images) return;
+
+    if (direction === "left") {
+      setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - 1));
+    } else {
+      setThumbnailStartIndex(
+        Math.min(
+          product.images.length - visibleThumbnails,
+          thumbnailStartIndex + 1
+        )
+      );
+    }
+  };
+
+  const needsNavigation =
+    product.images && product.images.length > visibleThumbnails;
+  const canScrollLeft = thumbnailStartIndex > 0;
+  const canScrollRight =
+    product.images &&
+    thumbnailStartIndex < product.images.length - visibleThumbnails;
+
   return (
     <article
       className="bg-white"
@@ -160,49 +242,156 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             </h2>
             {product.images && product.images.length > 0 ? (
               <>
-                <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div
+                  ref={mainImageRef}
+                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 w-full"
+                >
                   <Image
+                    key={selectedImage}
                     src={product.images[selectedImage].src}
                     alt={`${product.name} - ${product.images[selectedImage].alt} - Premium window treatment by Quality Blinds Australia`}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                    className={`object-cover transition-opacity duration-300 ease-in-out ${
+                      imageLoading ? "opacity-0" : "opacity-100"
+                    }`}
                     priority={selectedImage === 0}
                     loading={selectedImage === 0 ? "eager" : "lazy"}
                     itemProp="image"
+                    onLoadingComplete={() => setImageLoading(false)}
+                    onLoad={() => setImageLoading(false)}
                   />
                 </div>
-                <div
-                  className="grid grid-cols-4 gap-4"
-                  role="list"
-                  aria-label="Product image thumbnails"
-                >
-                  {product.images.map((image, index) => (
+
+                {/* Slider de miniaturas responsive */}
+                <div className="relative w-full">
+                  {/* Botón izquierdo */}
+                  {needsNavigation && canScrollLeft && (
                     <button
-                      key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                        selectedImage === index
-                          ? "border-blue-500 ring-2 ring-blue-200"
-                          : "border-transparent hover:border-gray-300"
-                      }`}
-                      aria-label={`View ${product.name} image ${index + 1}${
-                        selectedImage === index ? " (currently selected)" : ""
-                      }`}
+                      onClick={() => handleThumbnailScroll("left")}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl backdrop-blur-sm"
+                      aria-label="Ver imágenes anteriores"
                     >
-                      <Image
-                        src={image.src}
-                        alt={`${product.name} thumbnail ${index + 1} - ${
-                          image.alt
-                        }`}
-                        fill
-                        sizes="(max-width: 768px) 25vw, 12vw"
-                        className="object-cover"
-                        loading="lazy"
-                      />
+                      <ChevronLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                     </button>
-                  ))}
+                  )}
+
+                  {/* Contenedor de miniaturas */}
+                  <div
+                    ref={thumbnailsContainerRef}
+                    className={`flex justify-center gap-3 overflow-hidden transition-all duration-300 ${
+                      needsNavigation ? "px-8" : "px-0"
+                    }`}
+                    role="list"
+                    aria-label="Product image thumbnails"
+                  >
+                    {product.images
+                      .slice(
+                        thumbnailStartIndex,
+                        thumbnailStartIndex + visibleThumbnails
+                      )
+                      .map((image, index) => {
+                        const actualIndex = thumbnailStartIndex + index;
+                        return (
+                          <button
+                            key={actualIndex}
+                            onClick={() => {
+                              setImageLoading(true);
+                              setSelectedImage(actualIndex);
+                            }}
+                            className={`relative flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                              selectedImage === actualIndex
+                                ? "border-blue-500 ring-2 ring-blue-200 shadow-lg"
+                                : "border-transparent hover:border-gray-300 hover:shadow-md"
+                            }`}
+                            style={{
+                              width: `${thumbnailSize}px`,
+                              height: `${thumbnailSize}px`,
+                            }}
+                            aria-label={`Ver ${product.name} imagen ${
+                              actualIndex + 1
+                            }${
+                              selectedImage === actualIndex
+                                ? " (actualmente seleccionada)"
+                                : ""
+                            }`}
+                          >
+                            <div className="relative w-full h-full">
+                              <Image
+                                src={image.src}
+                                alt={`${product.name} miniatura ${
+                                  actualIndex + 1
+                                } - ${image.alt}`}
+                                fill
+                                sizes={`${thumbnailSize}px`}
+                                className="object-cover transition-all duration-300 hover:brightness-110"
+                                loading="lazy"
+                              />
+                              {selectedImage === actualIndex && (
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  exit={{ opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="absolute inset-0 bg-blue-500/15 ring-1 ring-inset ring-blue-500/30"
+                                />
+                              )}
+
+                              {/* Efecto de selección activa */}
+                              {selectedImage === actualIndex && (
+                                <motion.div
+                                  layoutId="selectedThumbnail"
+                                  className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg -z-10"
+                                  transition={{
+                                    type: "spring",
+                                    bounce: 0.15,
+                                    duration: 0.4,
+                                  }}
+                                />
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                  </div>
+
+                  {/* Botón derecho */}
+                  {needsNavigation && canScrollRight && (
+                    <button
+                      onClick={() => handleThumbnailScroll("right")}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl backdrop-blur-sm"
+                      aria-label="Ver más imágenes"
+                    >
+                      <ChevronRightIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                    </button>
+                  )}
                 </div>
+
+                {/* Indicador de posición - solo cuando hay navegación */}
+                {needsNavigation && (
+                  <div className="flex justify-center space-x-1 mt-2">
+                    {Array.from({
+                      length: Math.ceil(
+                        product.images.length / visibleThumbnails
+                      ),
+                    }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() =>
+                          setThumbnailStartIndex(index * visibleThumbnails)
+                        }
+                        className={`h-2 w-2 rounded-full transition-all duration-200 ${
+                          Math.floor(
+                            thumbnailStartIndex / visibleThumbnails
+                          ) === index
+                            ? "bg-blue-500 shadow-sm"
+                            : "bg-gray-300 hover:bg-gray-400"
+                        }`}
+                        aria-label={`Ir a página ${index + 1} de miniaturas`}
+                      />
+                    ))}
+                  </div>
+                )}
               </>
             ) : (
               <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">

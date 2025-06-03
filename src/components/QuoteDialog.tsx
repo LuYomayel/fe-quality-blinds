@@ -200,26 +200,6 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
                 </button>
               </div>
 
-              {/* Contact Message */}
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="mb-6 text-center bg-blue-50 p-4 rounded-lg border border-blue-200"
-              >
-                <p className="text-gray-700">
-                  <span className="font-medium">Call us at:</span>{" "}
-                  <a
-                    href="tel:+61293405050"
-                    className="text-blue-700 font-semibold hover:text-blue-800 transition"
-                  >
-                    +61 (02) 9340 5050
-                  </a>
-                  <span className="text-gray-500 mx-2">or</span>
-                  fill the form below
-                </p>
-              </motion.div>
-
               <motion.form
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
