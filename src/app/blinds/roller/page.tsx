@@ -1,31 +1,30 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
-  SunIcon,
-  EyeSlashIcon,
-  SparklesIcon,
   ArrowRightIcon,
+  SunIcon,
   ShieldCheckIcon,
   CogIcon,
+  EyeSlashIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { categoryConfigs } from "@/data/productData";
-import { openChatbot } from "../../../components/Chatbot";
+import QuoteDialog from "../../../components/QuoteDialog";
 
 const RollerBlindsPage = () => {
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+
   const heroRef = useRef(null);
-  const categoriesRef = useRef(null);
-  const benefitsRef = useRef(null);
+  const typesRef = useRef(null);
+  const featuresRef = useRef(null);
 
   const isHeroInView = useInView(heroRef, { once: true });
-  const isCategoriesInView = useInView(categoriesRef, {
-    once: true,
-    margin: "-100px",
-  });
-  const isBenefitsInView = useInView(benefitsRef, {
+  const isTypesInView = useInView(typesRef, { once: true, margin: "-100px" });
+  const isFeaturesInView = useInView(featuresRef, {
     once: true,
     margin: "-100px",
   });
@@ -85,10 +84,7 @@ const RollerBlindsPage = () => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      "I'm interested in getting a free quote for roller blinds",
-      "Roller Blinds"
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -219,10 +215,10 @@ const RollerBlindsPage = () => {
 
       {/* Categories Section */}
       <motion.section
-        ref={categoriesRef}
+        ref={typesRef}
         className="py-20 bg-gray-50"
         initial="hidden"
-        animate={isCategoriesInView ? "visible" : "hidden"}
+        animate={isTypesInView ? "visible" : "hidden"}
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -297,10 +293,10 @@ const RollerBlindsPage = () => {
 
       {/* Benefits Section */}
       <motion.section
-        ref={benefitsRef}
+        ref={featuresRef}
         className="py-20 bg-white"
         initial="hidden"
-        animate={isBenefitsInView ? "visible" : "hidden"}
+        animate={isFeaturesInView ? "visible" : "hidden"}
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -392,6 +388,14 @@ const RollerBlindsPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName="Roller Blinds"
+        productCategory="roller-blinds"
+      />
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Product } from "@/data/productData";
 import VariantsGallery from "./VariantsGallery";
 import ProductReviews from "./ProductReviews";
-import { openChatbot } from "./Chatbot";
+import QuoteDialog from "./QuoteDialog";
 
 interface ProductDetailProps {
   product: Product;
@@ -37,6 +37,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [visibleThumbnails, setVisibleThumbnails] = useState(4);
   const [imageLoading, setImageLoading] = useState(false);
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
 
   const heroRef = useRef(null);
   const galleryRef = useRef(null);
@@ -208,10 +209,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      `I'd like to get a free quote for ${product.name}`,
-      product.name
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -808,6 +806,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <meta itemProp="sku" content={product.id} />
         <meta itemProp="category" content="Window Treatments" />
       </div>
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName={product.name}
+        productCategory={product.category || ""}
+      />
     </article>
   );
 };

@@ -23,11 +23,22 @@ interface SamplesFormErrors {
   message?: string;
 }
 
-interface SamplesFormProps {
-  onClose: () => void;
+interface ChatMessage {
+  id: string;
+  type: "user" | "bot";
+  content: string;
+  timestamp: Date;
 }
 
-const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
+interface SamplesFormProps {
+  onClose: () => void;
+  chatMessages?: ChatMessage[];
+}
+
+const SamplesForm: React.FC<SamplesFormProps> = ({
+  onClose,
+  chatMessages = [],
+}) => {
   const [form, setForm] = useState<SamplesFormData>({
     name: "",
     email: "",
@@ -104,8 +115,44 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
     setStatus("sending");
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Generar resumen de conversación si hay mensajes del chatbot
+      let conversationSummary = "";
+      if (chatMessages.length > 0) {
+        try {
+          const summaryResponse = await fetch("/api/chat-summary", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: chatMessages }),
+          });
+          const summaryData = await summaryResponse.json();
+          conversationSummary =
+            summaryData.summary || "Unable to generate automatic summary.";
+        } catch (error) {
+          console.error("Error generating summary:", error);
+          conversationSummary =
+            "Error generating chatbot conversation summary.";
+        }
+      }
+
+      // Crear FormData con todos los datos incluyendo el resumen
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (key === "productTypes") {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value as string);
+        }
+      });
+      formData.append("chatSummary", conversationSummary);
+
+      // Enviar a endpoint de samples
+      const res = await fetch("/api/samples", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Error sending samples request");
+
       setStatus("sent");
 
       // Close modal after 2 seconds

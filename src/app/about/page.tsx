@@ -1,25 +1,23 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
 import {
+  ArrowRightIcon,
   CheckCircleIcon,
   UserGroupIcon,
   HeartIcon,
-  SparklesIcon,
   ShieldCheckIcon,
-  BuildingOfficeIcon,
-  ArrowRightIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/24/outline";
+import { BuildingOfficeIcon } from "@heroicons/react/24/solid";
 import ContactForm from "../../components/ContactForm";
-import { openChatbot } from "../../components/Chatbot";
+import QuoteDialog from "../../components/QuoteDialog";
 
 const AboutUs = () => {
-  // Remove quote modal state since we're using chatbot
-  // const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
 
   // Refs para las animaciones basadas en scroll
   const heroRef = useRef(null);
@@ -59,7 +57,7 @@ const AboutUs = () => {
       title: "PRECISION",
       description:
         "We measure and understand the key drivers in our business on which we exclusively focus.",
-      icon: <SparklesIcon className="h-8 w-8 text-blue-600" />,
+      icon: <ShieldCheckIcon className="h-8 w-8 text-blue-600" />,
     },
     {
       title: "CONSISTENCY",
@@ -138,10 +136,7 @@ const AboutUs = () => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      "I'd like to get a free quote and consultation for my home",
-      "Quality Blinds Services"
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -527,7 +522,7 @@ const AboutUs = () => {
               Get Free Quote
             </motion.button>
             <motion.button
-              onClick={() => setIsContactModalOpen(true)}
+              onClick={() => setShowContactForm(true)}
               className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-blue-600 transition-colors"
               variants={fadeInRight}
               whileHover={{
@@ -543,13 +538,13 @@ const AboutUs = () => {
       </motion.section>
 
       {/* Contact Form Modal */}
-      {isContactModalOpen && (
+      {showContactForm && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          onClick={() => setIsContactModalOpen(false)}
+          onClick={() => setShowContactForm(false)}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -562,7 +557,7 @@ const AboutUs = () => {
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-black">Contact Us</h2>
                 <button
-                  onClick={() => setIsContactModalOpen(false)}
+                  onClick={() => setShowContactForm(false)}
                   className="text-gray-400 hover:text-gray-600 transition"
                   aria-label="Close modal"
                 >
@@ -574,6 +569,14 @@ const AboutUs = () => {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName="Quality Blinds Services"
+        productCategory="consultation"
+      />
     </div>
   );
 };

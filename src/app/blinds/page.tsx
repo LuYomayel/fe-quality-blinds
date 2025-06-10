@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { openChatbot } from "../../components/Chatbot";
+import QuoteDialog from "../../components/QuoteDialog";
 
 const BlindsPage = () => {
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+
   const heroRef = useRef(null);
   const categoriesRef = useRef(null);
 
@@ -74,10 +76,7 @@ const BlindsPage = () => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      "I'm interested in getting a free quote for blinds",
-      "Quality Blinds"
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -231,6 +230,14 @@ const BlindsPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName="Quality Blinds"
+        productCategory="blinds"
+      />
     </div>
   );
 };

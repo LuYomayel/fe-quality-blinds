@@ -14,7 +14,18 @@ interface ContactFormData {
   product: string;
 }
 
-const ContactForm: React.FC = () => {
+interface ChatMessage {
+  id: string;
+  type: "user" | "bot";
+  content: string;
+  timestamp: Date;
+}
+
+interface ContactFormProps {
+  chatMessages?: ChatMessage[];
+}
+
+const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
   const [form, setForm] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -104,6 +115,28 @@ const ContactForm: React.FC = () => {
       filesRef.current.forEach((file) => {
         formData.append(`images`, file);
       });
+
+      // Generar resumen de conversación si hay mensajes del chatbot
+      let conversationSummary = "";
+      if (chatMessages.length > 0) {
+        try {
+          const summaryResponse = await fetch("/api/chat-summary", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: chatMessages }),
+          });
+          const summaryData = await summaryResponse.json();
+          conversationSummary =
+            summaryData.summary || "Unable to generate automatic summary.";
+        } catch (error) {
+          console.error("Error generating summary:", error);
+          conversationSummary =
+            "Error generating chatbot conversation summary.";
+        }
+      }
+
+      // Agregar el resumen al FormData
+      formData.append("chatSummary", conversationSummary);
 
       const res = await fetch("/api/contact", {
         method: "POST",

@@ -457,11 +457,45 @@ const Chatbot: React.FC<ChatbotProps> = ({
       addMessage(response);
       if (response.content === "__OPENAI_PLACEHOLDER__") {
         response.content = "";
+        // Mantener typing indicator mientras espera respuesta de OpenAI
+        setIsTyping(true);
         askOpenAI(inputValue).then((aiAnswer) => {
+          // Ocultar typing indicator
+          setIsTyping(false);
+
+          // Detectar si la respuesta de IA menciona booking/medición y agregar quick actions
+          const shouldAddBookingActions =
+            aiAnswer.toLowerCase().includes("schedule") ||
+            aiAnswer.toLowerCase().includes("book") ||
+            aiAnswer.toLowerCase().includes("consultation") ||
+            aiAnswer.toLowerCase().includes("measurement") ||
+            aiAnswer.toLowerCase().includes("measure") ||
+            aiAnswer.toLowerCase().includes("appointment") ||
+            aiAnswer.toLowerCase().includes("free quote");
+
+          const updatedMessage = {
+            ...response,
+            content: aiAnswer,
+            quickActions: shouldAddBookingActions
+              ? [
+                  {
+                    id: "book-home-visit",
+                    label: "Book Free Consultation",
+                    action: "BOOK_HOME_VISIT",
+                    icon: HomeIcon,
+                  },
+                  {
+                    id: "call-now",
+                    label: "Call (02) 9340 5050",
+                    action: "CALL_US",
+                    icon: PhoneIcon,
+                  },
+                ]
+              : undefined,
+          };
+
           setMessages((prev) =>
-            prev.map((m) =>
-              m.id === response.id ? { ...m, content: aiAnswer } : m
-            )
+            prev.map((m) => (m.id === response.id ? updatedMessage : m))
           );
         });
         return; // ya gestionado
@@ -774,46 +808,52 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${
-                    message.type === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
+              {messages
+                .filter((message) => message.content.trim() !== "") // Filtrar mensajes vacíos
+                .map((message) => (
                   <div
-                    className={`max-w-[80%] ${
-                      message.type === "user" ? "order-2" : "order-1"
+                    key={message.id}
+                    className={`flex ${
+                      message.type === "user" ? "justify-end" : "justify-start"
                     }`}
                   >
                     <div
-                      className={`rounded-2xl px-4 py-2 ${
-                        message.type === "user"
-                          ? "bg-blue-600 text-white"
-                          : "bg-white text-gray-800 shadow-sm border border-gray-100"
+                      className={`max-w-[80%] ${
+                        message.type === "user" ? "order-2" : "order-1"
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-line">
-                        {message.content}
+                      <div
+                        className={`rounded-2xl px-4 py-2 ${
+                          message.type === "user"
+                            ? "bg-blue-600 text-white"
+                            : "bg-white text-gray-800 shadow-sm border border-gray-100"
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-line">
+                          {message.content}
+                        </p>
+                      </div>
+                      <p
+                        className={`text-xs text-gray-500 mt-1 ${
+                          message.type === "user" ? "text-right" : "text-left"
+                        }`}
+                      >
+                        {formatTime(message.timestamp)}
                       </p>
                     </div>
-                    <p
-                      className={`text-xs text-gray-500 mt-1 ${
-                        message.type === "user" ? "text-right" : "text-left"
-                      }`}
-                    >
-                      {formatTime(message.timestamp)}
-                    </p>
                   </div>
-                </div>
-              ))}
+                ))}
 
               {/* Suggestions */}
-              {messages.length > 0 &&
-                messages[messages.length - 1].suggestions && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {messages[messages.length - 1].suggestions!.map(
-                      (suggestion, index) => (
+              {(() => {
+                const validMessages = messages.filter(
+                  (message) => message.content.trim() !== ""
+                );
+                const lastMessage = validMessages[validMessages.length - 1];
+                return (
+                  lastMessage?.suggestions && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {lastMessage.suggestions.map((suggestion, index) => (
                         <button
                           key={index}
                           onClick={() => handleSuggestionClick(suggestion)}
@@ -821,17 +861,22 @@ const Chatbot: React.FC<ChatbotProps> = ({
                         >
                           {suggestion}
                         </button>
-                      )
-                    )}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )
+                );
+              })()}
 
               {/* Quick Actions */}
-              {messages.length > 0 &&
-                messages[messages.length - 1].quickActions && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {messages[messages.length - 1].quickActions!.map(
-                      (action) => {
+              {(() => {
+                const validMessages = messages.filter(
+                  (message) => message.content.trim() !== ""
+                );
+                const lastMessage = validMessages[validMessages.length - 1];
+                return (
+                  lastMessage?.quickActions && (
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {lastMessage.quickActions.map((action) => {
                         const Icon = action.icon || LightBulbIcon;
                         return (
                           <button
@@ -843,10 +888,11 @@ const Chatbot: React.FC<ChatbotProps> = ({
                             {action.label}
                           </button>
                         );
-                      }
-                    )}
-                  </div>
-                )}
+                      })}
+                    </div>
+                  )
+                );
+              })()}
 
               {/* Typing Indicator */}
               {isTyping && (
@@ -937,7 +983,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
               >
                 <XMarkIcon className="h-5 w-5 text-gray-600" />
               </button>
-              <ContactForm />
+              <ContactForm chatMessages={messages} />
             </motion.div>
           </motion.div>
         )}
@@ -966,7 +1012,10 @@ const Chatbot: React.FC<ChatbotProps> = ({
               >
                 <XMarkIcon className="h-5 w-5 text-gray-600" />
               </button>
-              <SamplesForm onClose={() => setShowSamplesForm(false)} />
+              <SamplesForm
+                onClose={() => setShowSamplesForm(false)}
+                chatMessages={messages}
+              />
             </motion.div>
           </motion.div>
         )}
