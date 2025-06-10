@@ -56,7 +56,7 @@ export default async function CurtainsProductPage({
   const product = foundProduct as Product;
 
   return (
-    <main className="pt-20">
+    <main>
       <ProductDetail product={product} />
     </main>
   );

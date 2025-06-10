@@ -54,7 +54,7 @@ export default async function RomanBlindsProductPage({
   const product = foundProduct as Product;
 
   return (
-    <main className="pt-20">
+    <main>
       <ProductDetail product={product} />
     </main>
   );

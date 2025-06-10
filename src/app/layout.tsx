@@ -5,6 +5,7 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
+import { LoadingProvider } from "@/components/LoadingProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -145,8 +146,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased ${inter.className}`}
       >
-        <Header />
-        {children}
+        <LoadingProvider>
+          <Header />
+          {children}
+          <Footer />
+        </LoadingProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -229,7 +233,6 @@ export default function RootLayout({
             }),
           }}
         />
-        <Footer />
       </body>
     </html>
   );

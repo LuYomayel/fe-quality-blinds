@@ -53,7 +53,7 @@ export default function BlockoutRollerBlindsPage() {
 
   return (
     <>
-      <main className="pt-20">
+      <main>
         <ProductDetail product={product} />
       </main>
 

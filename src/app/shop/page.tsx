@@ -1,8 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { productData } from "@/data/productData"; // Assumes productData.ts or .js exports an array of product objects.
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import {
+  MagnifyingGlassIcon,
+  AdjustmentsHorizontalIcon,
+  Squares2X2Icon,
+  ListBulletIcon,
+  FunnelIcon,
+  EyeIcon,
+  HeartIcon,
+  ShoppingBagIcon,
+} from "@heroicons/react/24/outline";
+import {
+  StarIcon as StarIconSolid,
+  HeartIcon as HeartIconSolid,
+} from "@heroicons/react/24/solid";
 
 type Product = {
   id: string;
@@ -121,200 +136,560 @@ const Shop: React.FC = () => {
   // State to track which subcategory filter is active
   const [activeFilter, setActiveFilter] = useState<string>("");
 
-  // Filtered list of products based on activeFilter
-  const filteredProducts = activeFilter
-    ? (productData as Product[]).filter((prod) => prod.name === activeFilter)
-    : (productData as Product[]);
+  // New states for improved functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [favoriteProducts, setFavoriteProducts] = useState<Set<string>>(
+    new Set()
+  );
+  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
 
-  //console.log(filteredProducts);
+  // Refs for animations
+  const heroRef = useRef(null);
+  const filtersRef = useRef(null);
+  const productsRef = useRef(null);
+
+  const isHeroInView = useInView(heroRef, { once: true });
+  const isFiltersInView = useInView(filtersRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const isProductsInView = useInView(productsRef, {
+    once: true,
+    margin: "-50px",
+  });
+
+  // Enhanced filtering logic
+  const filteredProducts = (productData as Product[]).filter((product) => {
+    const matchesCategory = !activeFilter || product.name === activeFilter;
+    const matchesSearch =
+      !searchQuery ||
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.shortDescription
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Toggle favorite
+  const toggleFavorite = (productId: string) => {
+    const newFavorites = new Set(favoriteProducts);
+    if (newFavorites.has(productId)) {
+      newFavorites.delete(productId);
+    } else {
+      newFavorites.add(productId);
+    }
+    setFavoriteProducts(newFavorites);
+  };
+
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const fadeInLeft = {
+    hidden: { opacity: 0, x: -60 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const productCardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
   return (
-    <div className="flex flex-col md:flex-row bg-gray-50 min-h-screen pt-20">
-      {/* Sidebar */}
-      <aside className="w-full md:w-1/4 lg:w-1/5 bg-white border-r border-gray-200">
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Product Categories
-          </h2>
-          {/* "Show filters" header (collapsible functionality is optional) */}
-          <button
-            className="mb-6 text-gray-600 hover:text-gray-800 focus:outline-none"
-            onClick={() => setExpandedCategory(expandedCategory ? null : "all")}
-          >
-            {expandedCategory ? "Hide Filters" : "Show Filters"}
-          </button>
+    <div className="bg-gray-50 min-h-screen">
+      {/* Hero Section */}
+      <motion.section
+        ref={heroRef}
+        className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white pt-20 pb-16"
+        initial="hidden"
+        animate={isHeroInView ? "visible" : "hidden"}
+      >
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-[url('/images/blinds-pattern.png')] opacity-10"></div>
 
-          <div>
-            {categories.map((cat) => (
-              <div key={cat.name} className="mb-4">
-                <button
-                  className="w-full flex justify-between items-center text-left text-lg font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
-                  onClick={() =>
-                    setExpandedCategory(
-                      expandedCategory === cat.name ? null : cat.name
-                    )
-                  }
+        <div className="relative max-w-7xl mx-auto px-4">
+          <div className="text-center">
+            <motion.div variants={fadeInUp}>
+              <nav className="flex justify-center mb-8" aria-label="Breadcrumb">
+                <ol className="flex items-center space-x-2 text-blue-200">
+                  <li>
+                    <Link
+                      href="/"
+                      className="hover:text-white transition-colors"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li className="flex items-center">
+                    <svg
+                      className="w-4 h-4 mx-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-white font-medium">Shop</span>
+                  </li>
+                </ol>
+              </nav>
+            </motion.div>
+
+            <motion.h1
+              variants={fadeInUp}
+              className="text-5xl md:text-6xl font-bold mb-6"
+            >
+              Our Store
+            </motion.h1>
+            <motion.p
+              variants={fadeInUp}
+              transition={{ delay: 0.2 }}
+              className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8"
+            >
+              Discover our extensive range of blinds, curtains, awnings and
+              more. Premium quality to transform your home.
+            </motion.p>
+
+            {/* Quick Stats */}
+            <motion.div
+              className="flex flex-wrap justify-center gap-8 mt-12"
+              variants={staggerContainer}
+            >
+              {[
+                { number: `${productData.length}+`, label: "Products" },
+                { number: "5", label: "Categories" },
+                { number: "30+", label: "Years Experience" },
+                { number: "1000+", label: "Happy Clients" },
+              ].map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  className="text-center"
+                  variants={fadeInUp}
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <span>{cat.name}</span>
-                  <svg
-                    className={`w-5 h-5 transform transition-transform ${
-                      expandedCategory === cat.name ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                {expandedCategory === cat.name && (
-                  <ul className="mt-2 ml-4 space-y-2">
-                    {cat.subcategories.map((sub) => (
-                      <li key={sub}>
-                        <button
-                          className={`block text-gray-600 hover:text-gray-800 focus:outline-none ${
-                            activeFilter === sub
-                              ? "font-semibold text-teal-600"
-                              : ""
-                          }`}
-                          onClick={() =>
-                            setActiveFilter(activeFilter === sub ? "" : sub)
-                          }
-                        >
-                          {sub}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                  <div className="text-3xl font-bold text-white">
+                    {stat.number}
+                  </div>
+                  <div className="text-blue-200 text-sm">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto">
+        {/* Enhanced Sidebar */}
+        <motion.aside
+          ref={filtersRef}
+          className="w-full lg:w-80 bg-white shadow-lg lg:sticky lg:top-20 lg:h-fit"
+          initial="hidden"
+          animate={isFiltersInView ? "visible" : "hidden"}
+          variants={fadeInLeft}
+        >
+          <div className="p-6">
+            {/* Search Bar */}
+            <motion.div className="mb-8" variants={fadeInUp}>
+              <div className="relative">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
               </div>
-            ))}
-            {/* "Clear Filters" button */}
-            {activeFilter && (
+            </motion.div>
+
+            {/* Filter Header */}
+            <motion.div
+              className="flex items-center justify-between mb-6"
+              variants={fadeInUp}
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+                <FunnelIcon className="h-6 w-6 mr-2 text-blue-600" />
+                Categories
+              </h2>
               <button
-                className="mt-4 text-teal-600 hover:text-teal-800 font-medium focus:outline-none"
-                onClick={() => setActiveFilter("")}
+                className="lg:hidden flex items-center text-gray-600 hover:text-gray-800 focus:outline-none"
+                onClick={() =>
+                  setExpandedCategory(expandedCategory ? null : "all")
+                }
+              >
+                <AdjustmentsHorizontalIcon className="h-5 w-5 mr-1" />
+                {expandedCategory ? "Hide" : "Show"}
+              </button>
+            </motion.div>
+
+            {/* Categories */}
+            <motion.div variants={staggerContainer}>
+              {categories.map((cat) => (
+                <motion.div
+                  key={cat.name}
+                  className="mb-4 border-b border-gray-100 pb-4"
+                  variants={fadeInUp}
+                >
+                  <button
+                    className="w-full flex justify-between items-center text-left text-lg font-medium text-gray-700 hover:text-blue-600 focus:outline-none group transition-colors"
+                    onClick={() =>
+                      setExpandedCategory(
+                        expandedCategory === cat.name ? null : cat.name
+                      )
+                    }
+                  >
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      {cat.name}
+                    </span>
+                    <motion.svg
+                      className="w-5 h-5 text-gray-400 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      animate={{
+                        rotate: expandedCategory === cat.name ? 180 : 0,
+                      }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </motion.svg>
+                  </button>
+
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      height: expandedCategory === cat.name ? "auto" : 0,
+                      opacity: expandedCategory === cat.name ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <ul className="mt-3 ml-4 space-y-3">
+                      {cat.subcategories.map((sub) => (
+                        <motion.li
+                          key={sub}
+                          whileHover={{ x: 5 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <button
+                            className={`block text-gray-600 hover:text-blue-600 focus:outline-none transition-colors ${
+                              activeFilter === sub
+                                ? "font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-md"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              setActiveFilter(activeFilter === sub ? "" : sub)
+                            }
+                          >
+                            {sub}
+                          </button>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Clear Filters */}
+            {(activeFilter || searchQuery) && (
+              <motion.button
+                className="w-full mt-6 bg-red-50 text-red-600 hover:bg-red-100 font-medium py-3 px-4 rounded-lg transition-colors"
+                onClick={() => {
+                  setActiveFilter("");
+                  setSearchQuery("");
+                }}
+                variants={fadeInUp}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Clear Filters
-              </button>
+              </motion.button>
             )}
           </div>
-        </div>
-      </aside>
+        </motion.aside>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6">
-          Shop All Products
-        </h1>
+        {/* Enhanced Main Content */}
+        <main className="flex-1 p-6">
+          {/* Header with view controls */}
+          <motion.div
+            className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {activeFilter || "All Products"}
+              </h1>
+              <p className="text-gray-600">
+                {filteredProducts.length} product
+                {filteredProducts.length !== 1 ? "s" : ""} found
+                {searchQuery && ` for "${searchQuery}"`}
+              </p>
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product, index) => (
-            <article
-              key={product.id}
-              className="relative bg-white shadow-md rounded-lg overflow-hidden group hover:shadow-xl transition-all duration-300"
-            >
-              <Link
-                href={getProductRoute(product.id)}
-                aria-label={`View details for ${product.name} - ${product.shortDescription}`}
-                className="block"
+            {/* View Mode Toggle */}
+            <div className="flex items-center bg-white rounded-lg border shadow-sm">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-3 rounded-l-lg transition-colors ${
+                  viewMode === "grid"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+                title="Grid view"
               >
-                {/* Product Image Container */}
-                <div className="w-full h-48 overflow-hidden">
-                  <Image
-                    src={
-                      product.images[0]?.src ||
-                      "/images/aluminium-shutter-1.webp"
-                    }
-                    alt={`${product.name} - Premium window treatment by Quality Blinds Australia`}
-                    width={400}
-                    height={192}
-                    className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                    loading={index < 8 ? "eager" : "lazy"}
-                  />
-                </div>
+                <Squares2X2Icon className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-3 rounded-r-lg transition-colors ${
+                  viewMode === "list"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+                title="List view"
+              >
+                <ListBulletIcon className="h-5 w-5" />
+              </button>
+            </div>
+          </motion.div>
 
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 z-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center px-4 text-center">
-                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-sm mb-2">{product.shortDescription}</p>
-                    <span className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1 rounded-full transition-colors">
-                      View Details
-                    </span>
-                  </div>
-                </div>
+          {/* Products Grid */}
+          <motion.div
+            ref={productsRef}
+            className={`grid gap-6 ${
+              viewMode === "grid"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "grid-cols-1"
+            }`}
+            initial="hidden"
+            animate={isProductsInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+          >
+            {filteredProducts.map((product, index) => (
+              <motion.article
+                key={product.id}
+                className={`group relative bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden ${
+                  viewMode === "list" ? "flex items-center" : ""
+                }`}
+                variants={productCardVariants}
+                whileHover={{ y: -8, scale: 1.02 }}
+                onHoverStart={() => setHoveredProduct(product.id)}
+                onHoverEnd={() => setHoveredProduct(null)}
+              >
+                <Link
+                  href={getProductRoute(product.id)}
+                  className={`block ${
+                    viewMode === "list" ? "flex w-full" : ""
+                  }`}
+                >
+                  {/* Product Image */}
+                  <div
+                    className={`relative overflow-hidden ${
+                      viewMode === "list"
+                        ? "w-48 h-32 flex-shrink-0"
+                        : "w-full h-64"
+                    }`}
+                  >
+                    <Image
+                      src={
+                        product.images[0]?.src ||
+                        "/images/aluminium-shutter-1.webp"
+                      }
+                      alt={`${product.name} - Premium window treatment by Quality Blinds Australia`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading={index < 8 ? "eager" : "lazy"}
+                    />
 
-                {/* Product Info */}
-                <div className="relative z-10 p-4 bg-white">
-                  <h2 className="text-lg font-medium text-gray-800 group-hover:text-blue-700 transition-colors">
-                    {product.name}
-                  </h2>
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {product.rating > 0 && (
-                    <div className="flex items-center mt-2">
-                      <div className="flex text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <svg
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(product.rating)
-                                ? "text-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-500 ml-1">
-                        ({product.rating})
-                      </span>
+                    {/* Quick Actions */}
+                    <div className="absolute top-4 right-4 flex flex-col gap-2">
+                      <motion.button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleFavorite(product.id);
+                        }}
+                        className="p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-colors"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        title="Add to favourites"
+                      >
+                        {favoriteProducts.has(product.id) ? (
+                          <HeartIconSolid className="h-5 w-5 text-red-500" />
+                        ) : (
+                          <HeartIcon className="h-5 w-5 text-gray-600" />
+                        )}
+                      </motion.button>
+
+                      <motion.button
+                        className="p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-colors opacity-0 group-hover:opacity-100"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        title="Quick view"
+                      >
+                        <EyeIcon className="h-5 w-5 text-gray-600" />
+                      </motion.button>
                     </div>
-                  )}
-                </div>
-              </Link>
-            </article>
-          ))}
-        </div>
 
-        {/* If no products match filter */}
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+                    {/* Quick View Button */}
+                    {hoveredProduct === product.id && viewMode === "grid" && (
+                      <motion.div
+                        className="absolute bottom-4 left-4 right-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                          <ShoppingBagIcon className="h-4 w-4" />
+                          Request Quote
+                        </button>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {/* Product Info */}
+                  <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
+                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
+                      {product.name}
+                    </h2>
+
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                      {product.shortDescription}
+                    </p>
+
+                    {/* Rating */}
+                    {product.rating > 0 && (
+                      <div className="flex items-center mb-4">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <StarIconSolid
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < Math.floor(product.rating)
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-500 ml-2">
+                          ({product.rating}) • {product.reviewCount || 0}{" "}
+                          reviews
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Features Preview */}
+                    {product.features && product.features.length > 0 && (
+                      <div className="mb-4">
+                        <div className="flex flex-wrap gap-1">
+                          {product.features.slice(0, 2).map((feature, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                          {product.features.length > 2 && (
+                            <span className="inline-block text-gray-500 text-xs px-2 py-1">
+                              +{product.features.length - 2} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {viewMode === "list" && (
+                      <motion.button
+                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <ShoppingBagIcon className="h-4 w-4" />
+                        View Details
+                      </motion.button>
+                    )}
+                  </div>
+                </Link>
+              </motion.article>
+            ))}
+          </motion.div>
+
+          {/* No Products Found */}
+          {filteredProducts.length === 0 && (
+            <motion.div
+              className="text-center py-16"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <h3 className="mt-2 text-lg font-medium text-gray-900">
-              No products found
-            </h3>
-            <p className="mt-1 text-gray-500">
-              No products match the selected filter. Try clearing filters or
-              selecting a different category.
-            </p>
-            <button
-              onClick={() => setActiveFilter("")}
-              className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Clear Filters
-            </button>
-          </div>
-        )}
-      </main>
+              <div className="max-w-md mx-auto">
+                <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                  <MagnifyingGlassIcon className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                  No products found
+                </h3>
+                <p className="text-gray-600 mb-8">
+                  No products match your selected filters. Try adjusting your
+                  search criteria.
+                </p>
+                <motion.button
+                  onClick={() => {
+                    setActiveFilter("");
+                    setSearchQuery("");
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Clear Filters
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </main>
+      </div>
     </div>
   );
 };

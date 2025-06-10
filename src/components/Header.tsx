@@ -16,7 +16,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import ContactForm from "./ContactForm";
-import Link from "next/link";
+import LoadingLink from "./LoadingLink";
 import Image from "next/image";
 
 interface MenuItem {
@@ -24,6 +24,11 @@ interface MenuItem {
   href: string;
   icon?: React.ComponentType<{ className?: string }>;
   subItems?: MenuItem[];
+  preview?: {
+    image: string;
+    description: string;
+    features: string[];
+  };
 }
 
 const menuItems: MenuItem[] = [
@@ -38,46 +43,153 @@ const menuItems: MenuItem[] = [
       {
         name: "Roller Blinds",
         href: "/blinds/roller",
+        preview: {
+          image: "/images/roller-blind-1.webp",
+          description:
+            "Simple, stylish, and functional roller blinds that offer the perfect combination of practicality and elegance for any space.",
+          features: [
+            "Easy Operation",
+            "Multiple Light Control Options",
+            "Modern Design",
+          ],
+        },
         subItems: [
           {
             name: "Blockout Roller Blinds",
             href: "/blinds/roller/blockout-roller-blinds",
+            preview: {
+              image: "/images/blockout-roller-blind-1.webp",
+              description:
+                "Complete light control and privacy with our premium blockout roller blinds. Perfect for bedrooms and media rooms where total darkness is essential.",
+              features: [
+                "100% Light Blocking",
+                "Energy Efficient",
+                "Premium Fabrics",
+                "Perfect for Bedrooms",
+              ],
+            },
           },
           {
             name: "Sunscreen Roller Blinds",
             href: "/blinds/roller/sunscreen-roller-blinds",
+            preview: {
+              image: "/images/sunscreen-roller-blind-1.webp",
+              description:
+                "Reduce glare while maintaining your view. Ideal for living areas and offices with excellent UV protection and view preservation.",
+              features: [
+                "UV Protection",
+                "Glare Reduction",
+                "View Preservation",
+                "Office & Living Areas",
+              ],
+            },
           },
           {
             name: "Translucent Roller Blinds",
             href: "/blinds/roller/translucent-roller-blinds",
+            preview: {
+              image: "/images/translucent-roller-blind-1.webp",
+              description:
+                "Soft, filtered light with privacy. Perfect balance of natural light and discretion for any room in your home.",
+              features: [
+                "Light Filtering",
+                "Privacy Control",
+                "Elegant Finish",
+                "Versatile Design",
+              ],
+            },
           },
         ],
       },
       {
         name: "Roman Blinds",
         href: "/blinds/roman",
+        preview: {
+          image: "/images/roman-blind-1.webp",
+          description:
+            "Timeless elegance meets modern functionality. Classic folding design that brings sophisticated style to your windows.",
+          features: [
+            "Premium Fabrics",
+            "Elegant Folding Design",
+            "Luxury Finish",
+          ],
+        },
         subItems: [
           {
             name: "Blockout Roman Blinds",
             href: "/blinds/roman/blockout-roman-blinds",
+            preview: {
+              image: "/images/blockout-roman-blind-1.webp",
+              description:
+                "Classic elegance with complete privacy. Premium blockout roman blinds perfect for bedrooms and formal living areas requiring total light control.",
+              features: [
+                "Total Privacy",
+                "Light Blocking",
+                "Premium Fabrics",
+                "Elegant Design",
+              ],
+            },
           },
           {
             name: "Translucent Roman Blinds",
             href: "/blinds/roman/translucent-roman-blinds",
+            preview: {
+              image: "/images/translucent-roman-blind-1.webp",
+              description:
+                "Soft, filtered light with sophisticated style. Ideal for living spaces where gentle illumination meets timeless elegance.",
+              features: [
+                "Light Filtering",
+                "Decorative Appeal",
+                "Versatile Design",
+                "Sophisticated Style",
+              ],
+            },
           },
         ],
       },
       {
         name: "Venetian Blinds",
         href: "/blinds/venetian",
+        preview: {
+          image: "/images/venetian-blind-1.webp",
+          description:
+            "Precision meets style. Adjustable slats provide unmatched control over light and privacy with timeless elegance.",
+          features: [
+            "Precise Light Control",
+            "Multiple Materials",
+            "Classic Design",
+          ],
+        },
         subItems: [
           {
             name: "Aluminium Venetian Blinds",
             href: "/blinds/venetian/aluminium-venetian-blinds",
+            preview: {
+              image: "/images/aluminium-venetian-blind-1.webp",
+              description:
+                "Sleek, modern, and durable. Perfect for contemporary spaces requiring precise light control and easy maintenance.",
+              features: [
+                "Lightweight",
+                "Easy Clean",
+                "Modern Design",
+                "Durable Construction",
+              ],
+            },
           },
           {
             name: "Basswood Venetian Blinds",
             href: "/blinds/venetian/basswood-venetian-blinds",
+            preview: {
+              image: "/images/basswood-venetian-blind-1.webp",
+              description:
+                "Natural warmth and elegance. Premium basswood slats bring organic beauty and sophisticated charm to any room.",
+              features: [
+                "Natural Wood",
+                "Premium Quality",
+                "Elegant Finish",
+                "Organic Beauty",
+              ],
+            },
           },
         ],
       },
@@ -87,49 +199,285 @@ const menuItems: MenuItem[] = [
     name: "Curtains",
     href: "/curtains",
     icon: CursorArrowRaysIcon,
+    preview: {
+      image: "/images/curtain-1.webp",
+      description:
+        "Elegant curtains and drapes that add warmth, style, and functionality to any room in your home.",
+      features: [
+        "Premium Fabrics",
+        "Custom Sizing",
+        "Professional Installation",
+      ],
+    },
     subItems: [
-      { name: "Blockout Curtains", href: "/curtains/blockout-curtains" },
-      { name: "Sheer Curtains", href: "/curtains/sheer-curtains" },
-      { name: "Veri Shades", href: "/curtains/veri-shades" },
+      {
+        name: "Blockout Curtains",
+        href: "/curtains/blockout-curtains",
+        preview: {
+          image: "/images/blockout-curtain-1.webp",
+          description:
+            "Complete room darkening with luxurious curtains. Perfect for bedrooms and media rooms requiring total light control.",
+          features: [
+            "Complete Light Blocking",
+            "Thermal Insulation",
+            "Premium Fabrics",
+            "Noise Reduction",
+          ],
+        },
+      },
+      {
+        name: "Sheer Curtains",
+        href: "/curtains/sheer-curtains",
+        preview: {
+          image: "/images/sheer-curtain-1.webp",
+          description:
+            "Delicate and airy sheer curtains that filter light beautifully while maintaining privacy and elegance.",
+          features: [
+            "Light Filtering",
+            "Elegant Drape",
+            "Privacy Control",
+            "Versatile Styling",
+          ],
+        },
+      },
+      {
+        name: "Veri Shades",
+        href: "/curtains/veri-shades",
+        preview: {
+          image: "/images/veri-shades-curtain-1.webp",
+          description:
+            "Innovative combination of blinds and shades offering versatile light control and contemporary style.",
+          features: [
+            "Dual Functionality",
+            "Modern Design",
+            "Light Control",
+            "Easy Operation",
+          ],
+        },
+      },
     ],
   },
   {
     name: "Shutters",
     href: "/shutters",
     icon: BuildingOffice2Icon,
+    preview: {
+      image: "/images/shutter-1.webp",
+      description:
+        "Premium shutters that provide excellent insulation, privacy, and a sophisticated architectural element to your home.",
+      features: [
+        "Energy Efficient",
+        "Durable Construction",
+        "Premium Materials",
+      ],
+    },
     subItems: [
-      { name: "ABS Shutters", href: "/shutters/abs-shutters" },
+      {
+        name: "ABS Shutters",
+        href: "/shutters/abs-shutters",
+        preview: {
+          image: "/images/pvc-shutter-1.webp",
+          description:
+            "Durable and lightweight ABS shutters offering excellent value and performance for any home interior.",
+          features: [
+            "Lightweight",
+            "Cost Effective",
+            "Easy Maintenance",
+            "Durable Construction",
+          ],
+        },
+      },
       {
         name: "ABS Waterproof Shutters",
         href: "/shutters/abs-waterproof-shutters",
+        preview: {
+          image: "/images/pvc-shutter-1.webp",
+          description:
+            "Waterproof ABS shutters perfect for bathrooms, kitchens, and humid environments with superior moisture resistance.",
+          features: [
+            "100% Waterproof",
+            "Humidity Resistant",
+            "Easy Clean",
+            "Bathroom Safe",
+          ],
+        },
       },
-      { name: "Basswood Shutters", href: "/shutters/basswood-shutters" },
-      { name: "Phoenixwood Shutters", href: "/shutters/phoenixwood-shutters" },
+      {
+        name: "Basswood Shutters",
+        href: "/shutters/basswood-shutters",
+        preview: {
+          image: "/images/basswood-shutter-1.webp",
+          description:
+            "Premium basswood shutters combining natural beauty with superior craftsmanship for the discerning homeowner.",
+          features: [
+            "Natural Wood",
+            "Premium Quality",
+            "Elegant Grain",
+            "Handcrafted",
+          ],
+        },
+      },
+      {
+        name: "Phoenixwood Shutters",
+        href: "/shutters/phoenixwood-shutters",
+        preview: {
+          image: "/images/phoenixwood-shutter.webp",
+          description:
+            "Luxury phoenixwood shutters offering exceptional durability and stunning natural beauty for premium interiors.",
+          features: [
+            "Luxury Wood",
+            "Superior Durability",
+            "Rich Grain",
+            "Premium Finish",
+          ],
+        },
+      },
     ],
   },
   {
     name: "Awnings",
     href: "/awnings",
     icon: SunIcon,
+    preview: {
+      image: "/images/awning-1.webp",
+      description:
+        "High-quality awnings that provide excellent sun protection and weather resistance for outdoor living spaces.",
+      features: ["UV Protection", "Weather Resistant", "Motorised Options"],
+    },
     subItems: [
-      { name: "Conservatory Awnings", href: "/awnings/conservatory-awnings" },
-      { name: "Folding Arm Awnings", href: "/awnings/folding-arm-awnings" },
-      { name: "Straight Drop Awnings", href: "/awnings/straight-drop-awnings" },
-      { name: "Canopy Awning", href: "/awnings/canopy-awning" },
+      {
+        name: "Conservatory Awnings",
+        href: "/awnings/conservatory-awnings",
+        preview: {
+          image: "/images/conservatory-awning-1.webp",
+          description:
+            "Specialized awnings designed for conservatories, providing excellent sun protection and temperature control.",
+          features: [
+            "Temperature Control",
+            "UV Protection",
+            "Custom Fit",
+            "Energy Saving",
+          ],
+        },
+      },
+      {
+        name: "Folding Arm Awnings",
+        href: "/awnings/folding-arm-awnings",
+        preview: {
+          image: "/images/folding-arm-awning-1.webp",
+          description:
+            "Versatile folding arm awnings that extend your outdoor living space with style and functionality.",
+          features: [
+            "Retractable Design",
+            "Weather Resistant",
+            "Large Coverage",
+            "Easy Operation",
+          ],
+        },
+      },
+      {
+        name: "Straight Drop Awnings",
+        href: "/awnings/straight-drop-awnings",
+        preview: {
+          image: "/images/straight-drop-awning-1.webp",
+          description:
+            "Straight drop awnings perfect for windows and outdoor areas, providing excellent sun and weather protection.",
+          features: [
+            "Vertical Protection",
+            "Wind Resistant",
+            "Versatile Use",
+            "Privacy Screen",
+          ],
+        },
+      },
+      {
+        name: "Canopy Awning",
+        href: "/awnings/canopy-awning",
+        preview: {
+          image: "/images/canopy-awning-1.webp",
+          description:
+            "Fixed canopy awnings that provide permanent sun protection and architectural enhancement to your property.",
+          features: [
+            "Permanent Solution",
+            "Architectural Feature",
+            "Durable Frame",
+            "Weather Protection",
+          ],
+        },
+      },
     ],
   },
   {
     name: "Other Products",
     href: "/other-products",
     icon: WrenchScrewdriverIcon,
+    preview: {
+      image: "/images/other-product-1.webp",
+      description:
+        "Additional outdoor solutions including louvers, shade sails, and specialty products for complete home coverage.",
+      features: ["Versatile Solutions", "Quality Materials", "Custom Design"],
+    },
     subItems: [
-      { name: "Louvers", href: "/other-product/louvers" },
+      {
+        name: "Louvers",
+        href: "/other-product/louvers",
+        preview: {
+          image: "/images/louver-1.webp",
+          description:
+            "Adjustable louvers for perfect airflow and light control, ideal for privacy screens and architectural features.",
+          features: [
+            "Airflow Control",
+            "Privacy Screen",
+            "Weather Resistant",
+            "Modern Design",
+          ],
+        },
+      },
       {
         name: "Polycarbonate Roofings",
         href: "/other-product/polycarbonate-roofings",
+        preview: {
+          image: "/images/polycarbonate-roofing-1.webp",
+          description:
+            "Durable polycarbonate roofing solutions that provide excellent weather protection while allowing natural light.",
+          features: [
+            "Weather Protection",
+            "Light Transmission",
+            "Impact Resistant",
+            "Easy Installation",
+          ],
+        },
       },
-      { name: "Shade Sails", href: "/other-product/shade-sails" },
-      { name: "Umbrellas", href: "/other-product/umbrellas" },
+      {
+        name: "Shade Sails",
+        href: "/other-product/shade-sails",
+        preview: {
+          image: "/images/shade-sail-1.webp",
+          description:
+            "Stylish shade sails that create comfortable outdoor spaces with excellent UV protection and modern aesthetics.",
+          features: [
+            "UV Protection",
+            "Modern Aesthetics",
+            "Flexible Installation",
+            "Durable Fabric",
+          ],
+        },
+      },
+      {
+        name: "Umbrellas",
+        href: "/other-product/umbrellas",
+        preview: {
+          image: "/images/umbrella-1.webp",
+          description:
+            "Premium outdoor umbrellas designed for Australian conditions, providing portable shade and style.",
+          features: [
+            "Portable Shade",
+            "Weather Resistant",
+            "Stylish Design",
+            "Easy Setup",
+          ],
+        },
+      },
     ],
   },
 ];
@@ -139,6 +487,7 @@ export default function Header() {
   const [showContact, setShowContact] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [hoveredPreview, setHoveredPreview] = useState<MenuItem | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -159,6 +508,22 @@ export default function Header() {
       newExpanded.add(itemName);
     }
     setExpandedItems(newExpanded);
+  };
+
+  const handleSubItemHover = (subItem: MenuItem) => {
+    if (subItem.preview) {
+      setHoveredPreview(subItem);
+    }
+  };
+
+  const handleItemHover = (item: MenuItem) => {
+    if (item.preview) {
+      setHoveredPreview(item);
+    }
+  };
+
+  const handleHoverEnd = () => {
+    setHoveredPreview(null);
   };
 
   const menuVariants = {
@@ -204,6 +569,32 @@ export default function Header() {
     },
   };
 
+  const previewVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+      transition: {
+        duration: 0.3,
+        ease: "easeIn",
+      },
+    },
+  };
+
   return (
     <>
       {/* Contact Us button */}
@@ -237,6 +628,72 @@ export default function Header() {
       >
         <Bars3Icon className="h-7 w-7" />
       </motion.button>
+
+      {/* Preview Overlay */}
+      <AnimatePresence>
+        {hoveredPreview && isMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-60 flex items-center justify-center pointer-events-none"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={previewVariants}
+          >
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-xl mx-4 border border-gray-200">
+              {/* Preview Image */}
+              <div className="relative h-80 overflow-hidden">
+                <Image
+                  src={
+                    hoveredPreview.preview?.image || "/images/placeholder.webp"
+                  }
+                  alt={hoveredPreview.name}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {hoveredPreview.name}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Preview Content */}
+              <div className="p-6">
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  {hoveredPreview.preview?.description}
+                </p>
+
+                {/* Features */}
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+                    Key Features:
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {hoveredPreview.preview?.features.map((feature, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-block bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full font-medium"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="mt-6">
+                  <div className="text-center">
+                    <span className="text-sm text-gray-500">
+                      Click to explore {hoveredPreview.name.toLowerCase()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Menu overlay */}
       <AnimatePresence>
@@ -290,6 +747,8 @@ export default function Header() {
                       <div className="space-y-1">
                         <button
                           onClick={() => toggleExpanded(item.name)}
+                          onMouseEnter={() => handleItemHover(item)}
+                          onMouseLeave={handleHoverEnd}
                           className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group"
                         >
                           <div className="flex items-center space-x-3">
@@ -319,37 +778,34 @@ export default function Header() {
                               exit="closed"
                               className="ml-8 space-y-1 border-l-2 border-blue-200 pl-4"
                             >
-                              {/* Link principal de la categoría */}
-                              {/*}
-                              <Link
-                                href={item.href}
-                                className="block p-2 text-gray-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
-                                onClick={() => setIsMenuOpen(false)}
-                              >
-                                View All {item.name}
-                              </Link>
-                              */}
-
                               {item.subItems.map((subItem) => (
                                 <div key={subItem.name}>
-                                  <Link
+                                  <LoadingLink
                                     href={subItem.href}
                                     className="block p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
                                     onClick={() => setIsMenuOpen(false)}
+                                    onMouseEnter={() =>
+                                      handleSubItemHover(subItem)
+                                    }
+                                    onMouseLeave={handleHoverEnd}
                                   >
                                     {subItem.name}
-                                  </Link>
+                                  </LoadingLink>
                                   {subItem.subItems && (
                                     <div className="ml-4 mt-1 space-y-1 border-l border-gray-200 pl-3">
                                       {subItem.subItems.map((subSubItem) => (
-                                        <Link
+                                        <LoadingLink
                                           key={subSubItem.name}
                                           href={subSubItem.href}
                                           className="block p-1 text-sm text-gray-500 hover:text-blue-500 hover:bg-blue-25 rounded transition-all duration-200"
                                           onClick={() => setIsMenuOpen(false)}
+                                          onMouseEnter={() =>
+                                            handleSubItemHover(subSubItem)
+                                          }
+                                          onMouseLeave={handleHoverEnd}
                                         >
                                           {subSubItem.name}
-                                        </Link>
+                                        </LoadingLink>
                                       ))}
                                     </div>
                                   )}
@@ -360,10 +816,12 @@ export default function Header() {
                         </AnimatePresence>
                       </div>
                     ) : (
-                      <Link
+                      <LoadingLink
                         href={item.href}
                         className="flex items-center space-x-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group"
                         onClick={() => setIsMenuOpen(false)}
+                        onMouseEnter={() => handleItemHover(item)}
+                        onMouseLeave={handleHoverEnd}
                       >
                         {item.icon && (
                           <item.icon className="h-5 w-5 text-blue-600 group-hover:text-blue-700" />
@@ -371,7 +829,7 @@ export default function Header() {
                         <span className="font-semibold text-gray-800 group-hover:text-blue-800">
                           {item.name}
                         </span>
-                      </Link>
+                      </LoadingLink>
                     )}
                   </motion.div>
                 ))}

@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
+import {
+  StarIcon as StarOutlineIcon,
+  ArrowRightIcon,
+} from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import QuoteDialog from "./QuoteDialog";
 
@@ -55,39 +58,51 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [visibleThumbnails, setVisibleThumbnails] = useState(4);
   const [imageLoading, setImageLoading] = useState(false);
 
+  const heroRef = useRef(null);
+  const galleryRef = useRef(null);
+  const detailsRef = useRef(null);
+  const relatedRef = useRef(null);
   const mainImageRef = useRef<HTMLDivElement>(null);
-  const thumbnailsContainerRef = useRef<HTMLDivElement>(null);
+
+  const isHeroInView = useInView(heroRef, { once: true });
+  const isGalleryInView = useInView(galleryRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const isDetailsInView = useInView(detailsRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const isRelatedInView = useInView(relatedRef, {
+    once: true,
+    margin: "-100px",
+  });
 
   // Calcular tamaños responsive
   const getThumbnailSize = () => {
     if (containerWidth === 0) return 80;
-
-    // Responsive thumbnail sizes
     if (containerWidth < 640) return 60; // mobile
     if (containerWidth < 1024) return 70; // tablet
     return 80; // desktop
   };
 
   const thumbnailSize = getThumbnailSize();
-  const gap = 12; // gap entre miniaturas
-  const arrowSpace = 64; // espacio para las flechas (32px cada lado)
+  const gap = 12;
+  const arrowSpace = 64;
 
   // Calcular cuántas miniaturas caben
   useEffect(() => {
     const calculateVisibleThumbnails = () => {
       if (containerWidth === 0) return;
-
       const availableWidth = containerWidth - arrowSpace;
       const thumbnailWithGap = thumbnailSize + gap;
       const maxThumbnails = Math.floor(
         (availableWidth + gap) / thumbnailWithGap
       );
-
       setVisibleThumbnails(
         Math.max(1, Math.min(maxThumbnails, product.images?.length || 0))
       );
     };
-
     calculateVisibleThumbnails();
   }, [containerWidth, thumbnailSize, product.images?.length]);
 
@@ -98,10 +113,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         setContainerWidth(mainImageRef.current.offsetWidth);
       }
     };
-
     measureContainer();
     window.addEventListener("resize", measureContainer);
-
     return () => window.removeEventListener("resize", measureContainer);
   }, []);
 
@@ -167,7 +180,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   const handleThumbnailScroll = (direction: "left" | "right") => {
     if (!product.images) return;
-
     if (direction === "left") {
       setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - 1));
     } else {
@@ -187,470 +199,502 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     product.images &&
     thumbnailStartIndex < product.images.length - visibleThumbnails;
 
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
   return (
     <article
-      className="bg-white"
+      className="bg-white min-h-screen"
       itemScope
       itemType="https://schema.org/Product"
     >
-      {/* Breadcrumbs */}
-      <nav className="max-w-7xl mx-auto px-4 py-4" aria-label="Breadcrumb">
-        <ol
-          className="flex items-center space-x-2 text-sm text-gray-500"
-          itemScope
-          itemType="https://schema.org/BreadcrumbList"
-        >
-          {breadcrumbs.map((crumb, index) => (
-            <li
-              key={crumb.href}
-              className="flex items-center"
-              itemProp="itemListElement"
-              itemScope
-              itemType="https://schema.org/ListItem"
+      {/* Hero Section */}
+      <motion.section
+        ref={heroRef}
+        className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white pb-16 pt-20"
+        initial="hidden"
+        animate={isHeroInView ? "visible" : "hidden"}
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-[url('/images/product-hero-pattern.png')] opacity-10"></div>
+
+        <div className="relative max-w-7xl mx-auto px-4">
+          <motion.div variants={fadeInUp}>
+            {/* Breadcrumbs */}
+            <nav
+              className="flex justify-center lg:justify-start mb-6"
+              aria-label="Breadcrumb"
             >
-              {index > 0 && (
-                <span className="mx-2" aria-hidden="true">
-                  ›
-                </span>
-              )}
-              <Link
-                href={crumb.href}
-                className={`hover:text-blue-700 transition-colors ${
-                  index === breadcrumbs.length - 1
-                    ? "text-gray-900 font-medium"
-                    : ""
-                }`}
-                itemProp="item"
+              <ol
+                className="flex items-center space-x-2 text-blue-200"
+                itemScope
+                itemType="https://schema.org/BreadcrumbList"
               >
-                <span itemProp="name">{crumb.name}</span>
-              </Link>
-              <meta itemProp="position" content={String(index + 1)} />
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Galería de Imágenes */}
-          <section
-            className="space-y-4"
-            aria-labelledby="product-images-heading"
-          >
-            <h2 id="product-images-heading" className="sr-only">
-              Product Images
-            </h2>
-            {product.images && product.images.length > 0 ? (
-              <>
-                <div
-                  ref={mainImageRef}
-                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 w-full"
-                >
-                  <Image
-                    key={selectedImage}
-                    src={product.images[selectedImage].src}
-                    alt={`${product.name} - ${product.images[selectedImage].alt} - Premium window treatment by Quality Blinds Australia`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
-                    className={`object-cover transition-opacity duration-300 ease-in-out ${
-                      imageLoading ? "opacity-0" : "opacity-100"
-                    }`}
-                    priority={selectedImage === 0}
-                    loading={selectedImage === 0 ? "eager" : "lazy"}
-                    itemProp="image"
-                    onLoadingComplete={() => setImageLoading(false)}
-                    onLoad={() => setImageLoading(false)}
-                  />
-                </div>
-
-                {/* Slider de miniaturas responsive */}
-                <div className="relative w-full">
-                  {/* Botón izquierdo */}
-                  {needsNavigation && canScrollLeft && (
-                    <button
-                      onClick={() => handleThumbnailScroll("left")}
-                      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl backdrop-blur-sm"
-                      aria-label="Ver imágenes anteriores"
-                    >
-                      <ChevronLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
-                    </button>
-                  )}
-
-                  {/* Contenedor de miniaturas */}
-                  <div
-                    ref={thumbnailsContainerRef}
-                    className={`flex justify-center gap-3 overflow-hidden transition-all duration-300 ${
-                      needsNavigation ? "px-8" : "px-0"
-                    }`}
-                    role="list"
-                    aria-label="Product image thumbnails"
+                {breadcrumbs.map((crumb, index) => (
+                  <li
+                    key={crumb.href}
+                    className="flex items-center"
+                    itemProp="itemListElement"
+                    itemScope
+                    itemType="https://schema.org/ListItem"
                   >
-                    {product.images
-                      .slice(
-                        thumbnailStartIndex,
-                        thumbnailStartIndex + visibleThumbnails
-                      )
-                      .map((image, index) => {
-                        const actualIndex = thumbnailStartIndex + index;
-                        return (
-                          <button
-                            key={actualIndex}
-                            onClick={() => {
-                              setImageLoading(true);
-                              setSelectedImage(actualIndex);
-                            }}
-                            className={`relative flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                              selectedImage === actualIndex
-                                ? "border-blue-500 ring-2 ring-blue-200 shadow-lg"
-                                : "border-transparent hover:border-gray-300 hover:shadow-md"
-                            }`}
-                            style={{
-                              width: `${thumbnailSize}px`,
-                              height: `${thumbnailSize}px`,
-                            }}
-                            aria-label={`Ver ${product.name} imagen ${
-                              actualIndex + 1
-                            }${
-                              selectedImage === actualIndex
-                                ? " (actualmente seleccionada)"
-                                : ""
-                            }`}
-                          >
-                            <div className="relative w-full h-full">
+                    {index > 0 && <ArrowRightIcon className="w-4 h-4 mx-2" />}
+                    <Link
+                      href={crumb.href}
+                      className={`hover:text-white transition-colors ${
+                        index === breadcrumbs.length - 1
+                          ? "text-white font-medium"
+                          : ""
+                      }`}
+                      itemProp="item"
+                    >
+                      <span itemProp="name">{crumb.name}</span>
+                    </Link>
+                    <meta itemProp="position" content={String(index + 1)} />
+                  </li>
+                ))}
+              </ol>
+            </nav>
+
+            {/* Hero Content */}
+            <div className="text-center lg:text-left max-w-4xl">
+              <motion.h1
+                className="text-5xl lg:text-6xl font-bold mb-6"
+                itemProp="name"
+                variants={fadeInUp}
+              >
+                {product.name}
+              </motion.h1>
+
+              <motion.p
+                className="text-xl text-blue-100 mb-6 max-w-3xl"
+                itemProp="description"
+                variants={fadeInUp}
+              >
+                {product.shortDescription}
+              </motion.p>
+
+              {product.rating > 0 && (
+                <motion.div
+                  className="flex items-center justify-center lg:justify-start space-x-2 mb-6"
+                  itemProp="aggregateRating"
+                  itemScope
+                  itemType="https://schema.org/AggregateRating"
+                  variants={fadeInUp}
+                >
+                  <div
+                    className="flex"
+                    role="img"
+                    aria-label={`${product.rating} out of 5 stars`}
+                  >
+                    {renderStars(product.rating)}
+                  </div>
+                  <span className="text-blue-200 ml-2">
+                    ({product.rating}/5)
+                  </span>
+                  <meta
+                    itemProp="ratingValue"
+                    content={String(product.rating)}
+                  />
+                  <meta itemProp="bestRating" content="5" />
+                  <meta itemProp="worstRating" content="1" />
+                  <meta itemProp="reviewCount" content="1" />
+                </motion.div>
+              )}
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                variants={fadeInUp}
+              >
+                <motion.button
+                  onClick={() => setIsQuoteModalOpen(true)}
+                  className="bg-white text-blue-900 font-semibold px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={`Get a free quote for ${product.name}`}
+                >
+                  Get Free Quote & Consultation
+                </motion.button>
+                <motion.a
+                  href="#gallery"
+                  className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-blue-900 transition-colors inline-flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  View Gallery
+                  <ArrowRightIcon className="w-4 h-4" />
+                </motion.a>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Product Gallery Section */}
+      <motion.section
+        id="gallery"
+        ref={galleryRef}
+        className="py-12 bg-gray-50"
+        initial="hidden"
+        animate={isGalleryInView ? "visible" : "hidden"}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div className="text-center mb-10" variants={fadeInUp}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Product Gallery
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Explore detailed images of {product.name} to see the quality and
+              craftsmanship up close.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
+            variants={cardVariants}
+          >
+            {/* Main Image */}
+            <div className="space-y-4">
+              {product.images && product.images.length > 0 ? (
+                <>
+                  <motion.div
+                    ref={mainImageRef}
+                    className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-2xl"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Image
+                      key={selectedImage}
+                      src={product.images[selectedImage].src}
+                      alt={`${product.name} - ${product.images[selectedImage].alt}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                      className={`object-cover transition-opacity duration-300 ${
+                        imageLoading ? "opacity-0" : "opacity-100"
+                      }`}
+                      priority={selectedImage === 0}
+                      itemProp="image"
+                      onLoadingComplete={() => setImageLoading(false)}
+                      onLoad={() => setImageLoading(false)}
+                    />
+                  </motion.div>
+
+                  {/* Thumbnail Navigation */}
+                  <div className="relative w-full">
+                    {needsNavigation && canScrollLeft && (
+                      <button
+                        onClick={() => handleThumbnailScroll("left")}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl"
+                      >
+                        <ChevronLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                      </button>
+                    )}
+
+                    <div
+                      className={`flex justify-center gap-3 overflow-hidden ${
+                        needsNavigation ? "px-8" : "px-0"
+                      }`}
+                    >
+                      {product.images
+                        .slice(
+                          thumbnailStartIndex,
+                          thumbnailStartIndex + visibleThumbnails
+                        )
+                        .map((image, index) => {
+                          const actualIndex = thumbnailStartIndex + index;
+                          return (
+                            <motion.button
+                              key={actualIndex}
+                              onClick={() => {
+                                setImageLoading(true);
+                                setSelectedImage(actualIndex);
+                              }}
+                              className={`relative flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                                selectedImage === actualIndex
+                                  ? "border-blue-500 ring-2 ring-blue-200 shadow-lg"
+                                  : "border-transparent hover:border-gray-300 hover:shadow-md"
+                              }`}
+                              style={{
+                                width: `${thumbnailSize}px`,
+                                height: `${thumbnailSize}px`,
+                              }}
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
                               <Image
                                 src={image.src}
                                 alt={`${product.name} miniatura ${
                                   actualIndex + 1
-                                } - ${image.alt}`}
+                                }`}
                                 fill
-                                sizes={`${thumbnailSize}px`}
-                                className="object-cover transition-all duration-300 hover:brightness-110"
+                                className="object-cover"
                                 loading="lazy"
                               />
-                              {selectedImage === actualIndex && (
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  exit={{ opacity: 0 }}
-                                  transition={{ duration: 0.2 }}
-                                  className="absolute inset-0 bg-blue-500/15 ring-1 ring-inset ring-blue-500/30"
-                                />
-                              )}
+                            </motion.button>
+                          );
+                        })}
+                    </div>
 
-                              {/* Efecto de selección activa */}
-                              {selectedImage === actualIndex && (
-                                <motion.div
-                                  layoutId="selectedThumbnail"
-                                  className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg -z-10"
-                                  transition={{
-                                    type: "spring",
-                                    bounce: 0.15,
-                                    duration: 0.4,
-                                  }}
-                                />
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })}
-                  </div>
-
-                  {/* Botón derecho */}
-                  {needsNavigation && canScrollRight && (
-                    <button
-                      onClick={() => handleThumbnailScroll("right")}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl backdrop-blur-sm"
-                      aria-label="Ver más imágenes"
-                    >
-                      <ChevronRightIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Indicador de posición - solo cuando hay navegación */}
-                {needsNavigation && (
-                  <div className="flex justify-center space-x-1 mt-2">
-                    {Array.from({
-                      length: Math.ceil(
-                        product.images.length / visibleThumbnails
-                      ),
-                    }).map((_, index) => (
+                    {needsNavigation && canScrollRight && (
                       <button
-                        key={index}
-                        onClick={() =>
-                          setThumbnailStartIndex(index * visibleThumbnails)
-                        }
-                        className={`h-2 w-2 rounded-full transition-all duration-200 ${
-                          Math.floor(
-                            thumbnailStartIndex / visibleThumbnails
-                          ) === index
-                            ? "bg-blue-500 shadow-sm"
-                            : "bg-gray-300 hover:bg-gray-400"
-                        }`}
-                        aria-label={`Ir a página ${index + 1} de miniaturas`}
-                      />
-                    ))}
+                        onClick={() => handleThumbnailScroll("right")}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl"
+                      >
+                        <ChevronRightIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                      </button>
+                    )}
                   </div>
-                )}
-              </>
-            ) : (
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                  No images available for {product.name}
+                </>
+              ) : (
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
+                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                    No images available for {product.name}
+                  </div>
                 </div>
-              </div>
-            )}
-          </section>
-
-          {/* Product Summary */}
-          <section className="space-y-6" aria-labelledby="product-info-heading">
-            <header>
-              <h1
-                id="product-info-heading"
-                className="text-4xl font-bold text-gray-900"
-                itemProp="name"
-              >
-                {product.name}
-              </h1>
-            </header>
-
-            {product.rating > 0 && (
-              <div
-                className="flex items-center space-x-2"
-                itemProp="aggregateRating"
-                itemScope
-                itemType="https://schema.org/AggregateRating"
-              >
-                <div
-                  className="flex"
-                  role="img"
-                  aria-label={`${product.rating} out of 5 stars`}
-                >
-                  {renderStars(product.rating)}
-                </div>
-                <meta itemProp="ratingValue" content={String(product.rating)} />
-                <meta itemProp="bestRating" content="5" />
-                <meta itemProp="worstRating" content="1" />
-                <meta itemProp="reviewCount" content="1" />
-              </div>
-            )}
-
-            <p className="text-gray-700 text-lg" itemProp="description">
-              {product.shortDescription}
-            </p>
-
-            <div className="space-y-4">
-              <button
-                onClick={() => setIsQuoteModalOpen(true)}
-                className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-4 rounded-md transition text-lg"
-                aria-label={`Get a free quote for ${product.name}`}
-              >
-                Get Free Quote & Consultation
-              </button>
-              <p className="text-sm text-gray-600 text-center">
-                Free measure and quote • Professional installation • Lifetime
-                warranty
-              </p>
+              )}
             </div>
 
-            {/* Schema.org Product Data */}
-            <div className="hidden">
-              <span
-                itemProp="brand"
-                itemScope
-                itemType="https://schema.org/Brand"
+            {/* Product Information */}
+            <div className="space-y-6">
+              <motion.div
+                className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200"
+                variants={cardVariants}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.3 }}
               >
-                <meta itemProp="name" content="Quality Blinds Australia" />
-              </span>
-              <span
-                itemProp="manufacturer"
-                itemScope
-                itemType="https://schema.org/Organization"
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Product Features
+                </h3>
+                <ul className="space-y-4">
+                  {product.features.map((feature, index) => (
+                    <motion.li
+                      key={index}
+                      className="flex items-start space-x-3"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-700">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200"
+                variants={cardVariants}
               >
-                <meta itemProp="name" content="Quality Blinds Australia" />
-              </span>
-              <span
-                itemProp="offers"
-                itemScope
-                itemType="https://schema.org/Offer"
-              >
-                <meta
-                  itemProp="availability"
-                  content="https://schema.org/InStock"
-                />
-                <meta itemProp="priceCurrency" content="AUD" />
-                <meta itemProp="seller" content="Quality Blinds Australia" />
-              </span>
-              <meta itemProp="sku" content={product.id} />
-              <meta itemProp="category" content="Window Treatments" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Quality Guarantee
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    <span className="text-gray-700">
+                      Free measure and quote
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    <span className="text-gray-700">
+                      Professional installation
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    <span className="text-gray-700">Lifetime warranty</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </section>
+          </motion.div>
         </div>
+      </motion.section>
 
-        {/* Product Information Tabs */}
-        <section className="mt-16" aria-labelledby="product-details-heading">
-          <h2 id="product-details-heading" className="sr-only">
-            Product Details
-          </h2>
-          <div className="border-b border-gray-200">
-            <nav
-              className="flex space-x-8"
-              role="tablist"
-              aria-label="Product information"
-            >
-              {["description", "specifications"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab
-                      ? "border-blue-500 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
-                  role="tab"
-                  aria-selected={activeTab === tab}
-                  aria-controls={`${tab}-panel`}
-                  id={`${tab}-tab`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              ))}
-            </nav>
-          </div>
+      {/* Product Details Section */}
+      <motion.section
+        ref={detailsRef}
+        className="py-12 bg-white"
+        initial="hidden"
+        animate={isDetailsInView ? "visible" : "hidden"}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div className="text-center mb-10" variants={fadeInUp}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Product Details
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Get all the technical information and specifications you need to
+              make an informed decision.
+            </p>
+          </motion.div>
 
-          <div className="py-8">
+          <motion.div className="mb-6" variants={cardVariants}>
+            <div className="border-b border-gray-200">
+              <nav className="flex space-x-8 justify-center" role="tablist">
+                {["description", "specifications"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 px-6 border-b-2 font-medium text-lg transition-all duration-200 ${
+                      activeTab === tab
+                        ? "border-blue-500 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    }`}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </motion.div>
+
+          <motion.div variants={cardVariants}>
             <AnimatePresence mode="wait">
               {activeTab === "description" && (
                 <motion.div
                   key="description"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="prose max-w-none"
-                  role="tabpanel"
-                  id="description-panel"
-                  aria-labelledby="description-tab"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-gray-50 rounded-2xl p-8"
                 >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Product Description
-                  </h3>
-                  <div
-                    className="text-gray-700 text-lg leading-relaxed mb-6"
-                    itemProp="description"
-                  >
-                    {product.description}
+                  <div className="prose max-w-none">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                      Product Description
+                    </h3>
+                    <div className="text-gray-700 text-lg leading-relaxed space-y-4">
+                      {product.description
+                        .split("\n")
+                        .map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold text-gray-900 mb-4">
-                    Key Features & Benefits
-                  </h4>
-                  <ul className="list-disc pl-5 mt-4 space-y-2" role="list">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="text-gray-700" role="listitem">
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
                 </motion.div>
               )}
 
               {activeTab === "specifications" && (
                 <motion.div
                   key="specifications"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  role="tabpanel"
-                  id="specifications-panel"
-                  aria-labelledby="specifications-tab"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-gray-50 rounded-2xl p-8"
                 >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
                     Technical Specifications
                   </h3>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <table
-                      className="min-w-full divide-y divide-gray-200"
-                      role="table"
-                    >
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            scope="col"
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
+                    <div className="divide-y divide-gray-200">
+                      {Object.entries(product.specifications).map(
+                        ([key, value]) => (
+                          <div
+                            key={key}
+                            className="px-6 py-4 flex justify-between items-center hover:bg-gray-50 transition-colors"
                           >
-                            Specification
-                          </th>
-                          <th
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            scope="col"
-                          >
-                            Details
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {Object.entries(product.specifications).map(
-                          ([key, value]) => (
-                            <tr key={key}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-50">
-                                {key}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                {value}
-                              </td>
-                            </tr>
-                          )
-                        )}
-                      </tbody>
-                    </table>
+                            <span className="font-medium text-gray-900">
+                              {key}
+                            </span>
+                            <span className="text-gray-700">{value}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </section>
+          </motion.div>
+        </div>
+      </motion.section>
 
-        {/* Related Products */}
-        <section className="mt-20" aria-labelledby="related-products-heading">
-          <h2
-            id="related-products-heading"
-            className="text-3xl font-bold text-gray-900 mb-8 text-center"
-          >
-            You May Also Like These Window Treatments
-          </h2>
+      {/* Related Products Section */}
+      <motion.section
+        ref={relatedRef}
+        className="py-12 bg-gradient-to-br from-gray-50 to-blue-50"
+        initial="hidden"
+        animate={isRelatedInView ? "visible" : "hidden"}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div className="text-center mb-10" variants={fadeInUp}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              You May Also Like
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover other premium window treatments that complement your
+              style.
+            </p>
+          </motion.div>
+
           {product.relatedProducts && product.relatedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8" role="list">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              variants={staggerContainer}
+            >
               {product.relatedProducts.map((relatedProduct) => (
-                <article
+                <motion.article
                   key={relatedProduct.id}
-                  className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  role="listitem"
+                  className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+                  variants={cardVariants}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                   itemScope
                   itemType="https://schema.org/Product"
                 >
-                  <Link
-                    href={relatedProduct.href}
-                    aria-label={`View details for ${relatedProduct.name}`}
-                  >
-                    <div className="aspect-w-16 aspect-h-9 relative h-48">
+                  <Link href={relatedProduct.href}>
+                    <div className="relative h-64 overflow-hidden">
                       {relatedProduct.image ? (
                         <Image
                           src={relatedProduct.image}
-                          alt={`${relatedProduct.name} - Premium window treatment by Quality Blinds Australia`}
+                          alt={`${relatedProduct.name} - Premium window treatment`}
                           fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                           loading="lazy"
                           itemProp="image"
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
-                          No image available for {relatedProduct.name}
+                          No image available
                         </div>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                     <div className="p-6">
                       <h3
-                        className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors"
+                        className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors"
                         itemProp="name"
                       >
                         {relatedProduct.name}
@@ -663,11 +707,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                       </p>
                     </div>
                   </Link>
-                </article>
+                </motion.article>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <div className="text-center text-gray-500 py-8">
+            <motion.div
+              className="text-center text-gray-500 py-8"
+              variants={fadeInUp}
+            >
               <p>No related products available at the moment.</p>
               <Link
                 href="/"
@@ -675,9 +722,30 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               >
                 Browse our full collection
               </Link>
-            </div>
+            </motion.div>
           )}
-        </section>
+        </div>
+      </motion.section>
+
+      {/* Schema.org Product Data */}
+      <div className="hidden">
+        <span itemProp="brand" itemScope itemType="https://schema.org/Brand">
+          <meta itemProp="name" content="Quality Blinds Australia" />
+        </span>
+        <span
+          itemProp="manufacturer"
+          itemScope
+          itemType="https://schema.org/Organization"
+        >
+          <meta itemProp="name" content="Quality Blinds Australia" />
+        </span>
+        <span itemProp="offers" itemScope itemType="https://schema.org/Offer">
+          <meta itemProp="availability" content="https://schema.org/InStock" />
+          <meta itemProp="priceCurrency" content="AUD" />
+          <meta itemProp="seller" content="Quality Blinds Australia" />
+        </span>
+        <meta itemProp="sku" content={product.id} />
+        <meta itemProp="category" content="Window Treatments" />
       </div>
 
       {/* Quote Dialog Component */}
