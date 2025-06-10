@@ -364,14 +364,17 @@ const Chatbot: React.FC<ChatbotProps> = ({
   const botResponse = (userMessage: string): Message => {
     const lowerMessage = userMessage.toLowerCase();
     let content = "";
-    let suggestions: string[] = [];
     let quickActions: QuickAction[] = [];
 
-    // PRIORIDAD 1: Saludos básicos (mantener respuesta rápida)
+    // SOLO saludos básicos muy específicos - todo lo demás va a IA
     if (
-      lowerMessage.includes("hello") ||
-      lowerMessage.includes("hi") ||
-      lowerMessage.includes("hey")
+      lowerMessage === "hello" ||
+      lowerMessage === "hi" ||
+      lowerMessage === "hey" ||
+      lowerMessage === "hello!" ||
+      lowerMessage === "hi!" ||
+      lowerMessage === "hey!" ||
+      lowerMessage.match(/^(hello|hi|hey)[\s.,!]*$/i)
     ) {
       content =
         "Hello! Welcome to Quality Blinds Australia! 👋\n\nI'm here to help you find perfect window treatments for your home. We've been serving Sydney & NSW since 1989 with:\n\n✅ FREE quotes & measurements\n✅ Local manufacturing (fast turnaround)\n✅ Professional installation\n✅ Comprehensive warranties\n\nWhat can I help you with today?";
@@ -396,64 +399,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         },
       ];
     }
-    // PRIORIDAD 2: Información de contacto específica
-    else if (
-      (lowerMessage.includes("call") || lowerMessage.includes("phone")) &&
-      !lowerMessage.includes("choose") &&
-      !lowerMessage.includes("need") &&
-      !lowerMessage.includes("help")
-    ) {
-      content =
-        "Here's how to reach Quality Blinds Australia:\n\n📞 PHONE: (02) 9340 5050\n✉️ EMAIL: sales@qualityblinds.com.au\n📍 SHOWROOM: 131 Botany St, Randwick NSW 2031\n\n🕒 BUSINESS HOURS:\nMonday-Friday: 9AM-5PM\nSaturday: 9AM-2PM (by appointment)\nSunday: Closed\n\n🏠 FREE home consultations available across Sydney & NSW";
-      quickActions = [
-        {
-          id: "call",
-          label: "Call (02) 9340 5050",
-          action: "CALL_US",
-          icon: PhoneIcon,
-        },
-        {
-          id: "book-home-visit",
-          label: "Book Home Visit",
-          action: "BOOK_HOME_VISIT",
-          icon: HomeIcon,
-        },
-      ];
-    }
-    // PRIORIDAD 3: FAQ genérico SOLO si no menciona productos específicos
-    else if (
-      (lowerMessage.includes("help") ||
-        lowerMessage.includes("faq") ||
-        lowerMessage.includes("question")) &&
-      !lowerMessage.includes("roller") &&
-      !lowerMessage.includes("roman") &&
-      !lowerMessage.includes("venetian") &&
-      !lowerMessage.includes("shutter") &&
-      !lowerMessage.includes("curtain") &&
-      !lowerMessage.includes("awning") &&
-      !lowerMessage.includes("blind") &&
-      !lowerMessage.includes("choose") &&
-      !lowerMessage.includes("recommend") &&
-      !lowerMessage.includes("compare")
-    ) {
-      content =
-        "I'm here to help with all your window treatment questions!\n\n❓ I CAN HELP WITH:\n• Product recommendations & comparisons\n• Free quotes & measurements\n• Installation process & timeframes\n• Warranty & repair services\n• Fabric samples & color options\n• Motorization & smart features\n\nWhat specific area can I help you with today?";
-      suggestions = [
-        "Get Quote",
-        "Product Comparison",
-        "Installation Info",
-        "Samples",
-      ];
-      quickActions = [
-        {
-          id: "faq",
-          label: "View Common Questions",
-          action: "SHOW_FAQ",
-          icon: QuestionMarkCircleIcon,
-        },
-      ];
-    }
-    // PRIORIDAD 4: TODO LO DEMÁS va a IA (incluyendo consultas específicas de productos)
+    // TODO LO DEMÁS va a IA - ella determinará la intención real
     else {
       return {
         id: Date.now().toString(),
@@ -468,7 +414,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
       type: "bot",
       content,
       timestamp: new Date(),
-      suggestions,
+      suggestions: [],
       quickActions,
     };
   };
