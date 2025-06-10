@@ -1,20 +1,22 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
-  HomeIcon,
   ArrowRightIcon,
-  ShieldCheckIcon,
   PaintBrushIcon,
+  HomeIcon,
+  ShieldCheckIcon,
   SwatchIcon,
 } from "@heroicons/react/24/outline";
 import { categoryConfigs } from "@/data/productData";
-import { openChatbot } from "../../../components/Chatbot";
+import QuoteDialog from "../../../components/QuoteDialog";
 
 const RomanBlindsPage = () => {
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+
   const heroRef = useRef(null);
   const categoriesRef = useRef(null);
   const benefitsRef = useRef(null);
@@ -84,10 +86,7 @@ const RomanBlindsPage = () => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      "I'm interested in getting a free quote for Roman blinds",
-      "Roman Blinds"
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -389,6 +388,14 @@ const RomanBlindsPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName="Roman Blinds"
+        productCategory="roman-blinds"
+      />
     </div>
   );
 };

@@ -1,11 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Output configuration for Netlify
-  output: "export",
+  // Configuración para Netlify con server-side functions
+  // output: "export", // Remover para usar funciones de servidor
   trailingSlash: true,
   images: {
-    unoptimized: true, // Required for static export
+    domains: ["example.com"], // Añadir dominios externos si es necesario
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 
   // Enable experimental features for better performance
@@ -17,8 +23,7 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
 
-  // Disable server-side features for static export
-  // async headers() and async redirects() are not supported with output: 'export'
+  // Headers y redirects se manejan en netlify.toml
 };
 
 export default nextConfig;

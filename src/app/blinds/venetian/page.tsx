@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -12,9 +12,11 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { categoryConfigs } from "@/data/productData";
-import { openChatbot } from "../../../components/Chatbot";
+import QuoteDialog from "../../../components/QuoteDialog";
 
 const VenetianBlindsPage = () => {
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+
   const heroRef = useRef(null);
   const categoriesRef = useRef(null);
   const benefitsRef = useRef(null);
@@ -84,10 +86,7 @@ const VenetianBlindsPage = () => {
   };
 
   const handleQuoteRequest = () => {
-    openChatbot(
-      "I'm interested in getting a free quote for Venetian blinds",
-      "Venetian Blinds"
-    );
+    setShowQuoteDialog(true);
   };
 
   return (
@@ -391,6 +390,14 @@ const VenetianBlindsPage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Quote Dialog */}
+      <QuoteDialog
+        isOpen={showQuoteDialog}
+        onClose={() => setShowQuoteDialog(false)}
+        productName="Venetian Blinds"
+        productCategory="venetian-blinds"
+      />
     </div>
   );
 };
