@@ -154,15 +154,6 @@ const fallbackTestimonials = [
 ];
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/test-chat");
-      const data = await response.json();
-      console.log(data);
-    };
-    fetchData();
-  }, []);
-
   // Datos de marcas
   const brandPartners = [
     {

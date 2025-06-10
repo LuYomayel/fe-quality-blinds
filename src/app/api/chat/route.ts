@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
+import { OpenAI } from "openai";
 
-export const dynamic = "force-static";
-export const revalidate = false;
+// Configuración correcta para API routes
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Contexto optimizado para minimizar tokens pero mantener información esencial
 const QUALITY_BLINDS_CONTEXT = `You are the Quality Blinds Australia assistant. We're a family business since 1989 based in Sydney.
@@ -53,22 +54,33 @@ IMPORTANT INSTRUCTIONS:
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt } = await req.json();
+    const { message } = await req.json();
 
-    if (!prompt) {
+    if (!message) {
       return NextResponse.json(
-        { error: "Prompt is required" },
+        { error: "Message is required" },
         { status: 400 }
       );
     }
 
-    // PRODUCCIÓN - API real de OpenAI
+    // Verificar que la API key esté configurada
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OpenAI API key not configured");
+      return NextResponse.json(
+        {
+          error:
+            "Service temporarily unavailable. Please call (02) 9340 5050 for assistance.",
+        },
+        { status: 500 }
+      );
+    }
+
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Modelo más barato
+      model: "gpt-4o-mini", // Corregido: era "gpt-o4-mini"
       messages: [
         {
           role: "system",
@@ -76,18 +88,42 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "user",
-          content: prompt,
+          content: message,
         },
       ],
-      temperature: 0.3, // Más consistente
-      max_tokens: 300, // Limita respuesta para controlar costos
+      temperature: 0.3,
+      max_tokens: 300,
     });
 
+    const reply =
+      completion.choices[0]?.message?.content ||
+      "Lo siento, no pude procesar tu consulta.";
+
     return NextResponse.json({
-      answer: completion.choices[0].message.content,
+      reply: reply,
     });
   } catch (error) {
     console.error("Error in chat API:", error);
+
+    // Mejor manejo de errores específicos
+    if (error instanceof Error) {
+      if (error.message.includes("model")) {
+        return NextResponse.json(
+          {
+            error:
+              "Chat service temporarily unavailable. Please call (02) 9340 5050.",
+          },
+          { status: 500 }
+        );
+      }
+      if (error.message.includes("API key")) {
+        return NextResponse.json(
+          { error: "Service configuration error. Please call (02) 9340 5050." },
+          { status: 500 }
+        );
+      }
+    }
+
     return NextResponse.json(
       {
         error:

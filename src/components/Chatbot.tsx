@@ -123,10 +123,13 @@ const Chatbot: React.FC<ChatbotProps> = ({
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ message: prompt }),
       });
       const data = await res.json();
-      return data.answer ?? "Sorry, I couldn't get that right now.";
+      if (data && data.error) {
+        return data.error;
+      }
+      return data.reply;
     } catch {
       return "Sorry, I'm having trouble connecting to our knowledge base.";
     }
