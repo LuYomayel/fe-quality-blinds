@@ -13,11 +13,12 @@ import {
   BuildingOfficeIcon,
   ArrowRightIcon,
 } from "@heroicons/react/24/solid";
-import QuoteDialog from "../../components/QuoteDialog";
 import ContactForm from "../../components/ContactForm";
+import { openChatbot } from "../../components/Chatbot";
 
 const AboutUs = () => {
-  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  // Remove quote modal state since we're using chatbot
+  // const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // Refs para las animaciones basadas en scroll
@@ -134,6 +135,13 @@ const AboutUs = () => {
         delayChildren: 0.1,
       },
     },
+  };
+
+  const handleQuoteRequest = () => {
+    openChatbot(
+      "I'd like to get a free quote and consultation for my home",
+      "Quality Blinds Services"
+    );
   };
 
   return (
@@ -507,7 +515,7 @@ const AboutUs = () => {
             variants={staggerContainer}
           >
             <motion.button
-              onClick={() => setIsQuoteModalOpen(true)}
+              onClick={handleQuoteRequest}
               className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors"
               variants={fadeInLeft}
               whileHover={{
@@ -533,13 +541,6 @@ const AboutUs = () => {
           </motion.div>
         </div>
       </motion.section>
-
-      {/* Quote Dialog */}
-      <QuoteDialog
-        isOpen={isQuoteModalOpen}
-        onClose={() => setIsQuoteModalOpen(false)}
-        productName="Quality Blinds Services"
-      />
 
       {/* Contact Form Modal */}
       {isContactModalOpen && (

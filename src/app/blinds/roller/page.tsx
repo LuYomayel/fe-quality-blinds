@@ -13,6 +13,7 @@ import {
   CogIcon,
 } from "@heroicons/react/24/outline";
 import { categoryConfigs } from "@/data/productData";
+import { openChatbot } from "../../../components/Chatbot";
 
 const RollerBlindsPage = () => {
   const heroRef = useRef(null);
@@ -83,6 +84,13 @@ const RollerBlindsPage = () => {
     },
   };
 
+  const handleQuoteRequest = () => {
+    openChatbot(
+      "I'm interested in getting a free quote for roller blinds",
+      "Roller Blinds"
+    );
+  };
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -142,6 +150,7 @@ const RollerBlindsPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
+                  onClick={handleQuoteRequest}
                   className="bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -366,6 +375,7 @@ const RollerBlindsPage = () => {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <motion.button
+              onClick={handleQuoteRequest}
               className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

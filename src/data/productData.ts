@@ -16,8 +16,68 @@ export interface Product {
     shortDescription: string;
   }>;
   variants: {
+    // Traditional size variants
     width: string[];
     height: string[];
+    // Enhanced variant system with rich data
+    colors?: Array<{
+      name: string;
+      value: string; // hex color or color class
+      image?: string; // Optional image showing the color
+      description?: string;
+      available: boolean;
+    }>;
+    fabrics?: Array<{
+      id: string;
+      name: string;
+      image: string;
+      thumbnail: string;
+      type: string; // "blockout", "translucent", "sheer", "sunscreen", etc.
+      description: string;
+      features: string[]; // ["UV Protection", "Easy Clean", etc.]
+      opacity: number; // 0-100, 0 = transparent, 100 = blockout
+      available: boolean;
+      premium?: boolean;
+      sampleAvailable?: boolean;
+    }>;
+    materials?: Array<{
+      id: string;
+      name: string;
+      image: string;
+      thumbnail: string;
+      type: string; // "wood", "aluminum", "pvc", "fabric", etc.
+      description: string;
+      features: string[];
+      finish?: string; // "matte", "glossy", "textured", etc.
+      available: boolean;
+      premium?: boolean;
+    }>;
+    slatSizes?: Array<{
+      size: string; // "25mm", "50mm", "63mm", "89mm"
+      name: string;
+      image: string;
+      description: string;
+      recommended: string[]; // Room types where this size works best
+      available: boolean;
+    }>;
+    controls?: Array<{
+      type: string; // "manual", "motorized", "smart"
+      name: string;
+      image: string;
+      description: string;
+      features: string[];
+      available: boolean;
+      premium?: boolean;
+    }>;
+    mountings?: Array<{
+      type: string; // "inside", "outside", "ceiling"
+      name: string;
+      image: string;
+      description: string;
+      compatibility: string[]; // Which products this works with
+      available: boolean;
+    }>;
+    // Legacy color array (keep for backward compatibility)
     color: string[];
   };
   rating: number;
@@ -94,6 +154,159 @@ export const productData: Product[] = [
       width: [],
       height: [],
       color: [],
+      fabrics: [
+        {
+          id: "sunscreen-charcoal",
+          name: "Sunscreen Charcoal",
+          image: "/images/fabric-sunscreen-charcoal.jpg",
+          thumbnail: "/images/fabric-sunscreen-charcoal-thumb.jpg",
+          type: "sunscreen",
+          description:
+            "High-performance sunscreen fabric that blocks harmful UV rays while maintaining excellent visibility and airflow.",
+          features: [
+            "95% UV Protection",
+            "Breathable",
+            "Easy Clean",
+            "Fade Resistant",
+          ],
+          opacity: 15,
+          available: true,
+          premium: false,
+          sampleAvailable: true,
+        },
+        {
+          id: "blockout-white",
+          name: "Blockout White",
+          image: "/images/fabric-blockout-white.jpg",
+          thumbnail: "/images/fabric-blockout-white-thumb.jpg",
+          type: "blockout",
+          description:
+            "Complete light blocking fabric perfect for creating comfortable shaded areas and privacy.",
+          features: [
+            "100% Light Block",
+            "Privacy",
+            "Temperature Control",
+            "Durable",
+          ],
+          opacity: 100,
+          available: true,
+          premium: false,
+          sampleAvailable: true,
+        },
+        {
+          id: "translucent-cream",
+          name: "Translucent Cream",
+          image: "/images/fabric-translucent-cream.jpg",
+          thumbnail: "/images/fabric-translucent-cream-thumb.jpg",
+          type: "translucent",
+          description:
+            "Soft translucent fabric that filters light beautifully while providing gentle shade and elegance.",
+          features: [
+            "Light Filtering",
+            "Elegant Appearance",
+            "UV Protection",
+            "Weather Resistant",
+          ],
+          opacity: 40,
+          available: true,
+          premium: true,
+          sampleAvailable: true,
+        },
+      ],
+      colors: [
+        {
+          name: "Classic White",
+          value: "#FFFFFF",
+          description:
+            "Timeless white finish that complements any exterior design",
+          available: true,
+        },
+        {
+          name: "Charcoal Grey",
+          value: "#36454F",
+          description: "Modern charcoal grey for contemporary homes",
+          available: true,
+        },
+        {
+          name: "Heritage Green",
+          value: "#355E3B",
+          description:
+            "Traditional green that blends with natural surroundings",
+          available: true,
+        },
+        {
+          name: "Coastal Blue",
+          value: "#4682B4",
+          description: "Fresh blue perfect for coastal and modern properties",
+          available: false,
+        },
+      ],
+      controls: [
+        {
+          type: "motorized",
+          name: "Remote Control Motor",
+          image: "/images/control-remote.jpg",
+          description:
+            "Convenient remote control operation with multiple awnings control capability.",
+          features: [
+            "Multi-awning Control",
+            "Quiet Operation",
+            "Weather Sensors Compatible",
+            "5 Year Warranty",
+          ],
+          available: true,
+          premium: true,
+        },
+        {
+          type: "smart",
+          name: "Smart Home Integration",
+          image: "/images/control-smart.jpg",
+          description:
+            "WiFi enabled smart control compatible with Alexa, Google Home, and smartphone apps.",
+          features: [
+            "Voice Control",
+            "Smartphone App",
+            "Scheduling",
+            "Weather Integration",
+          ],
+          available: true,
+          premium: true,
+        },
+        {
+          type: "manual",
+          name: "Manual Crank",
+          image: "/images/control-manual.jpg",
+          description: "Reliable manual operation with smooth gear mechanism.",
+          features: [
+            "No Power Required",
+            "Durable Mechanism",
+            "Cost Effective",
+            "Easy Operation",
+          ],
+          available: true,
+          premium: false,
+        },
+      ],
+      mountings: [
+        {
+          type: "wall",
+          name: "Wall Mount",
+          image: "/images/mount-wall.jpg",
+          description:
+            "Standard wall mounting for most conservatory applications.",
+          compatibility: ["Brick Walls", "Rendered Walls", "Timber Frames"],
+          available: true,
+        },
+        {
+          type: "roof",
+          name: "Roof Mount",
+          image: "/images/mount-roof.jpg",
+          description:
+            "Roof mounting system for conservatories without suitable wall space.",
+          compatibility: ["Glass Roofs", "Polycarbonate Roofs", "Solid Roofs"],
+          available: true,
+        },
+      ],
     },
     rating: 0,
     reviewCount: 0,
@@ -335,7 +548,7 @@ export const productData: Product[] = [
     shortDescription:
       "Basswood Venetian Blinds are lightweight timber blinds available in a wide choice of colours and stains to complement any décor, and are easy to clean and maintain.",
     description:
-      "Our Basswood Venetian Blinds enhance your home’s natural charm with robust timber stability and a broad palette of colours and stains. Easy to operate, clean, and install, these blinds bring the outdoors inside and suit any décor effortlessly.",
+      "Our Basswood Venetian Blinds enhance your home's natural charm with robust timber stability and a broad palette of colours and stains. Easy to operate, clean, and install, these blinds bring the outdoors inside and suit any décor effortlessly.",
     images: [
       {
         src: "/images/basswood-venetian-blind-1.webp",
@@ -1350,7 +1563,7 @@ export const productData: Product[] = [
     shortDescription:
       "Translucent Roman Blinds provide daytime privacy while allowing natural light to filter through, ideal for living areas.",
     description:
-      "Translucent Roman Blinds allow a filtered amount of light to enter your home while blocking external views when closed, creating a comfortable, softly lit environment. Their light-filtering performance depends on the fabric’s weight and weave, making them perfect for living spaces that require both privacy and natural illumination.",
+      "Translucent Roman Blinds allow a filtered amount of light to enter your home while blocking external views when closed, creating a comfortable, softly lit environment. Their light-filtering performance depends on the fabric's weight and weave, making them perfect for living spaces that require both privacy and natural illumination.",
     category: "blinds",
     subcategory: "roman",
     heroImage: "/images/translucent-roman-blind-1.webp",
@@ -1411,7 +1624,7 @@ export const productData: Product[] = [
     shortDescription:
       "Looking for excellent wooden blinds at a low cost? Our Cedar Venetian Blinds may become your new window pal, adding warmth and charm to any room with rich cedar grain.",
     description:
-      "One of the main advantages of Cedar Venetian Blinds over other wood blinds is their stability—they won’t shrink or expand with temperature or humidity changes. Featuring high-quality cord and easy-to-use tilt mechanisms for precise light and privacy control, our DIY Cedar Venetian Blinds are simple to install and best suited for dry environments like living rooms, bedrooms, and workspaces.",
+      "One of the main advantages of Cedar Venetian Blinds over other wood blinds is their stability—they won't shrink or expand with temperature or humidity changes. Featuring high-quality cord and easy-to-use tilt mechanisms for precise light and privacy control, our DIY Cedar Venetian Blinds are simple to install and best suited for dry environments like living rooms, bedrooms, and workspaces.",
     category: "blinds",
     subcategory: "venetian",
     heroImage: "/images/cedar-venetian-blind-1.webp",

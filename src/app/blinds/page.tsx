@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { openChatbot } from "../../components/Chatbot";
 
 const BlindsPage = () => {
   const heroRef = useRef(null);
@@ -70,6 +71,13 @@ const BlindsPage = () => {
         delayChildren: 0.1,
       },
     },
+  };
+
+  const handleQuoteRequest = () => {
+    openChatbot(
+      "I'm interested in getting a free quote for blinds",
+      "Quality Blinds"
+    );
   };
 
   return (
@@ -205,12 +213,14 @@ const BlindsPage = () => {
               space. Get a free consultation and quote today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/about#contact"
-                className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              <motion.button
+                onClick={handleQuoteRequest}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Get Free Quote
-              </Link>
+              </motion.button>
               <Link
                 href="/shop"
                 className="border-2 border-blue-600 text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"

@@ -1,10 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import {
+  motion,
+  useScroll,
+  // useSpring,
+  useInView,
+  // useAnimation,
+  useTransform,
+} from "framer-motion";
 
 // Configuración de scroll suave
 // const smoothScroll = (
@@ -104,8 +110,8 @@ const projectCategories = [
   },
 ];
 
-// Datos de testimonios - Agregando más reseñas para el slider
-const customerTestimonials = [
+// Datos de testimonios - Estos serán reemplazados por reviews dinámicos de Google
+const fallbackTestimonials = [
   {
     name: "Jackis aray",
     date: "2021-09-28",
@@ -145,107 +151,68 @@ const customerTestimonials = [
       "Quality Blinds is the best blinds company we have used the price and quality of the product was the the best we have had. Service they delivered before they said they...",
     avatar: "B",
   },
-  {
-    name: "Sarah Johnson",
-    date: "2021-06-15",
-    rating: 5,
-    review:
-      "Outstanding customer service! The team helped us choose the perfect blinds for our new home. Installation was flawless and the quality is exceptional. Highly recommended!",
-    avatar: "S",
-  },
-  {
-    name: "Mike Chen",
-    date: "2021-04-22",
-    rating: 5,
-    review:
-      "Professional service from start to finish. Great quality products and the installation team was punctual and clean. Very satisfied with our new Roman blinds.",
-    avatar: "M",
-  },
-  {
-    name: "Lisa Thompson",
-    date: "2021-05-30",
-    rating: 5,
-    review:
-      "Fantastic experience with Quality Blinds! They provided excellent advice, competitive pricing, and the finished result exceeded our expectations.",
-    avatar: "L",
-  },
-  {
-    name: "David Wilson",
-    date: "2021-03-08",
-    rating: 5,
-    review:
-      "Top-notch service and product quality. The consultation was thorough and the installation team was professional. Our venetian blinds look amazing!",
-    avatar: "D",
-  },
-  {
-    name: "Emma Roberts",
-    date: "2021-07-12",
-    rating: 5,
-    review:
-      "Couldn't be happier with our new shutters! Quality Blinds delivered exactly what they promised. Great value for money and excellent craftsmanship.",
-    avatar: "E",
-  },
-];
-
-// Datos de marcas
-const brandPartners = [
-  {
-    name: "ACMEDA",
-    logo: "/images/brands/acmeda.png",
-    description: "Premium window covering solutions",
-    link: "/brands/acmeda",
-  },
-  {
-    name: "ALUXOR",
-    logo: "/images/brands/aluxor.png",
-    description: "Innovative awning systems",
-    link: "/brands/aluxor",
-  },
-  {
-    name: "Carbolite",
-    logo: "/images/brands/carbolite.png",
-    description: "Quality awnings & louvres",
-    link: "/brands/carbolite",
-  },
-  {
-    name: "ESR Blinds",
-    logo: "/images/brands/esr-blinds.png",
-    description: "Professional blind solutions",
-    link: "/brands/esr-blinds",
-  },
-  {
-    name: "FOREST",
-    logo: "/images/brands/forest.png",
-    description: "Drapery hardware specialists",
-    link: "/brands/forest",
-  },
 ];
 
 const Home: React.FC = () => {
+  // Datos de marcas
+  const brandPartners = [
+    {
+      name: "ACMEDA",
+      logo: "/images/brands/acmeda.png",
+      description: "Premium window covering solutions",
+      link: "/brands/acmeda",
+    },
+    {
+      name: "ALUXOR",
+      logo: "/images/brands/aluxor.png",
+      description: "Innovative awning systems",
+      link: "/brands/aluxor",
+    },
+    {
+      name: "Carbolite",
+      logo: "/images/brands/carbolite.png",
+      description: "Quality awnings & louvres",
+      link: "/brands/carbolite",
+    },
+    {
+      name: "ESR Blinds",
+      logo: "/images/brands/esr-blinds.png",
+      description: "Professional blind solutions",
+      link: "/brands/esr-blinds",
+    },
+    {
+      name: "FOREST",
+      logo: "/images/brands/forest.png",
+      description: "Drapery hardware specialists",
+      link: "/brands/forest",
+    },
+  ];
+
+  // State management
+  const [currentCollection, setCurrentCollection] = useState(0);
+  const [currentProject, setCurrentProject] = useState(0);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [currentBrand, setCurrentBrand] = useState(0);
+
+  // State for dynamic Google reviews
+  const [customerTestimonials, setCustomerTestimonials] =
+    useState(fallbackTestimonials);
+  const [googleRating, setGoogleRating] = useState(4.4);
+  const [totalReviews, setTotalReviews] = useState(120);
+
+  // Refs
+  const heroRef = useRef<HTMLElement>(null);
+  const collectionsRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const brandsRef = useRef<HTMLDivElement>(null);
+
+  // Framer Motion hooks
+  const heroInView = useInView(heroRef, { once: true });
+  // const controls = useAnimation();
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  const [heroRef, heroInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  // Estados simplificados para carruseles infinitos
-  const [currentCollection, setCurrentCollection] = React.useState(0);
-  const [currentProject, setCurrentProject] = React.useState(0);
-  const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
-  const [currentBrand, setCurrentBrand] = React.useState(0);
-
-  // Referencias para los carruseles
-  const collectionsRef = React.useRef<HTMLDivElement>(null);
-  const projectsRef = React.useRef<HTMLDivElement>(null);
-  const brandsRef = React.useRef<HTMLDivElement>(null);
-
-  // Crear arrays infinitos duplicando elementos para efecto continuo
+  // Data arrays for carousels
   const infiniteCollections = [
     ...featuredCollections,
     ...featuredCollections,
@@ -425,6 +392,43 @@ const Home: React.FC = () => {
     });
   };
 
+  // Fetch Google reviews on component mount
+  useEffect(() => {
+    const fetchGoogleReviews = async () => {
+      try {
+        const response = await fetch("/api/reviews/google");
+        const data = await response.json();
+
+        if (data.success) {
+          // Convert Google reviews to our testimonial format
+          const formattedReviews = data.data.reviews.map(
+            (review: {
+              author_name: string;
+              time: number;
+              rating: number;
+              text: string;
+            }) => ({
+              name: review.author_name,
+              date: new Date(review.time).toISOString().split("T")[0],
+              rating: review.rating,
+              review: review.text,
+              avatar: review.author_name.charAt(0).toUpperCase(),
+            })
+          );
+
+          setCustomerTestimonials(formattedReviews);
+          setGoogleRating(data.data.rating);
+          setTotalReviews(data.data.totalReviews);
+        }
+      } catch (error) {
+        console.error("Error fetching Google reviews:", error);
+        // Keep fallback data if API fails
+      }
+    };
+
+    fetchGoogleReviews();
+  }, []);
+
   return (
     <>
       {/* Progress indicator */}
@@ -488,20 +492,6 @@ const Home: React.FC = () => {
               aria-label="Explore our featured window treatment collections"
             >
               <span>Explore Our Collection</span>
-              <svg
-                className="ml-2 w-4 h-4 sm:w-5 sm:h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
             </Link>
           </motion.div>
         </div>
@@ -963,10 +953,12 @@ const Home: React.FC = () => {
                     </svg>
                   ))}
                 </div>
-                <span className="font-semibold text-gray-900">4.4 de 5</span>
+                <span className="font-semibold text-gray-900">
+                  {googleRating} de 5
+                </span>
               </div>
               <p className="text-gray-600">
-                Based on {customerTestimonials.length} reviews from Google
+                Based on {totalReviews} reviews from Google
               </p>
             </motion.div>
 

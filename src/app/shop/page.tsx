@@ -135,12 +135,24 @@ const Shop: React.FC = () => {
   // State to track which subcategory filter is active
   const [activeFilter, setActiveFilter] = useState<string>("");
 
+  // Advanced filter states
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
+  const [selectedMaterial, setSelectedMaterial] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(
+    new Set()
+  );
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+
   // New states for improved functionality
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [favoriteProducts, setFavoriteProducts] = useState<Set<string>>(
     new Set()
   );
+
+  // Filter visibility state
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   // Refs for animations
   const heroRef = useRef(null);
@@ -157,17 +169,147 @@ const Shop: React.FC = () => {
     margin: "-50px",
   });
 
-  // Enhanced filtering logic
+  // Advanced filter options
+  const roomTypes = [
+    "Living Room",
+    "Bedroom",
+    "Kitchen",
+    "Bathroom",
+    "Office",
+    "Dining Room",
+    "Outdoor",
+    "Conservatory",
+    "Study",
+    "Children's Room",
+  ];
+
+  const materialTypes = [
+    "Fabric",
+    "Aluminum",
+    "Wood",
+    "PVC",
+    "Bamboo",
+    "Vinyl",
+    "Canvas",
+    "Acrylic",
+    "Sunscreen",
+    "Blockout",
+  ];
+
+  const colorOptions = [
+    "White",
+    "Black",
+    "Grey",
+    "Brown",
+    "Beige",
+    "Blue",
+    "Green",
+    "Red",
+    "Natural",
+    "Cream",
+  ];
+
+  const featureOptions = [
+    "UV Protection",
+    "Blockout",
+    "Light Filtering",
+    "Easy Clean",
+    "Water Resistant",
+    "Fire Retardant",
+    "Energy Efficient",
+    "Motorized",
+    "Remote Control",
+    "Child Safe",
+  ];
+
+  // Enhanced filtering logic with advanced filters
   const filteredProducts = (productData as Product[]).filter((product) => {
+    // Basic category filter
     const matchesCategory = !activeFilter || product.name === activeFilter;
+
+    // Search filter
     const matchesSearch =
       !searchQuery ||
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.shortDescription
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+
+    // Room filter - check if product is suitable for selected room
+    const matchesRoom =
+      !selectedRoom ||
+      product.description.toLowerCase().includes(selectedRoom.toLowerCase()) ||
+      product.features.some((feature) =>
+        feature.toLowerCase().includes(selectedRoom.toLowerCase())
+      );
+
+    // Material filter - check product name, description, or specifications
+    const matchesMaterial =
+      !selectedMaterial ||
+      product.name.toLowerCase().includes(selectedMaterial.toLowerCase()) ||
+      product.description
+        .toLowerCase()
+        .includes(selectedMaterial.toLowerCase()) ||
+      Object.values(product.specifications).some((spec) =>
+        spec.toLowerCase().includes(selectedMaterial.toLowerCase())
+      );
+
+    // Color filter - check variants or description
+    const matchesColor =
+      !selectedColor ||
+      product.variants.color.some((color) =>
+        color.toLowerCase().includes(selectedColor.toLowerCase())
+      ) ||
+      product.description.toLowerCase().includes(selectedColor.toLowerCase());
+
+    // Features filter - all selected features must be present
+    const matchesFeatures =
+      selectedFeatures.size === 0 ||
+      Array.from(selectedFeatures).every(
+        (feature) =>
+          product.features.some((productFeature) =>
+            productFeature.toLowerCase().includes(feature.toLowerCase())
+          ) || product.description.toLowerCase().includes(feature.toLowerCase())
+      );
+
+    return (
+      matchesCategory &&
+      matchesSearch &&
+      matchesRoom &&
+      matchesMaterial &&
+      matchesColor &&
+      matchesFeatures
+    );
   });
+
+  // Helper functions for advanced filters
+  const toggleFeature = (feature: string) => {
+    const newFeatures = new Set(selectedFeatures);
+    if (newFeatures.has(feature)) {
+      newFeatures.delete(feature);
+    } else {
+      newFeatures.add(feature);
+    }
+    setSelectedFeatures(newFeatures);
+  };
+
+  const clearAllFilters = () => {
+    setActiveFilter("");
+    setSearchQuery("");
+    setSelectedRoom("");
+    setSelectedMaterial("");
+    setSelectedColor("");
+    setSelectedFeatures(new Set());
+    setPriceRange([0, 1000]);
+  };
+
+  const hasActiveFilters =
+    activeFilter ||
+    searchQuery ||
+    selectedRoom ||
+    selectedMaterial ||
+    selectedColor ||
+    selectedFeatures.size > 0;
 
   // Toggle favorite
   const toggleFavorite = (productId: string) => {
@@ -374,7 +516,7 @@ const Shop: React.FC = () => {
             >
               <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 flex items-center">
                 <FunnelIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600" />
-                Categories
+                Filters
               </h2>
               <button
                 className="lg:hidden flex items-center text-gray-600 hover:text-gray-800 focus:outline-none text-sm touch-manipulation"
@@ -387,7 +529,177 @@ const Shop: React.FC = () => {
               </button>
             </motion.div>
 
-            {/* Categories - Mejorado para móvil */}
+            {/* Advanced Filters Toggle */}
+            <motion.div className="mb-4 sm:mb-6" variants={fadeInUp}>
+              <button
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="w-full flex items-center justify-between p-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <span className="font-medium">Advanced Filters</span>
+                <motion.svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  animate={{ rotate: showAdvancedFilters ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </motion.svg>
+              </button>
+            </motion.div>
+
+            {/* Advanced Filters Section */}
+            <motion.div
+              initial={false}
+              animate={{
+                height: showAdvancedFilters ? "auto" : 0,
+                opacity: showAdvancedFilters ? 1 : 0,
+              }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden mb-6"
+            >
+              <div className="space-y-4 sm:space-y-6">
+                {/* Room Filter */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-700">
+                      Room Type
+                    </h3>
+                    <span className="text-xs text-gray-500 italic">
+                      Perfect for...
+                    </span>
+                  </div>
+                  <select
+                    value={selectedRoom}
+                    onChange={(e) => setSelectedRoom(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">All Rooms</option>
+                    {roomTypes.map((room) => (
+                      <option key={room} value={room}>
+                        {room}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Material Filter */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-700">
+                      Material
+                    </h3>
+                    <span className="text-xs text-gray-500 italic">
+                      Quality matters
+                    </span>
+                  </div>
+                  <select
+                    value={selectedMaterial}
+                    onChange={(e) => setSelectedMaterial(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">All Materials</option>
+                    {materialTypes.map((material) => (
+                      <option key={material} value={material}>
+                        {material}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Color Filter */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-700">
+                      Color
+                    </h3>
+                    <span className="text-xs text-gray-500 italic">
+                      Match your style
+                    </span>
+                  </div>
+                  <select
+                    value={selectedColor}
+                    onChange={(e) => setSelectedColor(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">All Colors</option>
+                    {colorOptions.map((color) => (
+                      <option key={color} value={color}>
+                        {color}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Price Range Filter */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-700">
+                      Price Range
+                    </h3>
+                    <span className="text-xs text-gray-500 italic">
+                      Budget friendly
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    <input
+                      type="range"
+                      min="0"
+                      max="1000"
+                      step="50"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        setPriceRange([0, parseInt(e.target.value)])
+                      }
+                      className="w-full accent-blue-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>$0</span>
+                      <span className="font-medium text-blue-600">
+                        ${priceRange[1]}+
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Features Filter */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-700">
+                      Features
+                    </h3>
+                    <span className="text-xs text-gray-500 italic">
+                      {selectedFeatures.size > 0 &&
+                        `${selectedFeatures.size} selected`}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-2">
+                    {featureOptions.map((feature) => (
+                      <label
+                        key={feature}
+                        className="flex items-center space-x-2 text-sm cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedFeatures.has(feature)}
+                          onChange={() => toggleFeature(feature)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
+                        />
+                        <span className="text-gray-700 flex-1">{feature}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Basic Categories - Mejorado para móvil */}
             <motion.div
               variants={staggerContainer}
               className={`space-y-3 sm:space-y-4 ${
@@ -464,17 +776,27 @@ const Shop: React.FC = () => {
             </motion.div>
 
             {/* Clear Filters */}
-            {(activeFilter || searchQuery) && (
+            {hasActiveFilters && (
               <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full mt-4 sm:mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium touch-manipulation"
-                onClick={() => {
-                  setActiveFilter("");
-                  setSearchQuery("");
-                }}
+                className="w-full mt-4 sm:mt-6 px-4 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium touch-manipulation border border-red-200"
+                onClick={clearAllFilters}
               >
-                Clear All Filters
+                Clear All Filters (
+                {
+                  [
+                    activeFilter,
+                    searchQuery,
+                    selectedRoom,
+                    selectedMaterial,
+                    selectedColor,
+                    ...(selectedFeatures.size > 0
+                      ? [`${selectedFeatures.size} features`]
+                      : []),
+                  ].filter(Boolean).length
+                }
+                )
               </motion.button>
             )}
           </div>
@@ -488,47 +810,61 @@ const Shop: React.FC = () => {
           animate={isProductsInView ? "visible" : "hidden"}
           variants={fadeInUp}
         >
-          {/* Results Header - Mejorado */}
-          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                  {filteredProducts.length} Products Found
-                </h2>
-                {(activeFilter || searchQuery) && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    {activeFilter && `Filtered by: ${activeFilter}`}
-                    {activeFilter && searchQuery && " • "}
-                    {searchQuery && `Search: "${searchQuery}"`}
-                  </p>
+          {/* Products Header con filtros activos */}
+          <motion.div
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8"
+            variants={fadeInUp}
+          >
+            <div>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                Our Products
+              </h2>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-sm text-gray-600">
+                  {filteredProducts.length} products found
+                </span>
+                {hasActiveFilters && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {[
+                      activeFilter && "Category",
+                      searchQuery && "Search",
+                      selectedRoom && "Room",
+                      selectedMaterial && "Material",
+                      selectedColor && "Color",
+                      selectedFeatures.size > 0 &&
+                        `${selectedFeatures.size} Features`,
+                    ]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </span>
                 )}
               </div>
-
-              {/* View Toggle - Solo desktop */}
-              <div className="hidden lg:flex bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-md transition-all ${
-                    viewMode === "grid"
-                      ? "bg-white shadow text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  <Squares2X2Icon className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-md transition-all ${
-                    viewMode === "list"
-                      ? "bg-white shadow text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  <ListBulletIcon className="h-5 w-5" />
-                </button>
-              </div>
             </div>
-          </div>
+
+            {/* View Toggle - Solo desktop */}
+            <div className="hidden lg:flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-2 rounded-md transition-all ${
+                  viewMode === "grid"
+                    ? "bg-white shadow text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Squares2X2Icon className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-2 rounded-md transition-all ${
+                  viewMode === "list"
+                    ? "bg-white shadow text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <ListBulletIcon className="h-5 w-5" />
+              </button>
+            </div>
+          </motion.div>
 
           {/* Products Grid/List - Layout responsivo */}
           {filteredProducts.length > 0 ? (

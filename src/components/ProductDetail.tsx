@@ -10,8 +10,10 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import QuoteDialog from "./QuoteDialog";
 import { Product } from "@/data/productData";
+import VariantsGallery from "./VariantsGallery";
+import ProductReviews from "./ProductReviews";
+import { openChatbot } from "./Chatbot";
 
 interface ProductDetailProps {
   product: Product;
@@ -31,7 +33,6 @@ const smoothScroll = (
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
-  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [visibleThumbnails, setVisibleThumbnails] = useState(4);
@@ -206,6 +207,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     },
   };
 
+  const handleQuoteRequest = () => {
+    openChatbot(
+      `I'd like to get a free quote for ${product.name}`,
+      product.name
+    );
+  };
+
   return (
     <article
       className="bg-white min-h-screen"
@@ -311,7 +319,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                 variants={fadeInUp}
               >
                 <motion.button
-                  onClick={() => setIsQuoteModalOpen(true)}
+                  onClick={handleQuoteRequest}
                   className="bg-white text-blue-900 font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:bg-blue-50 transition-colors text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -521,8 +529,46 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         </div>
       </motion.section>
 
-      {/* Product Details Section */}
+      {/* Variants Gallery - Nueva sección independiente */}
+      {(product.variants.fabrics?.length ||
+        product.variants.colors?.length ||
+        product.variants.materials?.length ||
+        product.variants.slatSizes?.length ||
+        product.variants.controls?.length ||
+        product.variants.mountings?.length) && (
+        <motion.section
+          className="py-12 bg-gray-50"
+          initial="hidden"
+          animate={isGalleryInView ? "visible" : "hidden"}
+          variants={staggerContainer}
+        >
+          <div className="max-w-7xl mx-auto px-4">
+            <motion.div
+              className="text-center mb-8 sm:mb-10"
+              variants={fadeInUp}
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                Available Options
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+                Explore all the fabrics, colors, and customization options
+                available for {product.name}.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8"
+              variants={cardVariants}
+            >
+              <VariantsGallery product={product} />
+            </motion.div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* Product Details & Information Section */}
       <motion.section
+        id="details"
         ref={detailsRef}
         className="py-12 bg-white"
         initial="hidden"
@@ -716,6 +762,32 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         </div>
       </motion.section>
 
+      {/* Product Reviews */}
+      <motion.section
+        className="py-12 bg-gray-50"
+        initial="hidden"
+        animate={isGalleryInView ? "visible" : "hidden"}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div className="text-center mb-8 sm:mb-10" variants={fadeInUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+              Customer Reviews
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+              What our customers are saying about {product.name}.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white rounded-2xl shadow-xl p-6 sm:p-8"
+            variants={cardVariants}
+          >
+            <ProductReviews productId={product.id} productName={product.name} />
+          </motion.div>
+        </div>
+      </motion.section>
+
       {/* Schema.org Product Data */}
       <div className="hidden">
         <span itemProp="brand" itemScope itemType="https://schema.org/Brand">
@@ -736,13 +808,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <meta itemProp="sku" content={product.id} />
         <meta itemProp="category" content="Window Treatments" />
       </div>
-
-      {/* Quote Dialog Component */}
-      <QuoteDialog
-        isOpen={isQuoteModalOpen}
-        onClose={() => setIsQuoteModalOpen(false)}
-        productName={product.name}
-      />
     </article>
   );
 };

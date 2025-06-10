@@ -12,6 +12,7 @@ import {
   SwatchIcon,
 } from "@heroicons/react/24/outline";
 import { categoryConfigs } from "@/data/productData";
+import { openChatbot } from "../../../components/Chatbot";
 
 const RomanBlindsPage = () => {
   const heroRef = useRef(null);
@@ -82,6 +83,13 @@ const RomanBlindsPage = () => {
     },
   };
 
+  const handleQuoteRequest = () => {
+    openChatbot(
+      "I'm interested in getting a free quote for Roman blinds",
+      "Roman Blinds"
+    );
+  };
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -139,7 +147,8 @@ const RomanBlindsPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
-                  className="bg-white text-amber-900 font-semibold px-8 py-3 rounded-lg hover:bg-orange-50 transition-colors"
+                  onClick={handleQuoteRequest}
+                  className="bg-white text-blue-900 font-semibold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -363,6 +372,7 @@ const RomanBlindsPage = () => {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <motion.button
+              onClick={handleQuoteRequest}
               className="bg-white text-amber-600 font-semibold px-8 py-4 rounded-lg hover:bg-orange-50 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
