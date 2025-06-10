@@ -507,13 +507,13 @@ export default function Header() {
     } else {
       newExpanded.add(itemName);
     }
-    setExpandedItems(newExpanded);
+    setExpandedItems(new Set([itemName])); // Solo permite uno expandido a la vez en móvil
   };
 
   const handleSubItemHover = (subItem: MenuItem) => {
     if (
       window.matchMedia(
-        "(hover: hover) and (pointer: fine) and (min-width: 768px)"
+        "(hover: hover) and (pointer: fine) and (min-width: 1024px)"
       ).matches &&
       subItem.preview
     ) {
@@ -524,7 +524,7 @@ export default function Header() {
   const handleItemHover = (item: MenuItem) => {
     if (
       window.matchMedia(
-        "(hover: hover) and (pointer: fine) and (min-width: 768px)"
+        "(hover: hover) and (pointer: fine) and (min-width: 1024px)"
       ).matches &&
       item.preview
     ) {
@@ -540,14 +540,14 @@ export default function Header() {
     closed: {
       x: "-100%",
       transition: {
-        duration: 0.4,
+        duration: 0.3,
         ease: [0.4, 0, 0.2, 1],
       },
     },
     open: {
       x: 0,
       transition: {
-        duration: 0.4,
+        duration: 0.3,
         ease: [0.4, 0, 0.2, 1],
       },
     },
@@ -559,8 +559,8 @@ export default function Header() {
       opacity: 1,
       x: 0,
       transition: {
-        delay: i * 0.1,
-        duration: 0.3,
+        delay: i * 0.05,
+        duration: 0.2,
         ease: "easeOut",
       },
     }),
@@ -607,29 +607,30 @@ export default function Header() {
 
   return (
     <>
-      {/* Contact Us button */}
+      {/* Contact Us button - Optimizado para móvil */}
       <motion.button
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         onClick={() => setShowContact(true)}
-        className={`fixed top-4 right-4 sm:top-6 sm:right-6 z-50 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-3 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base ${
+        className={`fixed top-3 right-3 sm:top-4 sm:right-4 lg:top-6 lg:right-6 z-50 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg lg:rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-xs sm:text-sm lg:text-base ${
           scrolled ? "shadow-xl" : ""
         }`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <span className="hidden sm:inline">Contact Us</span>
-        <span className="sm:hidden">Contact</span>
+        <span className="hidden sm:inline lg:hidden">Contact</span>
+        <span className="sm:hidden lg:inline">Contact</span>
+        <span className="hidden lg:inline"> Us</span>
       </motion.button>
 
-      {/* Menu button */}
+      {/* Menu button - Optimizado para móvil */}
       <motion.button
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
         onClick={handleMenuButton}
-        className={`fixed top-4 left-4 sm:top-6 sm:left-6 z-50 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg sm:rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+        className={`fixed top-3 left-3 sm:top-4 sm:left-4 lg:top-6 lg:left-6 z-50 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg lg:rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
           scrolled ? "shadow-xl" : ""
         }`}
         aria-label="Open main menu"
@@ -637,22 +638,22 @@ export default function Header() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <Bars3Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+        <Bars3Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
       </motion.button>
 
-      {/* Preview Overlay - Only show on desktop */}
+      {/* Preview Overlay - Solo desktop (lg+) */}
       <AnimatePresence>
         {hoveredPreview && isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-60 flex items-center justify-center pointer-events-none p-4 hidden md:flex"
+            className="fixed inset-0 z-60 lg:flex items-center justify-center pointer-events-none p-4 hidden"
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={previewVariants}
           >
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden w-full max-w-sm sm:max-w-lg lg:max-w-xl border border-gray-200">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-lg xl:max-w-xl border border-gray-200">
               {/* Preview Image */}
-              <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
+              <div className="relative h-64 xl:h-80 overflow-hidden">
                 <Image
                   src={
                     hoveredPreview.preview?.image || "/images/placeholder.webp"
@@ -662,42 +663,33 @@ export default function Header() {
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-xl xl:text-2xl font-bold text-white mb-2">
                     {hoveredPreview.name}
                   </h3>
                 </div>
               </div>
 
               {/* Preview Content */}
-              <div className="p-4 sm:p-6">
-                <p className="text-gray-600 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
+              <div className="p-6">
+                <p className="text-gray-600 mb-4 leading-relaxed">
                   {hoveredPreview.preview?.description}
                 </p>
 
                 {/* Features */}
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-gray-900 text-xs sm:text-sm uppercase tracking-wide">
+                  <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
                     Key Features:
                   </h4>
-                  <div className="flex flex-wrap gap-1 sm:gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {hoveredPreview.preview?.features.map((feature, idx) => (
                       <span
                         key={idx}
-                        className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 sm:px-3 sm:py-1 rounded-full font-medium"
+                        className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
                       >
                         {feature}
                       </span>
                     ))}
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <div className="mt-4 sm:mt-6">
-                  <div className="text-center">
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      Click to explore {hoveredPreview.name.toLowerCase()}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -706,7 +698,7 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* Menu overlay */}
+      {/* Menu overlay - Optimizado para móvil */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -715,21 +707,21 @@ export default function Header() {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed top-0 left-0 bottom-0 w-72 sm:w-80 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-2xl overflow-y-auto z-50 border-r border-gray-200/50"
+              className="fixed top-0 left-0 bottom-0 w-full sm:w-80 lg:w-96 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-2xl overflow-y-auto z-50 border-r border-gray-200/50"
             >
-              {/* Header del menú */}
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 sm:p-6 text-white">
+              {/* Header del menú - Mejorado para móvil */}
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 lg:p-6 text-white">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="flex items-center space-x-2 lg:space-x-3">
                     <Image
                       src="/logo/logo-no-bg.webp"
                       alt="Quality Blinds Australia Logo"
-                      width={32}
-                      height={32}
-                      className="object-contain sm:w-10 sm:h-10"
+                      width={28}
+                      height={28}
+                      className="object-contain sm:w-8 sm:h-8 lg:w-10 lg:h-10"
                     />
                     <div>
-                      <h2 className="text-base sm:text-lg font-bold">
+                      <h2 className="text-sm sm:text-base lg:text-lg font-bold">
                         Quality Blinds
                       </h2>
                       <p className="text-blue-100 text-xs">Australia</p>
@@ -737,17 +729,17 @@ export default function Header() {
                   </div>
                   <motion.button
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
+                    className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <XMarkIcon className="h-5 w-5 lg:h-6 lg:w-6" />
                   </motion.button>
                 </div>
               </div>
 
-              {/* Menu items */}
-              <div className="p-4 sm:p-6 space-y-1 sm:space-y-2">
+              {/* Menu items - Mejorado para móvil */}
+              <div className="p-3 sm:p-4 lg:p-6 space-y-1">
                 {menuItems.map((item, index) => (
                   <motion.div
                     key={item.name}
@@ -762,13 +754,13 @@ export default function Header() {
                           onClick={() => toggleExpanded(item.name)}
                           onMouseEnter={() => handleItemHover(item)}
                           onMouseLeave={handleHoverEnd}
-                          className="w-full flex items-center justify-between p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group"
+                          className="w-full flex items-center justify-between p-3 lg:p-3 rounded-lg lg:rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group touch-manipulation"
                         >
-                          <div className="flex items-center space-x-2 sm:space-x-3">
+                          <div className="flex items-center space-x-3">
                             {item.icon && (
-                              <item.icon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 group-hover:text-blue-700" />
+                              <item.icon className="h-5 w-5 lg:h-5 lg:w-5 text-blue-600 group-hover:text-blue-700 flex-shrink-0" />
                             )}
-                            <span className="font-semibold text-sm sm:text-base text-gray-800 group-hover:text-blue-800">
+                            <span className="font-semibold text-sm sm:text-base text-gray-800 group-hover:text-blue-800 text-left">
                               {item.name}
                             </span>
                           </div>
@@ -778,7 +770,7 @@ export default function Header() {
                             }}
                             transition={{ duration: 0.2 }}
                           >
-                            <ChevronRightIcon className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                            <ChevronRightIcon className="h-4 w-4 text-gray-500 flex-shrink-0" />
                           </motion.div>
                         </button>
 
@@ -789,13 +781,13 @@ export default function Header() {
                               initial="closed"
                               animate="open"
                               exit="closed"
-                              className="ml-6 sm:ml-8 space-y-1 border-l-2 border-blue-200 pl-3 sm:pl-4"
+                              className="ml-4 sm:ml-6 lg:ml-8 space-y-1 border-l-2 border-blue-200 pl-3 lg:pl-4"
                             >
                               {item.subItems.map((subItem) => (
                                 <div key={subItem.name}>
                                   <LoadingLink
                                     href={subItem.href}
-                                    className="block p-1.5 sm:p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                                    className="block p-2.5 lg:p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 touch-manipulation"
                                     onClick={() => setIsMenuOpen(false)}
                                     onMouseEnter={() =>
                                       handleSubItemHover(subItem)
@@ -805,12 +797,12 @@ export default function Header() {
                                     {subItem.name}
                                   </LoadingLink>
                                   {subItem.subItems && (
-                                    <div className="ml-3 sm:ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2 sm:pl-3">
+                                    <div className="ml-3 lg:ml-4 mt-1 space-y-1 border-l border-gray-200 pl-2 lg:pl-3">
                                       {subItem.subItems.map((subSubItem) => (
                                         <LoadingLink
                                           key={subSubItem.name}
                                           href={subSubItem.href}
-                                          className="block p-1 text-xs sm:text-sm text-gray-500 hover:text-blue-500 hover:bg-blue-25 rounded transition-all duration-200"
+                                          className="block p-2 text-xs sm:text-sm text-gray-500 hover:text-blue-500 hover:bg-blue-25 rounded transition-all duration-200 touch-manipulation"
                                           onClick={() => setIsMenuOpen(false)}
                                           onMouseEnter={() =>
                                             handleSubItemHover(subSubItem)
@@ -831,13 +823,13 @@ export default function Header() {
                     ) : (
                       <LoadingLink
                         href={item.href}
-                        className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group"
+                        className="flex items-center space-x-3 p-3 lg:p-3 rounded-lg lg:rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-200 group touch-manipulation"
                         onClick={() => setIsMenuOpen(false)}
                         onMouseEnter={() => handleItemHover(item)}
                         onMouseLeave={handleHoverEnd}
                       >
                         {item.icon && (
-                          <item.icon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 group-hover:text-blue-700" />
+                          <item.icon className="h-5 w-5 lg:h-5 lg:w-5 text-blue-600 group-hover:text-blue-700 flex-shrink-0" />
                         )}
                         <span className="font-semibold text-sm sm:text-base text-gray-800 group-hover:text-blue-800">
                           {item.name}
@@ -848,15 +840,15 @@ export default function Header() {
                 ))}
               </div>
 
-              {/* Footer del menú */}
-              <div className="p-4 sm:p-6 border-t border-gray-200/50 bg-gradient-to-r from-gray-50 to-blue-50">
+              {/* Footer del menú - Mejorado para móvil */}
+              <div className="p-4 lg:p-6 border-t border-gray-200/50 bg-gradient-to-r from-gray-50 to-blue-50">
                 <div className="text-center">
                   <p className="text-xs sm:text-sm text-gray-600 mb-2">
                     Need help?
                   </p>
                   <a
                     href="tel:+61293405050"
-                    className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-xs sm:text-sm font-medium"
+                    className="inline-flex items-center px-4 py-2.5 lg:px-4 lg:py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-xs sm:text-sm font-medium touch-manipulation"
                   >
                     Call us: +61 (02) 9340 5050
                   </a>
@@ -875,25 +867,25 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* Contact Us Modal */}
+      {/* Contact Us Modal - Optimizado para móvil */}
       <AnimatePresence>
         {showContact && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-md sm:max-w-lg lg:max-w-xl relative"
+              className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl relative max-h-[90vh] overflow-y-auto"
             >
               <motion.button
                 onClick={() => setShowContact(false)}
-                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-900 hover:text-blue-700 z-10 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors"
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-900 hover:text-blue-700 z-10 w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors touch-manipulation"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >

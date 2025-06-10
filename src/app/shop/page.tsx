@@ -12,7 +12,6 @@ import {
   FunnelIcon,
   EyeIcon,
   HeartIcon,
-  ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 import {
   StarIcon as StarIconSolid,
@@ -142,7 +141,6 @@ const Shop: React.FC = () => {
   const [favoriteProducts, setFavoriteProducts] = useState<Set<string>>(
     new Set()
   );
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
 
   // Refs for animations
   const heroRef = useRef(null);
@@ -223,32 +221,35 @@ const Shop: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
+      {/* Hero Section - Optimizado para móvil */}
       <motion.section
         ref={heroRef}
-        className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white pt-20 pb-16"
+        className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white pt-16 sm:pt-20 pb-12 sm:pb-16"
         initial="hidden"
         animate={isHeroInView ? "visible" : "hidden"}
       >
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0 bg-[url('/images/blinds-pattern.png')] opacity-10"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.div variants={fadeInUp}>
-              <nav className="flex justify-center mb-8" aria-label="Breadcrumb">
+              <nav
+                className="flex justify-center mb-6 sm:mb-8"
+                aria-label="Breadcrumb"
+              >
                 <ol className="flex items-center space-x-2 text-blue-200">
                   <li>
                     <Link
                       href="/"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-white transition-colors text-sm sm:text-base"
                     >
                       Home
                     </Link>
                   </li>
                   <li className="flex items-center">
                     <svg
-                      className="w-4 h-4 mx-2"
+                      className="w-3 h-3 sm:w-4 sm:h-4 mx-2"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -258,7 +259,9 @@ const Shop: React.FC = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-white font-medium">Shop</span>
+                    <span className="text-white font-medium text-sm sm:text-base">
+                      Shop
+                    </span>
                   </li>
                 </ol>
               </nav>
@@ -266,22 +269,22 @@ const Shop: React.FC = () => {
 
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl md:text-6xl font-bold mb-6"
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
             >
               Our Store
             </motion.h1>
             <motion.p
               variants={fadeInUp}
               transition={{ delay: 0.2 }}
-              className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8"
+              className="text-base sm:text-lg lg:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4"
             >
               Discover our extensive range of blinds, curtains, awnings and
               more. Premium quality to transform your home.
             </motion.p>
 
-            {/* Quick Stats */}
+            {/* Quick Stats - Optimizado para móvil */}
             <motion.div
-              className="flex flex-wrap justify-center gap-8 mt-12"
+              className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-8 mt-8 sm:mt-12"
               variants={staggerContainer}
             >
               {[
@@ -296,10 +299,12 @@ const Shop: React.FC = () => {
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
                 >
-                  <div className="text-3xl font-bold text-white">
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
                     {stat.number}
                   </div>
-                  <div className="text-blue-200 text-sm">{stat.label}</div>
+                  <div className="text-blue-200 text-xs sm:text-sm">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -307,60 +312,96 @@ const Shop: React.FC = () => {
         </div>
       </motion.section>
 
-      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto">
-        {/* Enhanced Sidebar */}
+      {/* Main Content - Layout responsivo mejorado */}
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        {/* Enhanced Sidebar - Optimizado para móvil */}
         <motion.aside
           ref={filtersRef}
-          className="w-full lg:w-80 bg-white shadow-lg lg:sticky lg:top-20 lg:h-fit"
+          className="w-full lg:w-80 xl:w-96 bg-white shadow-lg rounded-lg lg:sticky lg:top-20 lg:h-fit order-2 lg:order-1"
           initial="hidden"
           animate={isFiltersInView ? "visible" : "hidden"}
           variants={fadeInLeft}
         >
-          <div className="p-6">
-            {/* Search Bar */}
-            <motion.div className="mb-8" variants={fadeInUp}>
+          <div className="p-4 sm:p-6">
+            {/* Search Bar - Mejorado para móvil */}
+            <motion.div className="mb-6 sm:mb-8" variants={fadeInUp}>
               <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
                 />
               </div>
             </motion.div>
 
-            {/* Filter Header */}
+            {/* View Mode Toggle - Solo móvil/tablet */}
             <motion.div
-              className="flex items-center justify-between mb-6"
+              className="mb-6 sm:mb-8 lg:hidden flex items-center justify-between"
               variants={fadeInUp}
             >
-              <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
-                <FunnelIcon className="h-6 w-6 mr-2 text-blue-600" />
+              <h3 className="text-lg font-semibold text-gray-800">View Mode</h3>
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-md transition-all ${
+                    viewMode === "grid"
+                      ? "bg-white shadow text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <Squares2X2Icon className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-md transition-all ${
+                    viewMode === "list"
+                      ? "bg-white shadow text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <ListBulletIcon className="h-4 w-4" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Filter Header - Mejorado */}
+            <motion.div
+              className="flex items-center justify-between mb-4 sm:mb-6"
+              variants={fadeInUp}
+            >
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 flex items-center">
+                <FunnelIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600" />
                 Categories
               </h2>
               <button
-                className="lg:hidden flex items-center text-gray-600 hover:text-gray-800 focus:outline-none"
+                className="lg:hidden flex items-center text-gray-600 hover:text-gray-800 focus:outline-none text-sm touch-manipulation"
                 onClick={() =>
                   setExpandedCategory(expandedCategory ? null : "all")
                 }
               >
-                <AdjustmentsHorizontalIcon className="h-5 w-5 mr-1" />
+                <AdjustmentsHorizontalIcon className="h-4 w-4 mr-1" />
                 {expandedCategory ? "Hide" : "Show"}
               </button>
             </motion.div>
 
-            {/* Categories */}
-            <motion.div variants={staggerContainer}>
+            {/* Categories - Mejorado para móvil */}
+            <motion.div
+              variants={staggerContainer}
+              className={`space-y-3 sm:space-y-4 ${
+                expandedCategory ? "block" : "hidden lg:block"
+              }`}
+            >
               {categories.map((cat) => (
                 <motion.div
                   key={cat.name}
-                  className="mb-4 border-b border-gray-100 pb-4"
+                  className="pb-3 sm:pb-4 border-b border-gray-100 last:border-b-0"
                   variants={fadeInUp}
                 >
                   <button
-                    className="w-full flex justify-between items-center text-left text-lg font-medium text-gray-700 hover:text-blue-600 focus:outline-none group transition-colors"
+                    className="w-full flex justify-between items-center text-left text-base sm:text-lg font-medium text-gray-700 hover:text-blue-600 focus:outline-none group transition-colors touch-manipulation"
                     onClick={() =>
                       setExpandedCategory(
                         expandedCategory === cat.name ? null : cat.name
@@ -371,7 +412,7 @@ const Shop: React.FC = () => {
                       {cat.name}
                     </span>
                     <motion.svg
-                      className="w-5 h-5 text-gray-400 group-hover:text-blue-600"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -398,28 +439,25 @@ const Shop: React.FC = () => {
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <ul className="mt-3 ml-4 space-y-3">
-                      {cat.subcategories.map((sub) => (
-                        <motion.li
-                          key={sub}
-                          whileHover={{ x: 5 }}
-                          transition={{ duration: 0.2 }}
+                    <div className="pt-3 space-y-2">
+                      {cat.subcategories.map((subcat) => (
+                        <button
+                          key={subcat}
+                          onClick={() =>
+                            setActiveFilter(
+                              activeFilter === subcat ? "" : subcat
+                            )
+                          }
+                          className={`block w-full text-left px-3 py-2 rounded-md text-sm transition-colors touch-manipulation ${
+                            activeFilter === subcat
+                              ? "bg-blue-50 text-blue-700 font-medium"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                          }`}
                         >
-                          <button
-                            className={`block text-gray-600 hover:text-blue-600 focus:outline-none transition-colors ${
-                              activeFilter === sub
-                                ? "font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-md"
-                                : ""
-                            }`}
-                            onClick={() =>
-                              setActiveFilter(activeFilter === sub ? "" : sub)
-                            }
-                          >
-                            {sub}
-                          </button>
-                        </motion.li>
+                          {subcat}
+                        </button>
                       ))}
-                    </ul>
+                    </div>
                   </motion.div>
                 </motion.div>
               ))}
@@ -428,267 +466,247 @@ const Shop: React.FC = () => {
             {/* Clear Filters */}
             {(activeFilter || searchQuery) && (
               <motion.button
-                className="w-full mt-6 bg-red-50 text-red-600 hover:bg-red-100 font-medium py-3 px-4 rounded-lg transition-colors"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full mt-4 sm:mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium touch-manipulation"
                 onClick={() => {
                   setActiveFilter("");
                   setSearchQuery("");
                 }}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                Clear Filters
+                Clear All Filters
               </motion.button>
             )}
           </div>
         </motion.aside>
 
-        {/* Enhanced Main Content */}
-        <main className="flex-1 p-6">
-          {/* Header with view controls */}
-          <motion.div
-            className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {activeFilter || "All Products"}
-              </h1>
-              <p className="text-gray-600">
-                {filteredProducts.length} product
-                {filteredProducts.length !== 1 ? "s" : ""} found
-                {searchQuery && ` for "${searchQuery}"`}
-              </p>
-            </div>
+        {/* Products Grid - Optimizado para móvil */}
+        <motion.main
+          ref={productsRef}
+          className="flex-1 order-1 lg:order-2"
+          initial="hidden"
+          animate={isProductsInView ? "visible" : "hidden"}
+          variants={fadeInUp}
+        >
+          {/* Results Header - Mejorado */}
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                  {filteredProducts.length} Products Found
+                </h2>
+                {(activeFilter || searchQuery) && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    {activeFilter && `Filtered by: ${activeFilter}`}
+                    {activeFilter && searchQuery && " • "}
+                    {searchQuery && `Search: "${searchQuery}"`}
+                  </p>
+                )}
+              </div>
 
-            {/* View Mode Toggle */}
-            <div className="flex items-center bg-white rounded-lg border shadow-sm">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`p-3 rounded-l-lg transition-colors ${
-                  viewMode === "grid"
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-                title="Grid view"
-              >
-                <Squares2X2Icon className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-3 rounded-r-lg transition-colors ${
-                  viewMode === "list"
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-                title="List view"
-              >
-                <ListBulletIcon className="h-5 w-5" />
-              </button>
-            </div>
-          </motion.div>
-
-          {/* Products Grid */}
-          <motion.div
-            ref={productsRef}
-            className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                : "grid-cols-1"
-            }`}
-            initial="hidden"
-            animate={isProductsInView ? "visible" : "hidden"}
-            variants={staggerContainer}
-          >
-            {filteredProducts.map((product, index) => (
-              <motion.article
-                key={product.id}
-                className={`group relative bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden ${
-                  viewMode === "list" ? "flex items-center" : ""
-                }`}
-                variants={productCardVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                onHoverStart={() => setHoveredProduct(product.id)}
-                onHoverEnd={() => setHoveredProduct(null)}
-              >
-                <Link
-                  href={getProductRoute(product.id)}
-                  className={`block ${
-                    viewMode === "list" ? "flex w-full" : ""
+              {/* View Toggle - Solo desktop */}
+              <div className="hidden lg:flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-md transition-all ${
+                    viewMode === "grid"
+                      ? "bg-white shadow text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  {/* Product Image */}
-                  <div
-                    className={`relative overflow-hidden ${
-                      viewMode === "list"
-                        ? "w-48 h-32 flex-shrink-0"
-                        : "w-full h-64"
-                    }`}
-                  >
-                    <Image
-                      src={
-                        product.images[0]?.src ||
-                        "/images/aluminium-shutter-1.webp"
-                      }
-                      alt={`${product.name} - Premium window treatment by Quality Blinds Australia`}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      loading={index < 8 ? "eager" : "lazy"}
-                    />
+                  <Squares2X2Icon className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-md transition-all ${
+                    viewMode === "list"
+                      ? "bg-white shadow text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <ListBulletIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
 
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Products Grid/List - Layout responsivo */}
+          {filteredProducts.length > 0 ? (
+            <motion.div
+              className={`gap-4 sm:gap-6 ${
+                viewMode === "grid"
+                  ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+                  : "flex flex-col space-y-4"
+              }`}
+              variants={staggerContainer}
+            >
+              {filteredProducts.map((product) => (
+                <motion.article
+                  key={product.id}
+                  variants={productCardVariants}
+                  whileHover={{ y: -4 }}
+                  className={`bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 group ${
+                    viewMode === "list"
+                      ? "flex flex-col sm:flex-row overflow-hidden"
+                      : ""
+                  }`}
+                >
+                  <Link href={getProductRoute(product.id)} className="block">
+                    <div
+                      className={`relative overflow-hidden ${
+                        viewMode === "list"
+                          ? "sm:w-48 sm:h-48 aspect-square sm:aspect-auto"
+                          : "aspect-[4/3]"
+                      } ${
+                        viewMode === "grid"
+                          ? "rounded-t-lg"
+                          : "sm:rounded-l-lg sm:rounded-t-none rounded-t-lg"
+                      }`}
+                    >
+                      <Image
+                        src={
+                          product.images[0]?.src || "/images/placeholder.webp"
+                        }
+                        alt={product.images[0]?.alt || product.name}
+                        fill
+                        sizes={
+                          viewMode === "list"
+                            ? "(max-width: 640px) 100vw, 192px"
+                            : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        }
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
 
-                    {/* Quick Actions */}
-                    <div className="absolute top-4 right-4 flex flex-col gap-2">
-                      <motion.button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleFavorite(product.id);
-                        }}
-                        className="p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-colors"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        title="Add to favourites"
-                      >
-                        {favoriteProducts.has(product.id) ? (
-                          <HeartIconSolid className="h-5 w-5 text-red-500" />
-                        ) : (
-                          <HeartIcon className="h-5 w-5 text-gray-600" />
-                        )}
-                      </motion.button>
-
-                      <motion.button
-                        className="p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-colors opacity-0 group-hover:opacity-100"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        title="Quick view"
-                      >
-                        <EyeIcon className="h-5 w-5 text-gray-600" />
-                      </motion.button>
+                      {/* Overlay Actions */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleFavorite(product.id);
+                            }}
+                            className="p-2 bg-white/90 rounded-full hover:bg-white transition-colors touch-manipulation"
+                            aria-label={`${
+                              favoriteProducts.has(product.id)
+                                ? "Remove from"
+                                : "Add to"
+                            } favorites`}
+                          >
+                            {favoriteProducts.has(product.id) ? (
+                              <HeartIconSolid className="h-4 w-4 text-red-500" />
+                            ) : (
+                              <HeartIcon className="h-4 w-4 text-gray-600" />
+                            )}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                            }}
+                            className="p-2 bg-white/90 rounded-full hover:bg-white transition-colors touch-manipulation"
+                            aria-label="Quick view"
+                          >
+                            <EyeIcon className="h-4 w-4 text-gray-600" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Quick View Button */}
-                    {hoveredProduct === product.id && viewMode === "grid" && (
-                      <motion.div
-                        className="absolute bottom-4 left-4 right-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                          <ShoppingBagIcon className="h-4 w-4" />
-                          Request Quote
-                        </button>
-                      </motion.div>
-                    )}
-                  </div>
+                    <div
+                      className={`p-4 sm:p-6 ${
+                        viewMode === "list" ? "flex-1" : ""
+                      }`}
+                    >
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
+                        {product.shortDescription}
+                      </p>
 
-                  {/* Product Info */}
-                  <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
-                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-                      {product.name}
-                    </h2>
-
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {product.shortDescription}
-                    </p>
-
-                    {/* Rating */}
-                    {product.rating > 0 && (
-                      <div className="flex items-center mb-4">
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <StarIconSolid
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < Math.floor(product.rating)
-                                  ? "text-yellow-400"
-                                  : "text-gray-300"
-                              }`}
-                            />
-                          ))}
+                      {/* Features */}
+                      {product.features && product.features.length > 0 && (
+                        <div className="mb-3 sm:mb-4">
+                          <div className="flex flex-wrap gap-1 sm:gap-2">
+                            {product.features
+                              .slice(0, 3)
+                              .map((feature, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full font-medium"
+                                >
+                                  {feature}
+                                </span>
+                              ))}
+                          </div>
                         </div>
-                        <span className="text-sm text-gray-500 ml-2">
-                          ({product.rating}) • {product.reviewCount || 0}{" "}
-                          reviews
-                        </span>
-                      </div>
-                    )}
+                      )}
 
-                    {/* Features Preview */}
-                    {product.features && product.features.length > 0 && (
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-1">
-                          {product.features.slice(0, 2).map((feature, idx) => (
-                            <span
-                              key={idx}
-                              className="inline-block bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full"
-                            >
-                              {feature}
-                            </span>
-                          ))}
-                          {product.features.length > 2 && (
-                            <span className="inline-block text-gray-500 text-xs px-2 py-1">
-                              +{product.features.length - 2} more
+                      {/* Rating and Stock */}
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-1">
+                          <StarIconSolid className="h-4 w-4 text-yellow-400" />
+                          <span className="font-medium">
+                            {product.rating || "New"}
+                          </span>
+                          {product.reviewCount > 0 && (
+                            <span className="text-gray-500">
+                              ({product.reviewCount})
                             </span>
                           )}
                         </div>
+                        <span className="text-green-600 font-medium">
+                          In Stock
+                        </span>
                       </div>
-                    )}
-
-                    {viewMode === "list" && (
-                      <motion.button
-                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <ShoppingBagIcon className="h-4 w-4" />
-                        View Details
-                      </motion.button>
-                    )}
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
-          </motion.div>
-
-          {/* No Products Found */}
-          {filteredProducts.length === 0 && (
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </motion.div>
+          ) : (
             <motion.div
-              className="text-center py-16"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12 sm:py-16"
             >
               <div className="max-w-md mx-auto">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                  <MagnifyingGlassIcon className="w-12 h-12 text-gray-400" />
+                <div className="mb-4">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-3-3v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
                   No products found
                 </h3>
-                <p className="text-gray-600 mb-8">
-                  No products match your selected filters. Try adjusting your
-                  search criteria.
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or filter criteria.
                 </p>
-                <motion.button
+                <button
                   onClick={() => {
                     setActiveFilter("");
                     setSearchQuery("");
                   }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium touch-manipulation"
                 >
-                  Clear Filters
-                </motion.button>
+                  Clear all filters
+                </button>
               </div>
             </motion.div>
           )}
-        </main>
+        </motion.main>
       </div>
     </div>
   );

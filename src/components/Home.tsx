@@ -234,217 +234,160 @@ const Home: React.FC = () => {
     threshold: 0.1,
   });
 
-  // Estados separados para cada carrusel
+  // Estados simplificados para carruseles infinitos
   const [currentCollection, setCurrentCollection] = React.useState(0);
   const [currentProject, setCurrentProject] = React.useState(0);
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
-  const [currentBrand, setCurrentBrand] = React.useState(0); // Estado corregido para brands
+  const [currentBrand, setCurrentBrand] = React.useState(0);
 
-  // Referencias para transiciones sin animación (para loop infinito)
+  // Referencias para los carruseles
   const collectionsRef = React.useRef<HTMLDivElement>(null);
   const projectsRef = React.useRef<HTMLDivElement>(null);
   const brandsRef = React.useRef<HTMLDivElement>(null);
 
-  // Crear arrays infinitos duplicando elementos
+  // Crear arrays infinitos duplicando elementos para efecto continuo
   const infiniteCollections = [
-    ...featuredCollections.slice(-3), // Últimos 3 al principio
     ...featuredCollections,
-    ...featuredCollections.slice(0, 3), // Primeros 3 al final
+    ...featuredCollections,
+    ...featuredCollections,
   ];
-
   const infiniteProjects = [
-    ...projectCategories.slice(-3),
     ...projectCategories,
-    ...projectCategories.slice(0, 3),
+    ...projectCategories,
+    ...projectCategories,
   ];
+  const infiniteBrands = [...brandPartners, ...brandPartners, ...brandPartners];
 
-  const infiniteBrands = [
-    ...brandPartners.slice(-2), // Solo 2 porque hay 5 elementos
-    ...brandPartners,
-    ...brandPartners.slice(0, 2),
-  ];
-
-  // Auto-play optimizado para colecciones
+  // Auto-play para colecciones - movimiento infinito suave
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentCollection((prev) => {
-        const next = prev + 1;
-        if (next > featuredCollections.length) {
-          // Salto invisible al inicio con timing optimizado
-          setTimeout(() => {
-            if (collectionsRef.current) {
-              collectionsRef.current.style.transition = "none";
-              collectionsRef.current.style.transform = `translateX(-${
-                100 / 3
-              }%)`;
-              setTimeout(() => {
-                if (collectionsRef.current) {
-                  collectionsRef.current.style.transition =
-                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-                }
-              }, 50);
-            }
-          }, 600); // Aumentado para que la transición termine
-          return 1;
-        }
-        return next;
-      });
-    }, 5000); // Aumentado a 5 segundos para mejor UX
+      setCurrentCollection((prev) => prev + 1);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play optimizado para proyectos
+  // Auto-play para proyectos - movimiento infinito suave
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentProject((prev) => {
-        const next = prev + 1;
-        if (next > projectCategories.length) {
-          setTimeout(() => {
-            if (projectsRef.current) {
-              projectsRef.current.style.transition = "none";
-              projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
-              setTimeout(() => {
-                if (projectsRef.current) {
-                  projectsRef.current.style.transition =
-                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-                }
-              }, 50);
-            }
-          }, 600);
-          return 1;
-        }
-        return next;
-      });
-    }, 5500); // Timing diferente para evitar sincronización
+      setCurrentProject((prev) => prev + 1);
+    }, 4500);
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play para testimonios
+  // Auto-play para testimonios - sin cambios, ya funciona bien
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) =>
         prev === customerTestimonials.length - 1 ? 0 : prev + 1
       );
-    }, 7000); // Más tiempo para leer testimonios
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play CORREGIDO para marcas
+  // Auto-play para brands - movimiento infinito suave
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBrand((prev) => {
-        const next = prev + 1;
-        if (next > brandPartners.length) {
-          setTimeout(() => {
-            if (brandsRef.current) {
-              brandsRef.current.style.transition = "none";
-              brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
-              setTimeout(() => {
-                if (brandsRef.current) {
-                  brandsRef.current.style.transition =
-                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-                }
-              }, 50);
-            }
-          }, 600);
-          return 1;
-        }
-        return next;
-      });
-    }, 4000); // Timing diferente para brands
+      setCurrentBrand((prev) => prev + 1);
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
-  // Funciones de navegación manual optimizadas
+  // Efecto para resetear posición cuando se completa un ciclo (sin animación visible)
+  React.useEffect(() => {
+    if (currentCollection >= featuredCollections.length * 2) {
+      setTimeout(() => {
+        if (collectionsRef.current) {
+          collectionsRef.current.style.transition = "none";
+          setCurrentCollection(featuredCollections.length);
+          setTimeout(() => {
+            if (collectionsRef.current) {
+              collectionsRef.current.style.transition =
+                "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+      }, 50);
+    }
+  }, [currentCollection]);
+
+  React.useEffect(() => {
+    if (currentProject >= projectCategories.length * 2) {
+      setTimeout(() => {
+        if (projectsRef.current) {
+          projectsRef.current.style.transition = "none";
+          setCurrentProject(projectCategories.length);
+          setTimeout(() => {
+            if (projectsRef.current) {
+              projectsRef.current.style.transition =
+                "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+      }, 50);
+    }
+  }, [currentProject]);
+
+  React.useEffect(() => {
+    if (currentBrand >= brandPartners.length * 2) {
+      setTimeout(() => {
+        if (brandsRef.current) {
+          brandsRef.current.style.transition = "none";
+          setCurrentBrand(brandPartners.length);
+          setTimeout(() => {
+            if (brandsRef.current) {
+              brandsRef.current.style.transition = "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+      }, 50);
+    }
+  }, [currentBrand]);
+
+  // Funciones de navegación manual mejoradas
   const nextCollection = () => {
-    setCurrentCollection((prev) => {
-      const next = prev + 1;
-      if (next > featuredCollections.length) {
-        setTimeout(() => {
-          if (collectionsRef.current) {
-            collectionsRef.current.style.transition = "none";
-            collectionsRef.current.style.transform = `translateX(-${100 / 3}%)`;
-            setTimeout(() => {
-              if (collectionsRef.current) {
-                collectionsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return 1;
-      }
-      return next;
-    });
+    setCurrentCollection((prev) => prev + 1);
   };
 
   const prevCollection = () => {
     setCurrentCollection((prev) => {
-      const next = prev - 1;
-      if (next < 0) {
-        setTimeout(() => {
-          if (collectionsRef.current) {
-            collectionsRef.current.style.transition = "none";
-            collectionsRef.current.style.transform = `translateX(-${
-              featuredCollections.length * (100 / 3)
-            }%)`;
-            setTimeout(() => {
-              if (collectionsRef.current) {
-                collectionsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return featuredCollections.length;
+      if (prev <= featuredCollections.length) {
+        // Saltar al final sin animación
+        if (collectionsRef.current) {
+          collectionsRef.current.style.transition = "none";
+          setTimeout(() => {
+            setCurrentCollection(featuredCollections.length * 2 - 1);
+            if (collectionsRef.current) {
+              collectionsRef.current.style.transition =
+                "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+        return prev;
       }
-      return next;
+      return prev - 1;
     });
   };
 
   const nextProject = () => {
-    setCurrentProject((prev) => {
-      const next = prev + 1;
-      if (next > projectCategories.length) {
-        setTimeout(() => {
-          if (projectsRef.current) {
-            projectsRef.current.style.transition = "none";
-            projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
-            setTimeout(() => {
-              if (projectsRef.current) {
-                projectsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return 1;
-      }
-      return next;
-    });
+    setCurrentProject((prev) => prev + 1);
   };
 
   const prevProject = () => {
     setCurrentProject((prev) => {
-      const next = prev - 1;
-      if (next < 0) {
-        setTimeout(() => {
-          if (projectsRef.current) {
-            projectsRef.current.style.transition = "none";
-            projectsRef.current.style.transform = `translateX(-${
-              projectCategories.length * (100 / 3)
-            }%)`;
-            setTimeout(() => {
-              if (projectsRef.current) {
-                projectsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return projectCategories.length;
+      if (prev <= projectCategories.length) {
+        if (projectsRef.current) {
+          projectsRef.current.style.transition = "none";
+          setTimeout(() => {
+            setCurrentProject(projectCategories.length * 2 - 1);
+            if (projectsRef.current) {
+              projectsRef.current.style.transition =
+                "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+        return prev;
       }
-      return next;
+      return prev - 1;
     });
   };
 
@@ -460,50 +403,25 @@ const Home: React.FC = () => {
     );
   };
 
-  // Funciones CORREGIDAS para brands
   const nextBrand = () => {
-    setCurrentBrand((prev) => {
-      const next = prev + 1;
-      if (next > brandPartners.length) {
-        setTimeout(() => {
-          if (brandsRef.current) {
-            brandsRef.current.style.transition = "none";
-            brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
-            setTimeout(() => {
-              if (brandsRef.current) {
-                brandsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return 1;
-      }
-      return next;
-    });
+    setCurrentBrand((prev) => prev + 1);
   };
 
   const prevBrand = () => {
     setCurrentBrand((prev) => {
-      const next = prev - 1;
-      if (next < 0) {
-        setTimeout(() => {
-          if (brandsRef.current) {
-            brandsRef.current.style.transition = "none";
-            brandsRef.current.style.transform = `translateX(-${
-              brandPartners.length * (100 / 3)
-            }%)`;
-            setTimeout(() => {
-              if (brandsRef.current) {
-                brandsRef.current.style.transition =
-                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
-              }
-            }, 50);
-          }
-        }, 600);
-        return brandPartners.length;
+      if (prev <= brandPartners.length) {
+        if (brandsRef.current) {
+          brandsRef.current.style.transition = "none";
+          setTimeout(() => {
+            setCurrentBrand(brandPartners.length * 2 - 1);
+            if (brandsRef.current) {
+              brandsRef.current.style.transition = "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+        return prev;
       }
-      return next;
+      return prev - 1;
     });
   };
 
@@ -523,7 +441,7 @@ const Home: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={heroInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 1 }}
-        className="relative h-[80vh] bg-gray-900 overflow-hidden"
+        className="relative h-[70vh] sm:h-[75vh] lg:h-[80vh] xl:h-[85vh] bg-gray-900 overflow-hidden"
         aria-labelledby="hero-heading"
       >
         <div className="absolute inset-0">
@@ -557,8 +475,8 @@ const Home: React.FC = () => {
           Solutions
         </h1>
 
-        {/* Call-to-action button positioned at bottom */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+        {/* Call-to-action button positioned at bottom - Optimizado para móvil */}
+        <div className="absolute bottom-6 sm:bottom-8 lg:bottom-8 left-1/2 transform -translate-x-1/2 z-10 px-4">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={heroInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
@@ -566,12 +484,12 @@ const Home: React.FC = () => {
           >
             <Link
               href="/shop"
-              className="inline-flex items-center bg-blue-700/90 hover:bg-blue-800 text-white font-semibold px-8 py-3 rounded-md transition-all backdrop-blur-sm hover:backdrop-blur-md shadow-lg hover:shadow-xl"
+              className="inline-flex items-center bg-blue-700/90 hover:bg-blue-800 text-white font-semibold px-6 py-3 sm:px-8 sm:py-3 lg:px-10 lg:py-4 rounded-md lg:rounded-lg transition-all backdrop-blur-sm hover:backdrop-blur-md shadow-lg hover:shadow-xl text-sm sm:text-base lg:text-lg touch-manipulation"
               aria-label="Explore our featured window treatment collections"
             >
               <span>Explore Our Collection</span>
               <svg
-                className="ml-2 w-5 h-5"
+                className="ml-2 w-4 h-4 sm:w-5 sm:h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -590,19 +508,19 @@ const Home: React.FC = () => {
       </motion.section>
 
       <div className="bg-white w-full">
-        {/* Featured Collections */}
-        <section
+        {/* Featured Collections - Optimizado para móvil */}
+        <motion.section
           id="featured-collections"
-          className="py-16"
+          className="py-12 sm:py-16 lg:py-20"
           aria-labelledby="collections-heading"
         >
-          <div className="w-[80%] mx-auto px-4">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               id="collections-heading"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
+              className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-center mb-3 sm:mb-4 text-gray-900 leading-tight"
             >
               Featured Window Treatment Collections
             </motion.h2>
@@ -611,7 +529,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto"
+              className="text-base sm:text-lg lg:text-xl text-gray-600 text-center mb-8 sm:mb-12 lg:mb-16 max-w-4xl mx-auto leading-relaxed px-4"
             >
               Discover our comprehensive range of premium blinds, curtains,
               shutters, and awnings. Each product is custom-made to fit your
@@ -623,7 +541,7 @@ const Home: React.FC = () => {
               {/* Navigation Arrows - Hidden on mobile, show on larger screens */}
               <button
                 onClick={prevCollection}
-                className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
                 aria-label="Colección anterior"
               >
                 <svg
@@ -642,7 +560,7 @@ const Home: React.FC = () => {
               </button>
               <button
                 onClick={nextCollection}
-                className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
                 aria-label="Siguiente colección"
               >
                 <svg
@@ -660,10 +578,9 @@ const Home: React.FC = () => {
                 </svg>
               </button>
 
-              {/* Mobile: Optimized grid, Desktop: Slider */}
-              <div className="sm:hidden">
-                {/* Mobile Grid - Show 2 per row for better mobile UX */}
-                <div className="grid grid-cols-2 gap-4 px-4">
+              {/* Mobile/Tablet: Grid optimizado */}
+              <div className="lg:hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {featuredCollections.slice(0, 6).map((collection, index) => (
                     <motion.article
                       key={`mobile-${collection.name}-${index}`}
@@ -673,26 +590,27 @@ const Home: React.FC = () => {
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <div className="relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300">
+                      <div className="relative overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300">
                         <Link
                           href={collection.link}
                           aria-label={`Learn more about ${collection.name}`}
+                          className="block"
                         >
                           <div className="relative aspect-[4/3] overflow-hidden">
                             <Image
                               src={collection.image}
                               alt={`Premium ${collection.name}`}
                               fill
-                              sizes="(max-width: 640px) 50vw, 33vw"
+                              sizes="(max-width: 640px) 100vw, 50vw"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                               loading="lazy"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-3">
-                              <h3 className="text-sm font-bold text-white mb-1 leading-tight">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                              <h3 className="text-lg sm:text-xl font-bold text-white mb-2 leading-tight">
                                 {collection.name}
                               </h3>
-                              <p className="text-xs text-white/90 line-clamp-2 leading-relaxed">
+                              <p className="text-sm sm:text-base text-white/90 line-clamp-3 leading-relaxed">
                                 {collection.description}
                               </p>
                             </div>
@@ -704,16 +622,13 @@ const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* Desktop Slider */}
-              <div className="hidden sm:block overflow-hidden px-8 lg:px-12">
+              {/* Desktop Slider - Solo visible en lg+ */}
+              <div className="hidden lg:block overflow-hidden px-12 xl:px-16">
                 <motion.div
                   ref={collectionsRef}
-                  className="flex"
-                  animate={{ x: `${-(currentCollection + 3) * (100 / 3)}%` }}
-                  transition={{
-                    type: "tween",
-                    duration: 0.6,
-                    ease: [0.25, 0.1, 0.25, 1],
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{
+                    transform: `translateX(-${(currentCollection * 100) / 3}%)`,
                   }}
                 >
                   {infiniteCollections.map((collection, index) => (
@@ -735,7 +650,7 @@ const Home: React.FC = () => {
                               src={collection.image}
                               alt={`Premium ${collection.name} by Quality Blinds Australia - ${collection.description}`}
                               fill
-                              sizes="(max-width: 768px) 100vw, 33vw"
+                              sizes="33vw"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                               loading="lazy"
                             />
@@ -757,23 +672,23 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* Our Projects Section */}
+        {/* Our Projects Section - Optimizado para móvil */}
         <motion.section
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="py-16 bg-gray-50"
+          className="py-12 sm:py-16 lg:py-20 bg-gray-50"
           aria-labelledby="projects-heading"
         >
-          <div className="w-[80%] mx-auto px-4">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               id="projects-heading"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
+              className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-center mb-3 sm:mb-4 text-gray-900 leading-tight"
             >
               OUR PROJECTS
             </motion.h2>
@@ -782,7 +697,7 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto"
+              className="text-base sm:text-lg lg:text-xl text-gray-600 text-center mb-8 sm:mb-12 lg:mb-16 max-w-4xl mx-auto leading-relaxed px-4"
             >
               We proudly serve diverse sectors with tailored window treatment
               solutions, from residential builders to major institutions across
@@ -794,7 +709,7 @@ const Home: React.FC = () => {
               {/* Navigation Arrows - Hidden on mobile */}
               <button
                 onClick={prevProject}
-                className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
                 aria-label="Proyecto anterior"
               >
                 <svg
@@ -813,7 +728,7 @@ const Home: React.FC = () => {
               </button>
               <button
                 onClick={nextProject}
-                className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
                 aria-label="Siguiente proyecto"
               >
                 <svg
@@ -831,10 +746,9 @@ const Home: React.FC = () => {
                 </svg>
               </button>
 
-              {/* Mobile: Optimized grid, Desktop: Slider */}
-              <div className="sm:hidden">
-                {/* Mobile Grid - Show 2 per row for better mobile UX */}
-                <div className="grid grid-cols-2 gap-4 px-4">
+              {/* Mobile/Tablet: Grid optimizado */}
+              <div className="lg:hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {projectCategories.slice(0, 6).map((project, index) => (
                     <motion.div
                       key={`mobile-${project.name}-${index}`}
@@ -844,22 +758,22 @@ const Home: React.FC = () => {
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <div className="relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300">
+                      <div className="relative overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300">
                         <div className="relative aspect-[4/3] overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
                           <Image
                             src={project.image}
                             alt={`${project.name} - ${project.description}`}
                             fill
-                            sizes="(max-width: 640px) 50vw, 33vw"
+                            sizes="(max-width: 640px) 100vw, 50vw"
                             className="object-cover transition-transform duration-300 group-hover:scale-110"
                             loading="lazy"
                           />
-                          <div className="absolute bottom-0 left-0 right-0 p-3 text-white z-20">
-                            <h3 className="text-sm font-bold mb-1 leading-tight">
+                          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white z-20">
+                            <h3 className="text-lg sm:text-xl font-bold mb-2 leading-tight">
                               {project.name}
                             </h3>
-                            <p className="text-xs opacity-90 line-clamp-2 leading-relaxed">
+                            <p className="text-sm sm:text-base opacity-90 line-clamp-3 leading-relaxed">
                               {project.description}
                             </p>
                           </div>
@@ -871,15 +785,12 @@ const Home: React.FC = () => {
               </div>
 
               {/* Desktop Slider */}
-              <div className="hidden sm:block overflow-hidden px-8 lg:px-12">
+              <div className="hidden lg:block overflow-hidden px-12 xl:px-16">
                 <motion.div
                   ref={projectsRef}
-                  className="flex"
-                  animate={{ x: `${-(currentProject + 3) * (100 / 3)}%` }}
-                  transition={{
-                    type: "tween",
-                    duration: 0.6,
-                    ease: [0.25, 0.1, 0.25, 1],
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{
+                    transform: `translateX(-${(currentProject * 100) / 3}%)`,
                   }}
                 >
                   {infiniteProjects.map((project, index) => (
@@ -903,10 +814,10 @@ const Home: React.FC = () => {
                             loading="lazy"
                           />
                           <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-20">
-                            <h3 className="text-lg font-bold mb-2 tracking-wide">
+                            <h3 className="text-lg font-bold mb-2">
                               {project.name}
                             </h3>
-                            <p className="text-sm opacity-90 leading-relaxed">
+                            <p className="text-sm opacity-90 line-clamp-2">
                               {project.description}
                             </p>
                           </div>
@@ -1055,7 +966,7 @@ const Home: React.FC = () => {
                 <span className="font-semibold text-gray-900">4.4 de 5</span>
               </div>
               <p className="text-gray-600">
-                Basado en {customerTestimonials.length} reseñas de Google
+                Based on {customerTestimonials.length} reviews from Google
               </p>
             </motion.div>
 
@@ -1262,12 +1173,9 @@ const Home: React.FC = () => {
               <div className="overflow-hidden px-12">
                 <motion.div
                   ref={brandsRef}
-                  className="flex"
-                  animate={{ x: `${-(currentBrand + 2) * (100 / 3)}%` }}
-                  transition={{
-                    type: "tween",
-                    duration: 0.6,
-                    ease: [0.25, 0.1, 0.25, 1],
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{
+                    transform: `translateX(-${(currentBrand * 100) / 3}%)`,
                   }}
                 >
                   {infiniteBrands.map((brand, index) => (

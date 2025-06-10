@@ -33,6 +33,10 @@ export interface Product {
     description: string;
     icon?: string;
   }>;
+  faqs?: Array<{
+    question: string;
+    answer: string;
+  }>;
 }
 
 export const productData: Product[] = [
@@ -286,9 +290,9 @@ export const productData: Product[] = [
     id: "aluminium-venetian-blinds",
     name: "Aluminium Venetian Blinds",
     shortDescription:
-      "Outdoor Aluminium Venetian Blinds are highly practical and versatile, made from a specialised aluminium alloy thicker than market standards for extra durability and strength.",
+      "Aluminium Venetian Blinds are splash-resistant, warp-proof, and easy to clean, available in 25 mm and 50 mm slat widths with a thicker alloy for enhanced strength and longevity.",
     description:
-      "Outdoor Aluminium Venetian Blinds are highly practical and versatile, made from a specialised aluminium alloy thicker than market standards for extra durability and strength. Available in 25 mm and 50 mm slat widths with various material finishes—from pastels and vibrant metallic shades to wood effects and plain finishes—which are splash-proof, warp-resistant, and easy to clean, making them ideal for kitchens and bathrooms. ",
+      "Constructed from a specialised aluminium alloy (not PVC), our Aluminium Venetian Blinds come in 25 mm and 50 mm slat widths and a wide colour palette—from pastels to metallic and wood-effect finishes. Their thicker slats provide extra durability, while the splash-proof, warp-resistant surface makes them ideal for kitchens, bathrooms, and high-humidity areas.",
     images: [
       {
         src: "/images/aluminium-venetian-blind-1.webp",
@@ -329,9 +333,9 @@ export const productData: Product[] = [
     id: "basswood-venetian-blinds",
     name: "Basswood Venetian Blinds",
     shortDescription:
-      "Basswood Venetian Blinds are lightweight and bring natural beauty into your home, offering a full range of tints and stains to match any decor.",
+      "Basswood Venetian Blinds are lightweight timber blinds available in a wide choice of colours and stains to complement any décor, and are easy to clean and maintain.",
     description:
-      "Basswood Venetian Blinds are lightweight and bring natural beauty into your home, offering a full range of tints and stains to match any decor. They come in both traditional and modern styles with finishes such as satin, gloss, matt, brushed, pearlised, and perforated, and are easy to maintain and clean while remaining durable. ",
+      "Our Basswood Venetian Blinds enhance your home’s natural charm with robust timber stability and a broad palette of colours and stains. Easy to operate, clean, and install, these blinds bring the outdoors inside and suit any décor effortlessly.",
     images: [
       {
         src: "/images/basswood-venetian-blind-1.webp",
@@ -368,9 +372,9 @@ export const productData: Product[] = [
     id: "blockout-roller-blinds",
     name: "Blockout Roller Blinds",
     shortDescription:
-      "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter.",
+      "Blockout Roller Blinds are available in a variety of fabrics from across the globe.",
     description:
-      "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter. Custom-made from thick, coated fabric designed to withstand harsh Australian climate. Can be paired with sheer curtains for a contemporary look. Available with manual or automated operation and easy cleaning; multiple fabric options include classic, modern, and textured weaves. ",
+      "Blockout Roller Blinds are available in a variety of fabrics from across the globe. They are a popular and efficient window covering that provides maximum darkness in gloomy environments. Roller Blinds are a great alternative to drapes or shutters in both home and business settings. Block-out blinds may be used alone or with sheer curtains on a single window for a contemporary look and to save space. Due to their versatility, Blockouts are often utilized in areas where maximum darkness or heat blockout from the sun is desired. They are easy to install, require less maintenance than Venetian blinds, and can be upgraded from manual to automated operation even years after installation. Blockout Roller Blinds form the best barrier against light and help maintain desired room temperature year-round, keeping your environment cooler in summer and warmer in winter, potentially reducing energy bills. Sun Blockout Roller Blinds are a popular choice for bedrooms, offices, and any room where a fully darkened environment is needed. Designed to withstand the harsh Australian climate, all our Blockout products are crafted to guarantee style and durability. Custom-made to your measurements, this high-quality blind features coated fabric that blocks out 100% of sunlight, making it perfect for large living rooms or business windows that require complete darkness during the day.",
     images: [
       {
         src: "/images/blockout-roller-blind-1.webp",
@@ -422,9 +426,9 @@ export const productData: Product[] = [
     id: "blockout-roman-blinds",
     name: "Blockout Roman Blinds",
     shortDescription:
-      "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look.",
+      "Our Blockout Roman Blinds are made from premium Australian materials and include a chain-operated tracking mechanism with aluminium back battens for a straight, tailored look.",
     description:
-      "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look. Single-piece fabric design allows easy addition of blackout lining. Available in various fabrics including Barbados, Gala, Kew, Matrix, Metro, and Serengetti. ",
+      "Blockout Roman Blinds are manufactured from quality fabrics sourced from Australian fabric houses. All of our Roman Blinds feature a continuous single-piece fabric design, making it easy to add blackout lining to transform your shades into complete light-blocking solutions. Supplied on our chain-operated tracking system with aluminium back battens, they ensure precise, tailored installation and timeless style.",
     images: [
       {
         src: "/images/blockout-roman-blind-1.webp",
@@ -472,9 +476,37 @@ export const productData: Product[] = [
     id: "blockout-curtains",
     name: "Blockout Curtains",
     shortDescription:
-      "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
+      "Blockout Curtains use proprietary three-weave technology to block 99% of harmful UV rays and 100% of harsh sunlight, improving energy efficiency year-round.",
     description:
-      "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight. They reduce heat transfer through windows by up to 24 %, improving energy efficiency by keeping rooms cooler in summer and warmer in winter. Available with various colours and fabrics suited for thermal insulation and UV protection. ",
+      "Blockout Curtains minimize heat transfer through windows by up to 24%, keeping rooms cooler in summer and warmer in winter. Made with a proprietary three-weave fabric, they block nearly all sunlight and UV radiation, enhance privacy, reduce noise, and help lower energy bills. Ideal for bedrooms, home theaters, and any space requiring complete light control and insulation.",
+    faqs: [
+      {
+        question: "Why choose blockout curtains?",
+        answer:
+          "Blockout curtains offer superior light control, privacy, noise reduction, and energy efficiency, making them ideal for bedrooms and home theaters.",
+      },
+      {
+        question: "Are blockout curtains energy efficient?",
+        answer:
+          "Yes, they can reduce heat transfer by up to 24%, helping keep rooms cooler in summer and warmer in winter.",
+      },
+      {
+        question: "Can blockout curtains improve sleep?",
+        answer:
+          "By blocking external light, they create a darker sleep environment, which can lead to better sleep quality.",
+      },
+      {
+        question:
+          "What is the difference between blockout and regular curtains?",
+        answer:
+          "Blockout curtains use dense, proprietary fabrics to block nearly all light, while regular curtains allow some light to filter through.",
+      },
+      {
+        question: "Are eyelet blockout curtains a good choice?",
+        answer:
+          "Eyelet blockout curtains combine easy installation with a stylish, modern look, offering full light control and privacy.",
+      },
+    ],
     images: [
       {
         src: "/images/blockout-curtains-1.webp",
@@ -588,9 +620,9 @@ export const productData: Product[] = [
     id: "sheer-curtains",
     name: "Sheer Curtains",
     shortDescription:
-      "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
+      "Sheer Curtains soften incoming light, add style, and offer daytime privacy—perfect for layering with roller or blockout treatments.",
     description:
-      "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor. They offer a level of daytime privacy but become transparent at night when interior lights are on. Ideal for layering with other window treatments, they create a serene, airy atmosphere and allow soft, filtered natural light. ",
+      "Lightweight sheer curtains soften natural light and add instant style to any décor. They provide daytime privacy and work beautifully as part of layered window treatments. When interior lights are on at night, they become more transparent, so consider pairing with blockout curtains for full privacy. Their versatile, gauzy fabrics create a serene, airy atmosphere in living rooms, bedrooms, or any space.",
     images: [
       {
         src: "/images/sheer-curtain-1.webp",
@@ -1180,9 +1212,9 @@ export const productData: Product[] = [
     id: "sunscreen-roller-blinds",
     name: "Sunscreen Roller Blinds",
     shortDescription:
-      "Reduce glare while maintaining your view. Ideal for living areas and offices with excellent UV protection and view preservation.",
+      "Sunscreen Roller Blinds are made of mesh-like fabric that blocks glare and UV rays, keeping your space cool and protecting furniture from fading.",
     description:
-      "Sunscreen Roller Blinds offer the perfect balance between sun protection and maintaining your view. Made from specially designed mesh fabrics, they reduce glare and heat while allowing natural light to filter through. Ideal for office spaces, living areas, and any room where you want to preserve your view while protecting against harmful UV rays.",
+      "Sunscreen Roller Blinds are made of mesh-like fabric that blocks glare and UV rays, keeping your space cool and protecting furniture from fading. They are best used where privacy is not required or combined with a Blockout Blind in a Double Roller Blind system for maximum relaxation. Available in a variety of materials and colors to suit any setting, our custom-made blinds help prevent heat, glare, and UV damage, saving on energy costs. They offer privacy during the day but become revealing at night with interior lights on, so pairing with Blockout is recommended for optimal privacy.",
     category: "blinds",
     subcategory: "roller",
     heroImage: "/images/sunscreen-roller-blind-1.webp",
@@ -1248,9 +1280,9 @@ export const productData: Product[] = [
     id: "translucent-roller-blinds",
     name: "Translucent Roller Blinds",
     shortDescription:
-      "Soft, filtered light with privacy. Perfect balance of natural light and discretion for any room in your home.",
+      "Translucent Roller Blinds allow you to create a private, pleasant atmosphere without obstructing natural light.",
     description:
-      "Translucent Roller Blinds provide the ideal solution when you want to maintain privacy while allowing soft, natural light to filter into your space. These blinds offer a gentle glow that creates a warm and inviting atmosphere while protecting your privacy during the day.",
+      "Translucent Roller Blinds allow you to create a private, pleasant atmosphere without obstructing natural light, providing 100% daytime privacy while reducing heat and glare. These semi-transparent fabrics offer an opaque shade that lets light filter through, maintaining a clear appearance. Ideal for living areas and bathrooms, they allow natural light to fill your room without sacrificing comfort. Also known as Light Filtering Roller Blinds, they combine elegance, privacy, and sophisticated aesthetic by balancing light and shading.",
     category: "blinds",
     subcategory: "roller",
     heroImage: "/images/translucent-roller-blind-1.webp",
@@ -1316,9 +1348,9 @@ export const productData: Product[] = [
     id: "translucent-roman-blinds",
     name: "Translucent Roman Blinds",
     shortDescription:
-      "Soft, filtered light with sophisticated style. Ideal for living spaces where gentle illumination meets timeless elegance.",
+      "Translucent Roman Blinds provide daytime privacy while allowing natural light to filter through, ideal for living areas.",
     description:
-      "Translucent Roman Blinds combine the classic elegance of roman styling with light-filtering capabilities. These blinds feature premium fabrics that allow gentle light diffusion while maintaining privacy, creating a sophisticated and inviting atmosphere in any room.",
+      "Translucent Roman Blinds allow a filtered amount of light to enter your home while blocking external views when closed, creating a comfortable, softly lit environment. Their light-filtering performance depends on the fabric’s weight and weave, making them perfect for living spaces that require both privacy and natural illumination.",
     category: "blinds",
     subcategory: "roman",
     heroImage: "/images/translucent-roman-blind-1.webp",
@@ -1377,9 +1409,9 @@ export const productData: Product[] = [
     id: "cedar-venetian-blinds",
     name: "Cedar Venetian Blinds",
     shortDescription:
-      "Luxurious cedar wood with rich grain patterns. The ultimate choice for those seeking premium quality and natural beauty.",
+      "Looking for excellent wooden blinds at a low cost? Our Cedar Venetian Blinds may become your new window pal, adding warmth and charm to any room with rich cedar grain.",
     description:
-      "Cedar Venetian Blinds represent the pinnacle of natural wood window treatments. Crafted from premium cedar timber, these blinds feature rich grain patterns and natural beauty that brings warmth and luxury to any space. Cedar's natural properties provide excellent durability and resistance to moisture and insects.",
+      "One of the main advantages of Cedar Venetian Blinds over other wood blinds is their stability—they won’t shrink or expand with temperature or humidity changes. Featuring high-quality cord and easy-to-use tilt mechanisms for precise light and privacy control, our DIY Cedar Venetian Blinds are simple to install and best suited for dry environments like living rooms, bedrooms, and workspaces.",
     category: "blinds",
     subcategory: "venetian",
     heroImage: "/images/cedar-venetian-blind-1.webp",
