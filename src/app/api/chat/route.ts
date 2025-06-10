@@ -54,7 +54,7 @@ IMPORTANT INSTRUCTIONS:
 
 export async function POST(req: NextRequest) {
   try {
-    const { message } = await req.json();
+    const { message, conversation } = await req.json();
 
     if (!message) {
       return NextResponse.json(
@@ -79,20 +79,24 @@ export async function POST(req: NextRequest) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
+    // Si se proporciona el historial de conversación completo, usarlo
+    // Si no, usar el formato anterior para compatibilidad
+    const messages = conversation || [
+      {
+        role: "system",
+        content: QUALITY_BLINDS_CONTEXT,
+      },
+      {
+        role: "user",
+        content: message,
+      },
+    ];
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini", // Corregido: era "gpt-o4-mini"
-      messages: [
-        {
-          role: "system",
-          content: QUALITY_BLINDS_CONTEXT,
-        },
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      messages: messages,
       temperature: 0.3,
-      max_tokens: 300,
+      max_tokens: 250, // Reducido de 300 a 250 para controlar costos
     });
 
     const reply =

@@ -118,13 +118,93 @@ const Chatbot: React.FC<ChatbotProps> = ({
   );
 
   // ── OpenAI helper ─────────────────────────────────────────
-  const askOpenAI = async (prompt: string): Promise<string> => {
+  const askOpenAI = async (
+    currentMessage: string,
+    conversationHistory: Message[]
+  ): Promise<string> => {
     try {
+      // Convertir historial a formato OpenAI (últimos 15 mensajes + mensaje actual)
+      const recentHistory = conversationHistory
+        .filter(
+          (msg) =>
+            msg.content.trim() !== "" &&
+            msg.content !== "__OPENAI_PLACEHOLDER__"
+        )
+        .slice(-15); // Últimos 15 mensajes para mantener contexto sin explotar costos
+
+      const openAIMessages = [
+        {
+          role: "system" as const,
+          content: `You are the Quality Blinds Australia assistant. We're a family business since 1989 based in Sydney.
+
+PRODUCTS & SPECIFIC FEATURES:
+• Roller Blinds: 
+  - BLOCKOUT: 100% light block, energy efficient (24% heat reduction), perfect for bedrooms, available in 100+ colors
+  - SUNSCREEN: UV protection + view, transparent at night, reduces glare, mesh fabric
+  - TRANSLUCENT: Privacy + natural light, day privacy only
+  - DOUBLE ROLLER: Combines blockout + sunscreen in same bracket for ultimate flexibility
+
+• Roman Blinds: Premium fabric, elegant pleated style, chain operated, blockout lining available
+
+• Venetian Blinds: 
+  - ALUMINIUM: 25mm/50mm slats, splash-resistant for kitchens/bathrooms
+  - BASSWOOD: Natural timber, stain or paint options
+  - CEDAR: Premium red cedar, luxury finish
+
+• Shutters: 
+  - ABS WATERPROOF: 100% waterproof, stainless steel, 23 colors, perfect bathrooms
+  - BASSWOOD: Real timber, 27 paint colors, great value
+  - PHOENIXWOOD: Premium hardwood, 51 colors, furniture quality
+
+PRICING GUIDANCE:
+For standard residential windows (1200x1500mm approx):
+- Roller Blinds: From $200-400 depending on fabric
+- Roman Blinds: From $300-500
+- Venetian: From $250-450
+- Shutters: From $800-1500 depending on material
+*Always mention these are approximate - free measure gives exact pricing*
+
+SERVICES:
+• FREE quotes & professional measurement (always emphasize this!)
+• Local manufacturing: blinds 1-2 weeks, shutters 4-6 weeks  
+• Professional installation included
+• Warranty: 2+ years mechanisms, lifetime on many fabrics
+
+CONTACT: (02) 9340 5050 | 131 Botany St, Randwick NSW
+
+IMPORTANT INSTRUCTIONS:
+1. Give helpful, specific answers with actual product details
+2. For pricing questions: Give approximate ranges BUT always say "for exact pricing, we need to measure - it's FREE!"
+3. Recommend specific products based on customer needs (bedroom = blockout, bathroom = waterproof, etc.)
+4. Don't just say "contact us" - give useful info THEN suggest free consultation
+5. Be conversational and helpful, not robotic
+6. When someone wants to book/schedule a measurement or consultation, say "I can help you book a free consultation!" and mention that options will appear to either book online or call directly
+7. NEVER mention email - all contact should be through phone or online booking forms
+8. Keep responses under 200 words when possible
+9. Maintain conversation context - remember what we discussed earlier`,
+        },
+        // Agregar historial de conversación
+        ...recentHistory.map((msg) => ({
+          role:
+            msg.type === "user" ? ("user" as const) : ("assistant" as const),
+          content: msg.content,
+        })),
+        // Agregar mensaje actual
+        {
+          role: "user" as const,
+          content: currentMessage,
+        },
+      ];
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: prompt }),
+        body: JSON.stringify({
+          message: currentMessage,
+          conversation: openAIMessages, // Enviar conversación completa
+        }),
       });
+
       const data = await res.json();
       if (data && data.error) {
         return data.error;
@@ -453,6 +533,50 @@ const Chatbot: React.FC<ChatbotProps> = ({
     setInputValue("");
     setIsTyping(true);
 
+    // Verificar límite de mensajes (20 mensajes = 10 intercambios aprox)
+    const currentMessageCount = messages.length + 1; // +1 por el mensaje que acabamos de agregar
+
+    if (currentMessageCount >= 20) {
+      // Notificar al usuario que se reiniciará la conversación
+      setTimeout(() => {
+        setIsTyping(false);
+        const limitMessage: Message = {
+          id: Date.now().toString(),
+          type: "bot",
+          content:
+            "🔄 **Conversation Limit Reached**\n\nTo keep our chat efficient and cost-effective, I'll start a fresh conversation after this response. Don't worry - I can still help you with anything you need!\n\nWhat would you like to know about our window treatments?",
+          timestamp: new Date(),
+          quickActions: [
+            {
+              id: "quote",
+              label: "Get Free Quote",
+              action: "REQUEST_QUOTE",
+              icon: CurrencyDollarIcon,
+            },
+            {
+              id: "products",
+              label: "Browse Products",
+              action: "BROWSE_PRODUCTS",
+              icon: ShoppingBagIcon,
+            },
+            {
+              id: "call-now",
+              label: "Call (02) 9340 5050",
+              action: "CALL_US",
+              icon: PhoneIcon,
+            },
+          ],
+        };
+        addMessage(limitMessage);
+
+        // Reiniciar después de 3 segundos
+        setTimeout(() => {
+          restartChat();
+        }, 3000);
+      }, 800);
+      return;
+    }
+
     // Simulate typing delay
     setTimeout(() => {
       setIsTyping(false);
@@ -462,7 +586,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         response.content = "";
         // Mantener typing indicator mientras espera respuesta de OpenAI
         setIsTyping(true);
-        askOpenAI(inputValue).then((aiAnswer) => {
+        askOpenAI(inputValue, messages).then((aiAnswer) => {
           // Ocultar typing indicator
           setIsTyping(false);
 
@@ -758,6 +882,21 @@ const Chatbot: React.FC<ChatbotProps> = ({
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                   <span className="text-xs">Online</span>
                 </div>
+                {/* Contador de mensajes */}
+                {messages.length > 0 && (
+                  <div
+                    className={`text-xs mr-2 ${
+                      messages.length >= 18
+                        ? "text-yellow-300"
+                        : messages.length >= 15
+                        ? "text-blue-200"
+                        : "text-blue-100"
+                    }`}
+                  >
+                    {messages.length}/20
+                    {messages.length >= 18 && <span className="ml-1">⚠️</span>}
+                  </div>
+                )}
                 <button
                   onClick={handleRestartClick}
                   className="p-2 hover:bg-white/10 rounded-lg transition-colors"
