@@ -95,6 +95,34 @@ export async function POST(req: NextRequest) {
 function generateMockResponse(prompt: string): string {
   const lowerPrompt = prompt.toLowerCase();
 
+  // Casos específicos de productos para habitaciones
+  if (
+    (lowerPrompt.includes("roller") &&
+      (lowerPrompt.includes("bed") || lowerPrompt.includes("bedroom"))) ||
+    (lowerPrompt.includes("choose") &&
+      lowerPrompt.includes("roller") &&
+      lowerPrompt.includes("blind"))
+  ) {
+    return "Perfect choice for a bedroom! For roller blinds in bedrooms, I recommend:\n\n🌑 **BLOCKOUT ROLLER BLINDS** (Most Popular for Bedrooms):\n• 100% light blocking for perfect sleep\n• Energy efficient - reduces heat by 24%\n• Available in many colors to match your decor\n\n🌅 **DOUBLE ROLLER SYSTEM**:\n• Blockout + Sunscreen in one\n• Day privacy with sunscreen, total darkness with blockout\n• Ultimate flexibility\n\nWhich style appeals to you? I can arrange a FREE measure and quote. Call (02) 9340 5050!";
+  }
+
+  if (
+    lowerPrompt.includes("roller") &&
+    (lowerPrompt.includes("choose") ||
+      lowerPrompt.includes("help") ||
+      lowerPrompt.includes("recommend"))
+  ) {
+    return "Great choice! We have 3 main types of roller blinds:\n\n🌑 **BLOCKOUT**: 100% light blocking, perfect for bedrooms and media rooms\n🌞 **SUNSCREEN**: UV protection while maintaining view, great for living areas\n🌅 **TRANSLUCENT**: Privacy with filtered light, ideal for bathrooms and kitchens\n\nWhich room is this for? That will help me recommend the best option. Free consultation available - call (02) 9340 5050!";
+  }
+
+  if (
+    lowerPrompt.includes("compare") ||
+    lowerPrompt.includes("comparison") ||
+    lowerPrompt.includes("difference")
+  ) {
+    return "I'd be happy to help you compare our products! Here are the main differences:\n\n🆚 **ROLLER vs ROMAN BLINDS**:\n• Roller: Modern, space-efficient, easy operation\n• Roman: Elegant fabric pleats, softer look\n\n🆚 **BLOCKOUT vs SUNSCREEN**:\n• Blockout: 100% light block, energy efficient\n• Sunscreen: UV protection + view, day privacy only\n\n🆚 **BLINDS vs SHUTTERS**:\n• Blinds: More affordable, easier to replace\n• Shutters: Permanent, premium, excellent insulation\n\nWhat specific products are you considering? Call (02) 9340 5050 for personalized advice!";
+  }
+
   if (
     lowerPrompt.includes("price") ||
     lowerPrompt.includes("cost") ||
