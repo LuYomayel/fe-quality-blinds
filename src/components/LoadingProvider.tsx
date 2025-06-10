@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  Suspense,
+} from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -20,7 +26,8 @@ interface LoadingProviderProps {
   children: React.ReactNode;
 }
 
-export function LoadingProvider({ children }: LoadingProviderProps) {
+// Separate component that uses useSearchParams, wrapped in Suspense
+function LoadingProviderInner({ children }: LoadingProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -40,6 +47,14 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
       {children}
       <LoadingOverlay />
     </LoadingContext.Provider>
+  );
+}
+
+export function LoadingProvider({ children }: LoadingProviderProps) {
+  return (
+    <Suspense fallback={<div>{children}</div>}>
+      <LoadingProviderInner>{children}</LoadingProviderInner>
+    </Suspense>
   );
 }
 
