@@ -128,6 +128,9 @@ function verifyCaptcha(captchaToken: string): boolean {
   return captchaToken === "verified" || captchaToken.length > 10;
 }
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 // GET - Fetch reviews for a product
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

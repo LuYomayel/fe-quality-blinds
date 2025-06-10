@@ -241,7 +241,7 @@ const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play para testimonios - sin cambios, ya funciona bien
+  // Auto-play para testimonials
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) =>
@@ -249,7 +249,7 @@ const Home: React.FC = () => {
       );
     }, 7000);
     return () => clearInterval(interval);
-  }, []);
+  }, [customerTestimonials.length]);
 
   // Auto-play para brands - movimiento infinito suave
   React.useEffect(() => {
@@ -257,7 +257,7 @@ const Home: React.FC = () => {
       setCurrentBrand((prev) => prev + 1);
     }, 3500);
     return () => clearInterval(interval);
-  }, []);
+  }, [brandPartners.length]);
 
   // Efecto para resetear posición cuando se completa un ciclo (sin animación visible)
   React.useEffect(() => {

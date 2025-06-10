@@ -13,6 +13,16 @@ interface SamplesFormData {
   message: string;
 }
 
+interface SamplesFormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  postcode?: string;
+  productTypes?: string;
+  message?: string;
+}
+
 interface SamplesFormProps {
   onClose: () => void;
 }
@@ -30,7 +40,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
-  const [errors, setErrors] = useState<Partial<SamplesFormData>>({});
+  const [errors, setErrors] = useState<SamplesFormErrors>({});
 
   const productOptions = [
     "Roller Blinds - Blockout",
@@ -48,7 +58,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
   ];
 
   const validateForm = () => {
-    const newErrors: Partial<SamplesFormData> = {};
+    const newErrors: SamplesFormErrors = {};
 
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
@@ -58,7 +68,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
     if (!form.address.trim()) newErrors.address = "Address is required";
     if (!form.postcode.trim()) newErrors.postcode = "Postcode is required";
     if (form.productTypes.length === 0)
-      newErrors.productTypes = "Please select at least one product type" as any;
+      newErrors.productTypes = "Please select at least one product type";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -69,7 +79,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onClose }) => {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof SamplesFormData]) {
+    if (errors[name as keyof SamplesFormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };

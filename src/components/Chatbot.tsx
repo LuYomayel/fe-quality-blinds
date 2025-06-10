@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChatBubbleLeftRightIcon,
@@ -82,6 +88,117 @@ const Chatbot: React.FC<ChatbotProps> = ({
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const setIsOpen = onToggle || setInternalIsOpen;
 
+  // Predefined responses and quick actions - memoized to prevent re-creation
+  const quickActions: QuickAction[] = useMemo(
+    () => [
+      {
+        id: "quote",
+        label: "Get Quote",
+        action: "REQUEST_QUOTE",
+        icon: CurrencyDollarIcon,
+      },
+      {
+        id: "products",
+        label: "Browse Products",
+        action: "BROWSE_PRODUCTS",
+        icon: ShoppingBagIcon,
+      },
+      {
+        id: "contact",
+        label: "Contact Us",
+        action: "CONTACT_INFO",
+        icon: PhoneIcon,
+      },
+      {
+        id: "faq",
+        label: "FAQs",
+        action: "SHOW_FAQ",
+        icon: QuestionMarkCircleIcon,
+      },
+    ],
+    []
+  );
+
+  const restartChat = () => {
+    setMessages([]);
+    setInputValue("");
+    setIsTyping(false);
+    setShowRestartConfirm(false);
+
+    // Add welcome message after a short delay
+    setTimeout(() => {
+      const welcomeMessage: Message = {
+        id: Date.now().toString(),
+        type: "bot",
+        content:
+          "👋 Hello! I'm here to help you find the perfect window treatments for your home. What can I assist you with today?",
+        timestamp: new Date(),
+        quickActions: quickActions,
+      };
+      setMessages([welcomeMessage]);
+    }, 300);
+  };
+
+  const handleRestartClick = useCallback(() => {
+    if (messages.length > 1) {
+      setShowRestartConfirm(true);
+    } else {
+      restartChat();
+    }
+  }, [messages.length]);
+
+  // Handle initial message when chatbot opens
+  const handleInitialMessage = useCallback(
+    (message: string, productName?: string) => {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        type: "user",
+        content: message,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, userMessage]);
+      setIsTyping(true);
+
+      // Enhanced response for quote requests
+      setTimeout(() => {
+        setIsTyping(false);
+        let response = botResponse(message);
+
+        // If it's a quote request and we have a product name, customize the response
+        if (message.toLowerCase().includes("quote") && productName) {
+          response = {
+            ...response,
+            content: `Perfect! I'd love to help you get a FREE quote for ${productName}.\n\nI can help you in two ways:\n\n🏠 **Book a FREE Home Consultation** - Our expert will visit your home for professional measurement and samples\n\n📞 **Get Quick Info** - Call us directly for immediate assistance\n\nWhich would you prefer?`,
+            quickActions: [
+              {
+                id: "book-home-visit",
+                label: "Book Home Consultation",
+                action: "BOOK_HOME_VISIT",
+                icon: HomeIcon,
+              },
+              {
+                id: "call-now",
+                label: "Call (02) 9340 5050",
+                action: "CALL_US",
+                icon: PhoneIcon,
+              },
+              {
+                id: "more-info",
+                label: `Learn More About ${productName}`,
+                action: "PRODUCT_INFO",
+                icon: LightBulbIcon,
+              },
+            ],
+          };
+        }
+
+        setMessages((prev) => [...prev, response]);
+      }, 800);
+    },
+    []
+  );
+
   // Set up global controller
   useEffect(() => {
     globalChatbotController = {
@@ -110,7 +227,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
     return () => {
       globalChatbotController = null;
     };
-  }, [setIsOpen]);
+  }, [setIsOpen, handleInitialMessage]);
 
   // Function to get product specific information
   const getProductInfo = (productName: string): string => {
@@ -134,83 +251,6 @@ const Chatbot: React.FC<ChatbotProps> = ({
       "This is a premium window treatment solution with excellent quality and local Australian manufacturing."
     );
   };
-
-  // Handle initial message when chatbot opens
-  const handleInitialMessage = (message: string, productName?: string) => {
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: "user",
-      content: message,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setIsTyping(true);
-
-    // Enhanced response for quote requests
-    setTimeout(() => {
-      setIsTyping(false);
-      let response = botResponse(message);
-
-      // If it's a quote request and we have a product name, customize the response
-      if (message.toLowerCase().includes("quote") && productName) {
-        response = {
-          ...response,
-          content: `Perfect! I'd love to help you get a FREE quote for ${productName}.\n\nI can help you in two ways:\n\n🏠 **Book a FREE Home Consultation** - Our expert will visit your home for professional measurement and samples\n\n📞 **Get Quick Info** - Call us directly for immediate assistance\n\nWhich would you prefer?`,
-          quickActions: [
-            {
-              id: "book-home-visit",
-              label: "Book Home Consultation",
-              action: "BOOK_HOME_VISIT",
-              icon: HomeIcon,
-            },
-            {
-              id: "call-now",
-              label: "Call (02) 9340 5050",
-              action: "CALL_US",
-              icon: PhoneIcon,
-            },
-            {
-              id: "more-info",
-              label: `Learn More About ${productName}`,
-              action: "PRODUCT_INFO",
-              icon: LightBulbIcon,
-            },
-          ],
-        };
-      }
-
-      setMessages((prev) => [...prev, response]);
-    }, 800);
-  };
-
-  // Predefined responses and quick actions
-  const quickActions: QuickAction[] = [
-    {
-      id: "quote",
-      label: "Get Quote",
-      action: "REQUEST_QUOTE",
-      icon: CurrencyDollarIcon,
-    },
-    {
-      id: "products",
-      label: "Browse Products",
-      action: "BROWSE_PRODUCTS",
-      icon: ShoppingBagIcon,
-    },
-    {
-      id: "contact",
-      label: "Contact Us",
-      action: "CONTACT_INFO",
-      icon: PhoneIcon,
-    },
-    {
-      id: "faq",
-      label: "FAQs",
-      action: "SHOW_FAQ",
-      icon: QuestionMarkCircleIcon,
-    },
-  ];
 
   const faqs = [
     {
@@ -268,7 +308,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
       };
       setMessages([welcomeMessage]);
     }
-  }, [isOpen]);
+  }, [isOpen, messages.length, quickActions]);
 
   useEffect(() => {
     scrollToBottom();
@@ -295,7 +335,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, showRestartConfirm]);
+  }, [isOpen, showRestartConfirm, handleRestartClick, setIsOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -303,34 +343,6 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
   const addMessage = (message: Message) => {
     setMessages((prev) => [...prev, message]);
-  };
-
-  const restartChat = () => {
-    setMessages([]);
-    setInputValue("");
-    setIsTyping(false);
-    setShowRestartConfirm(false);
-
-    // Add welcome message after a short delay
-    setTimeout(() => {
-      const welcomeMessage: Message = {
-        id: Date.now().toString(),
-        type: "bot",
-        content:
-          "👋 Hello! I'm here to help you find the perfect window treatments for your home. What can I assist you with today?",
-        timestamp: new Date(),
-        quickActions: quickActions,
-      };
-      setMessages([welcomeMessage]);
-    }, 300);
-  };
-
-  const handleRestartClick = () => {
-    if (messages.length > 1) {
-      setShowRestartConfirm(true);
-    } else {
-      restartChat();
-    }
   };
 
   const botResponse = (userMessage: string): Message => {

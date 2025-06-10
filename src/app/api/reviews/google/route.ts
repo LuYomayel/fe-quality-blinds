@@ -122,6 +122,9 @@ const mockPlaceDetails: GooglePlaceDetails = {
   reviews: mockGoogleReviews,
 };
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export async function GET() {
   try {
     // In production, uncomment this to use real Google Places API
