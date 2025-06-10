@@ -2,22 +2,21 @@
 
 import React from "react";
 import Image from "next/image";
-import ContactForm from "./ContactForm";
 import Link from "next/link";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 // Configuración de scroll suave
-const smoothScroll = (
-  e: React.MouseEvent<HTMLAnchorElement>,
-  targetId: string
-) => {
-  e.preventDefault();
-  const element = document.getElementById(targetId);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
-  }
-};
+// const smoothScroll = (
+//   e: React.MouseEvent<HTMLAnchorElement>,
+//   targetId: string
+// ) => {
+//   e.preventDefault();
+//   const element = document.getElementById(targetId);
+//   if (element) {
+//     element.scrollIntoView({ behavior: "smooth" });
+//   }
+// };
 
 const featuredCollections = [
   {
@@ -194,26 +193,31 @@ const brandPartners = [
     name: "ACMEDA",
     logo: "/images/brands/acmeda.png",
     description: "Premium window covering solutions",
+    link: "/brands/acmeda",
   },
   {
     name: "ALUXOR",
     logo: "/images/brands/aluxor.png",
     description: "Innovative awning systems",
+    link: "/brands/aluxor",
   },
   {
     name: "Carbolite",
     logo: "/images/brands/carbolite.png",
     description: "Quality awnings & louvres",
+    link: "/brands/carbolite",
   },
   {
     name: "ESR Blinds",
     logo: "/images/brands/esr-blinds.png",
     description: "Professional blind solutions",
+    link: "/brands/esr-blinds",
   },
   {
     name: "FOREST",
     logo: "/images/brands/forest.png",
     description: "Drapery hardware specialists",
+    link: "/brands/forest",
   },
 ];
 
@@ -230,11 +234,11 @@ const Home: React.FC = () => {
     threshold: 0.1,
   });
 
-  // Estados para los sliders automáticos
+  // Estados separados para cada carrusel
   const [currentCollection, setCurrentCollection] = React.useState(0);
   const [currentProject, setCurrentProject] = React.useState(0);
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
-  const [currentBrand, setCurrentBrand] = React.useState(0);
+  const [currentBrand, setCurrentBrand] = React.useState(0); // Estado corregido para brands
 
   // Referencias para transiciones sin animación (para loop infinito)
   const collectionsRef = React.useRef<HTMLDivElement>(null);
@@ -260,13 +264,13 @@ const Home: React.FC = () => {
     ...brandPartners.slice(0, 2),
   ];
 
-  // Auto-play para colecciones
+  // Auto-play optimizado para colecciones
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentCollection((prev) => {
         const next = prev + 1;
         if (next > featuredCollections.length) {
-          // Salto invisible al inicio
+          // Salto invisible al inicio con timing optimizado
           setTimeout(() => {
             if (collectionsRef.current) {
               collectionsRef.current.style.transition = "none";
@@ -275,20 +279,21 @@ const Home: React.FC = () => {
               }%)`;
               setTimeout(() => {
                 if (collectionsRef.current) {
-                  collectionsRef.current.style.transition = "";
+                  collectionsRef.current.style.transition =
+                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
                 }
               }, 50);
             }
-          }, 300);
+          }, 600); // Aumentado para que la transición termine
           return 1;
         }
         return next;
       });
-    }, 3500);
+    }, 5000); // Aumentado a 5 segundos para mejor UX
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play para proyectos
+  // Auto-play optimizado para proyectos
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentProject((prev) => {
@@ -300,16 +305,17 @@ const Home: React.FC = () => {
               projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
               setTimeout(() => {
                 if (projectsRef.current) {
-                  projectsRef.current.style.transition = "";
+                  projectsRef.current.style.transition =
+                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
                 }
               }, 50);
             }
-          }, 300);
+          }, 600);
           return 1;
         }
         return next;
       });
-    }, 4000);
+    }, 5500); // Timing diferente para evitar sincronización
     return () => clearInterval(interval);
   }, []);
 
@@ -319,11 +325,11 @@ const Home: React.FC = () => {
       setCurrentTestimonial((prev) =>
         prev === customerTestimonials.length - 1 ? 0 : prev + 1
       );
-    }, 5000);
+    }, 7000); // Más tiempo para leer testimonios
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-play para marcas
+  // Auto-play CORREGIDO para marcas
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBrand((prev) => {
@@ -335,20 +341,21 @@ const Home: React.FC = () => {
               brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
               setTimeout(() => {
                 if (brandsRef.current) {
-                  brandsRef.current.style.transition = "";
+                  brandsRef.current.style.transition =
+                    "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
                 }
               }, 50);
             }
-          }, 300);
+          }, 600);
           return 1;
         }
         return next;
       });
-    }, 3000);
+    }, 4000); // Timing diferente para brands
     return () => clearInterval(interval);
   }, []);
 
-  // Funciones de navegación manual
+  // Funciones de navegación manual optimizadas
   const nextCollection = () => {
     setCurrentCollection((prev) => {
       const next = prev + 1;
@@ -359,11 +366,12 @@ const Home: React.FC = () => {
             collectionsRef.current.style.transform = `translateX(-${100 / 3}%)`;
             setTimeout(() => {
               if (collectionsRef.current) {
-                collectionsRef.current.style.transition = "";
+                collectionsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return 1;
       }
       return next;
@@ -382,11 +390,12 @@ const Home: React.FC = () => {
             }%)`;
             setTimeout(() => {
               if (collectionsRef.current) {
-                collectionsRef.current.style.transition = "";
+                collectionsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return featuredCollections.length;
       }
       return next;
@@ -403,11 +412,12 @@ const Home: React.FC = () => {
             projectsRef.current.style.transform = `translateX(-${100 / 3}%)`;
             setTimeout(() => {
               if (projectsRef.current) {
-                projectsRef.current.style.transition = "";
+                projectsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return 1;
       }
       return next;
@@ -426,11 +436,12 @@ const Home: React.FC = () => {
             }%)`;
             setTimeout(() => {
               if (projectsRef.current) {
-                projectsRef.current.style.transition = "";
+                projectsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return projectCategories.length;
       }
       return next;
@@ -449,6 +460,7 @@ const Home: React.FC = () => {
     );
   };
 
+  // Funciones CORREGIDAS para brands
   const nextBrand = () => {
     setCurrentBrand((prev) => {
       const next = prev + 1;
@@ -459,11 +471,12 @@ const Home: React.FC = () => {
             brandsRef.current.style.transform = `translateX(-${100 / 3}%)`;
             setTimeout(() => {
               if (brandsRef.current) {
-                brandsRef.current.style.transition = "";
+                brandsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return 1;
       }
       return next;
@@ -482,11 +495,12 @@ const Home: React.FC = () => {
             }%)`;
             setTimeout(() => {
               if (brandsRef.current) {
-                brandsRef.current.style.transition = "";
+                brandsRef.current.style.transition =
+                  "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)";
               }
             }, 50);
           }
-        }, 300);
+        }, 600);
         return brandPartners.length;
       }
       return next;
@@ -551,8 +565,7 @@ const Home: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <Link
-              href="#featured-collections"
-              onClick={(e) => smoothScroll(e, "featured-collections")}
+              href="/shop"
               className="inline-flex items-center bg-blue-700/90 hover:bg-blue-800 text-white font-semibold px-8 py-3 rounded-md transition-all backdrop-blur-sm hover:backdrop-blur-md shadow-lg hover:shadow-xl"
               aria-label="Explore our featured window treatment collections"
             >
@@ -607,14 +620,14 @@ const Home: React.FC = () => {
 
             {/* Collections Slider */}
             <div className="relative">
-              {/* Navigation Arrows */}
+              {/* Navigation Arrows - Hidden on mobile, show on larger screens */}
               <button
                 onClick={prevCollection}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
                 aria-label="Colección anterior"
               >
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -629,11 +642,11 @@ const Home: React.FC = () => {
               </button>
               <button
                 onClick={nextCollection}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
                 aria-label="Siguiente colección"
               >
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -647,12 +660,61 @@ const Home: React.FC = () => {
                 </svg>
               </button>
 
-              <div className="overflow-hidden px-12">
+              {/* Mobile: Optimized grid, Desktop: Slider */}
+              <div className="sm:hidden">
+                {/* Mobile Grid - Show 2 per row for better mobile UX */}
+                <div className="grid grid-cols-2 gap-4 px-4">
+                  {featuredCollections.slice(0, 6).map((collection, index) => (
+                    <motion.article
+                      key={`mobile-${collection.name}-${index}`}
+                      className="group"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300">
+                        <Link
+                          href={collection.link}
+                          aria-label={`Learn more about ${collection.name}`}
+                        >
+                          <div className="relative aspect-[4/3] overflow-hidden">
+                            <Image
+                              src={collection.image}
+                              alt={`Premium ${collection.name}`}
+                              fill
+                              sizes="(max-width: 640px) 50vw, 33vw"
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-3">
+                              <h3 className="text-sm font-bold text-white mb-1 leading-tight">
+                                {collection.name}
+                              </h3>
+                              <p className="text-xs text-white/90 line-clamp-2 leading-relaxed">
+                                {collection.description}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop Slider */}
+              <div className="hidden sm:block overflow-hidden px-8 lg:px-12">
                 <motion.div
                   ref={collectionsRef}
                   className="flex"
                   animate={{ x: `${-(currentCollection + 3) * (100 / 3)}%` }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{
+                    type: "tween",
+                    duration: 0.6,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
                 >
                   {infiniteCollections.map((collection, index) => (
                     <motion.article
@@ -729,14 +791,14 @@ const Home: React.FC = () => {
 
             {/* Projects Slider */}
             <div className="relative">
-              {/* Navigation Arrows */}
+              {/* Navigation Arrows - Hidden on mobile */}
               <button
                 onClick={prevProject}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
                 aria-label="Proyecto anterior"
               >
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -751,11 +813,11 @@ const Home: React.FC = () => {
               </button>
               <button
                 onClick={nextProject}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors"
+                className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden sm:block"
                 aria-label="Siguiente proyecto"
               >
                 <svg
-                  className="w-6 h-6 text-gray-600"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -769,12 +831,56 @@ const Home: React.FC = () => {
                 </svg>
               </button>
 
-              <div className="overflow-hidden px-12">
+              {/* Mobile: Optimized grid, Desktop: Slider */}
+              <div className="sm:hidden">
+                {/* Mobile Grid - Show 2 per row for better mobile UX */}
+                <div className="grid grid-cols-2 gap-4 px-4">
+                  {projectCategories.slice(0, 6).map((project, index) => (
+                    <motion.div
+                      key={`mobile-${project.name}-${index}`}
+                      className="group"
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300">
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+                          <Image
+                            src={project.image}
+                            alt={`${project.name} - ${project.description}`}
+                            fill
+                            sizes="(max-width: 640px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                          <div className="absolute bottom-0 left-0 right-0 p-3 text-white z-20">
+                            <h3 className="text-sm font-bold mb-1 leading-tight">
+                              {project.name}
+                            </h3>
+                            <p className="text-xs opacity-90 line-clamp-2 leading-relaxed">
+                              {project.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop Slider */}
+              <div className="hidden sm:block overflow-hidden px-8 lg:px-12">
                 <motion.div
                   ref={projectsRef}
                   className="flex"
                   animate={{ x: `${-(currentProject + 3) * (100 / 3)}%` }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{
+                    type: "tween",
+                    duration: 0.6,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
                 >
                   {infiniteProjects.map((project, index) => (
                     <motion.div
@@ -999,7 +1105,11 @@ const Home: React.FC = () => {
                 <motion.div
                   className="flex"
                   animate={{ x: `${-currentTestimonial * 100}%` }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{
+                    type: "tween",
+                    duration: 0.6,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
                 >
                   {customerTestimonials.map((testimonial, index) => (
                     <div
@@ -1154,10 +1264,14 @@ const Home: React.FC = () => {
                   ref={brandsRef}
                   className="flex"
                   animate={{ x: `${-(currentBrand + 2) * (100 / 3)}%` }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{
+                    type: "tween",
+                    duration: 0.6,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
                 >
                   {infiniteBrands.map((brand, index) => (
-                    <motion.div
+                    <motion.article
                       key={`${brand.name}-${index}`}
                       className="w-1/3 flex-shrink-0 px-3"
                       initial={{ opacity: 0, y: 20 }}
@@ -1165,50 +1279,76 @@ const Home: React.FC = () => {
                       viewport={{ once: true }}
                       transition={{ delay: (index % 3) * 0.1 }}
                     >
-                      <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer">
-                        <div className="text-center">
-                          {/* Placeholder para el logo - reemplazar con las imágenes reales */}
-                          <div className="h-16 w-full bg-gray-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-gray-50 transition-colors">
-                            <span className="text-gray-500 text-sm font-medium">
-                              {brand.name}
-                            </span>
+                      <div className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                        <Link
+                          href={brand.link}
+                          aria-label={`Learn more about ${brand.name}`}
+                        >
+                          <div className="relative aspect-[4/3] overflow-hidden">
+                            <Image
+                              src={brand.logo}
+                              alt={`${brand.name} - ${brand.description}`}
+                              fill
+                              sizes="33vw"
+                              className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-transparent to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                              <h3 className="text-lg font-bold mb-1 text-gray-800">
+                                {brand.name}
+                              </h3>
+                              <p className="text-sm text-gray-600 line-clamp-2">
+                                {brand.description}
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-xs text-gray-600">
-                            {brand.description}
-                          </p>
-                        </div>
+                        </Link>
                       </div>
-                    </motion.div>
+                    </motion.article>
                   ))}
                 </motion.div>
+
+                {/* Mobile optimized brand grid */}
+                <div className="sm:hidden">
+                  <div className="grid grid-cols-2 gap-4 px-4 mt-8">
+                    {brandPartners.map((brand, index) => (
+                      <motion.article
+                        key={`mobile-brand-${brand.name}-${index}`}
+                        className="group"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <div className="relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300">
+                          <Link
+                            href={brand.link}
+                            aria-label={`Learn more about ${brand.name}`}
+                          >
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                              <Image
+                                src={brand.logo}
+                                alt={`${brand.name} - ${brand.description}`}
+                                fill
+                                sizes="(max-width: 640px) 50vw, 33vw"
+                                className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                                loading="lazy"
+                              />
+                              <div className="absolute bottom-0 left-0 right-0 p-2 text-center bg-gradient-to-t from-white/90 to-transparent">
+                                <h3 className="text-sm font-semibold text-gray-800">
+                                  {brand.name}
+                                </h3>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </motion.article>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </motion.section>
-
-        {/* Contact Form */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          id="contact-quality-blinds"
-          className="py-16"
-          aria-labelledby="contact-heading"
-        >
-          <div className="w-[80%] mx-auto px-4">
-            <h2
-              id="contact-heading"
-              className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900"
-            >
-              Get Your Free Consultation Today
-            </h2>
-            <p className="text-lg text-gray-600 text-center mb-12 max-w-4xl mx-auto">
-              Ready to transform your space? Contact our experts for a free
-              in-home consultation and quote. We&apos;ll help you choose the
-              perfect window treatments for your needs and budget.
-            </p>
-            <ContactForm />
           </div>
         </motion.section>
       </div>

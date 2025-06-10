@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
   CheckCircleIcon,
@@ -10,6 +11,7 @@ import {
   SparklesIcon,
   ShieldCheckIcon,
   BuildingOfficeIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/24/solid";
 import QuoteDialog from "../../components/QuoteDialog";
 import ContactForm from "../../components/ContactForm";
@@ -145,6 +147,26 @@ const AboutUs = () => {
       >
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4">
+          {/* Breadcrumbs */}
+          <motion.div variants={fadeInUp}>
+            <nav
+              className="flex justify-center lg:justify-start mb-8"
+              aria-label="Breadcrumb"
+            >
+              <ol className="flex items-center space-x-2 text-blue-200">
+                <li>
+                  <Link href="/" className="hover:text-white transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li className="flex items-center">
+                  <ArrowRightIcon className="w-4 h-4 mx-2" />
+                  <span className="text-white font-medium">About Us</span>
+                </li>
+              </ol>
+            </nav>
+          </motion.div>
+
           <div className="text-center">
             <motion.h1 variants={fadeInUp} className="text-5xl font-bold mb-6">
               About Quality Blinds

@@ -11,6 +11,7 @@ import {
   CogIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import { categoryConfigs } from "@/data/productData";
 
 const VenetianBlindsPage = () => {
   const heroRef = useRef(null);
@@ -27,56 +28,29 @@ const VenetianBlindsPage = () => {
     margin: "-100px",
   });
 
-  const venetianBlindCategories = [
-    {
-      id: "aluminium-venetian-blinds",
-      name: "Aluminium Venetian Blinds",
-      description:
-        "Sleek, modern, and durable. Perfect for contemporary spaces requiring precise light control and easy maintenance.",
-      image: "/images/aluminium-venetian-blinds.webp",
-      features: ["Lightweight", "Easy Clean", "Modern Design"],
-      href: "/blinds/venetian/aluminium-venetian-blinds",
-    },
-    {
-      id: "basswood-venetian-blinds",
-      name: "Basswood Venetian Blinds",
-      description:
-        "Natural warmth and elegance. Premium basswood slats bring organic beauty and sophisticated charm to any room.",
-      image: "/images/basswood-venetian-blinds.webp",
-      features: ["Natural Wood", "Premium Quality", "Elegant Finish"],
-      href: "/blinds/venetian/basswood-venetian-blinds",
-    },
-    {
-      id: "cedar-venetian-blinds",
-      name: "Cedar Venetian Blinds",
-      description:
-        "Luxurious cedar wood with rich grain patterns. The ultimate choice for those seeking premium quality and natural beauty.",
-      image: "/images/cedar-venetian-blinds.webp",
-      features: ["Luxury Wood", "Rich Grain", "Premium Craftsmanship"],
-      href: "/blinds/venetian/cedar-venetian-blinds",
-    },
-  ];
+  // Get data from centralized config
+  const config = categoryConfigs.venetianBlinds;
+  const venetianBlindCategories = config.products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    description: product.shortDescription,
+    image:
+      product.heroImage || product.images[0]?.src || "/images/placeholder.webp",
+    features: product.features,
+    href: `/blinds/venetian/${product.id}`,
+  }));
 
-  const benefits = [
-    {
-      icon: <AdjustmentsVerticalIcon className="h-8 w-8" />,
-      title: "Precise Control",
-      description:
-        "Adjustable slats provide exact light control and privacy levels",
-    },
-    {
-      icon: <CogIcon className="h-8 w-8" />,
-      title: "Versatile Operation",
-      description:
-        "Smooth tilting and lifting mechanisms for effortless daily use",
-    },
-    {
-      icon: <SparklesIcon className="h-8 w-8" />,
-      title: "Timeless Style",
-      description:
-        "Classic design that complements both traditional and modern interiors",
-    },
-  ];
+  const benefits = config.benefits.map((benefit) => ({
+    ...benefit,
+    icon:
+      benefit.icon === "AdjustmentsVerticalIcon" ? (
+        <AdjustmentsVerticalIcon className="h-8 w-8" />
+      ) : benefit.icon === "CogIcon" ? (
+        <CogIcon className="h-8 w-8" />
+      ) : (
+        <SparklesIcon className="h-8 w-8" />
+      ),
+  }));
 
   // Animation variants
   const fadeInUp = {
@@ -159,11 +133,10 @@ const VenetianBlindsPage = () => {
               </nav>
 
               <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                Venetian Blinds
+                {config.title}
               </h1>
               <p className="text-xl text-gray-200 mb-8 max-w-2xl">
-                Precision meets style. Our venetian blinds offer unmatched
-                control over light and privacy with timeless elegance.
+                {config.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -196,33 +169,37 @@ const VenetianBlindsPage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src="/images/venetian-blinds-hero.webp"
-                    alt="Premium Venetian Blinds by Quality Blinds Australia"
+                    src={config.heroImage}
+                    alt={`Premium ${config.title} by Quality Blinds Australia`}
                     fill
                     className="object-cover"
                     priority
                   />
                 </motion.div>
 
-                {/* Floating feature badges */}
+                {/* Floating feature badges - Hidden on mobile */}
                 <motion.div
-                  className="absolute -top-4 -right-4 bg-white text-slate-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white text-slate-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8, type: "spring" }}
                 >
-                  <AdjustmentsVerticalIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">Precise Control</div>
+                  <AdjustmentsVerticalIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    Precise Control
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  className="absolute -bottom-4 -left-4 bg-white text-slate-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 bg-white text-slate-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1, type: "spring" }}
                 >
-                  <EyeIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">Light Control</div>
+                  <EyeIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    Light Control
+                  </div>
                 </motion.div>
               </div>
             </motion.div>

@@ -11,6 +11,7 @@ import {
   PaintBrushIcon,
   SwatchIcon,
 } from "@heroicons/react/24/outline";
+import { categoryConfigs } from "@/data/productData";
 
 const RomanBlindsPage = () => {
   const heroRef = useRef(null);
@@ -27,46 +28,29 @@ const RomanBlindsPage = () => {
     margin: "-100px",
   });
 
-  const romanBlindCategories = [
-    {
-      id: "blockout-roman-blinds",
-      name: "Blockout Roman Blinds",
-      description:
-        "Classic elegance with complete privacy. Perfect for bedrooms and formal living areas requiring total light control.",
-      image: "/images/blockout-roman-blinds.webp",
-      features: ["Total Privacy", "Light Blocking", "Premium Fabrics"],
-      href: "/blinds/roman/blockout-roman-blinds",
-    },
-    {
-      id: "translucent-roman-blinds",
-      name: "Translucent Roman Blinds",
-      description:
-        "Soft, filtered light with sophisticated style. Ideal for living spaces where gentle illumination meets elegance.",
-      image: "/images/translucent-roman-blinds.webp",
-      features: ["Light Filtering", "Decorative Appeal", "Versatile Design"],
-      href: "/blinds/roman/translucent-roman-blinds",
-    },
-  ];
+  // Get data from centralized config
+  const config = categoryConfigs.romanBlinds;
+  const romanBlindCategories = config.products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    description: product.shortDescription,
+    image:
+      product.heroImage || product.images[0]?.src || "/images/placeholder.webp",
+    features: product.features,
+    href: `/blinds/roman/${product.id}`,
+  }));
 
-  const benefits = [
-    {
-      icon: <PaintBrushIcon className="h-8 w-8" />,
-      title: "Timeless Elegance",
-      description:
-        "Classic folding design that adds sophistication to any interior",
-    },
-    {
-      icon: <SwatchIcon className="h-8 w-8" />,
-      title: "Premium Fabrics",
-      description: "Wide selection of quality materials and designer patterns",
-    },
-    {
-      icon: <ShieldCheckIcon className="h-8 w-8" />,
-      title: "Superior Quality",
-      description:
-        "Precision engineering with smooth operation and lasting durability",
-    },
-  ];
+  const benefits = config.benefits.map((benefit) => ({
+    ...benefit,
+    icon:
+      benefit.icon === "PaintBrushIcon" ? (
+        <PaintBrushIcon className="h-8 w-8" />
+      ) : benefit.icon === "SwatchIcon" ? (
+        <SwatchIcon className="h-8 w-8" />
+      ) : (
+        <ShieldCheckIcon className="h-8 w-8" />
+      ),
+  }));
 
   // Animation variants
   const fadeInUp = {
@@ -147,11 +131,10 @@ const RomanBlindsPage = () => {
               </nav>
 
               <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                Roman Blinds
+                {config.title}
               </h1>
               <p className="text-xl text-orange-100 mb-8 max-w-2xl">
-                Timeless elegance meets modern functionality. Our roman blinds
-                bring sophisticated style and premium quality to your windows.
+                {config.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -184,33 +167,37 @@ const RomanBlindsPage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src="/images/roman-blinds-hero.webp"
-                    alt="Elegant Roman Blinds by Quality Blinds Australia"
+                    src={config.heroImage}
+                    alt={`Elegant ${config.title} by Quality Blinds Australia`}
                     fill
                     className="object-cover"
                     priority
                   />
                 </motion.div>
 
-                {/* Floating feature badges */}
+                {/* Floating feature badges - Hidden on mobile */}
                 <motion.div
-                  className="absolute -top-4 -right-4 bg-white text-amber-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white text-amber-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8, type: "spring" }}
                 >
-                  <PaintBrushIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">Designer Fabrics</div>
+                  <PaintBrushIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    Designer Fabrics
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  className="absolute -bottom-4 -left-4 bg-white text-amber-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 bg-white text-amber-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1, type: "spring" }}
                 >
-                  <HomeIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">Classic Style</div>
+                  <HomeIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    Classic Style
+                  </div>
                 </motion.div>
               </div>
             </motion.div>

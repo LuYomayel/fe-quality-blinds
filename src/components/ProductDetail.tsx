@@ -11,43 +11,22 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import QuoteDialog from "./QuoteDialog";
-
-interface ProductImage {
-  src: string;
-  alt: string;
-}
-
-interface ProductVariant {
-  id: string;
-  name: string;
-  stock: number;
-}
+import { Product } from "@/data/productData";
 
 interface ProductDetailProps {
-  product: {
-    id: string;
-    name: string;
-    shortDescription: string;
-    description: string;
-    images: ProductImage[];
-    variants: {
-      width: ProductVariant[];
-      height: ProductVariant[];
-      color: ProductVariant[];
-    };
-    rating: number;
-    stock: number;
-    features: string[];
-    specifications: Record<string, string>;
-    relatedProducts: {
-      id: string;
-      name: string;
-      shortDescription: string;
-      image: string;
-      href: string;
-    }[];
-  };
+  product: Product;
 }
+
+const smoothScroll = (
+  e: React.MouseEvent<HTMLAnchorElement>,
+  targetId: string
+) => {
+  e.preventDefault();
+  const element = document.getElementById(targetId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -125,45 +104,46 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   // Memoize breadcrumbs calculation
   const breadcrumbs = useMemo(() => {
-    const getProductCategory = (id: string) => {
-      if (id.includes("blinds")) return "Blinds";
-      if (id.includes("curtains")) return "Curtains";
-      if (id.includes("shutters")) return "Shutters";
-      if (id.includes("awnings")) return "Awnings";
-      return "Other Products";
-    };
+    const crumbs = [{ name: "Home", href: "/" }];
 
-    const getProductSubCategory = (id: string) => {
-      if (id.includes("roller")) return "Roller Blinds";
-      if (id.includes("roman")) return "Roman Blinds";
-      if (id.includes("venetian")) return "Venetian Blinds";
-      if (id.includes("blockout")) return "Blockout";
-      if (id.includes("abs")) return "ABS";
-      if (id.includes("basswood")) return "Basswood";
-      if (id.includes("conservatory")) return "Conservatory";
-      if (id.includes("folding-arm")) return "Folding Arm";
-      if (id.includes("straight-drop")) return "Straight Drop";
-      return "";
-    };
+    // Determine category and routes based on product ID
+    if (product.id.includes("roller") && product.id.includes("blind")) {
+      crumbs.push(
+        { name: "Blinds", href: "/blinds" }, // Now use /blinds since the page exists
+        { name: "Roller Blinds", href: "/blinds/roller" }
+      );
+    } else if (product.id.includes("roman") && product.id.includes("blind")) {
+      crumbs.push(
+        { name: "Blinds", href: "/blinds" },
+        { name: "Roman Blinds", href: "/blinds/roman" }
+      );
+    } else if (
+      product.id.includes("venetian") &&
+      product.id.includes("blind")
+    ) {
+      crumbs.push(
+        { name: "Blinds", href: "/blinds" },
+        { name: "Venetian Blinds", href: "/blinds/venetian" }
+      );
+    } else if (product.id.includes("awning")) {
+      crumbs.push({ name: "Awnings", href: "/shop" });
+    } else if (
+      product.id.includes("curtain") ||
+      product.id.includes("sheer") ||
+      product.id.includes("veri-shade")
+    ) {
+      crumbs.push({ name: "Curtains", href: "/shop" });
+    } else if (product.id.includes("shutter")) {
+      crumbs.push({ name: "Shutters", href: "/shop" });
+      // No intermediate categories for shutters since ABS, Basswood pages don't exist
+    } else {
+      crumbs.push({ name: "Other Products", href: "/shop" });
+    }
 
-    const category = getProductCategory(product.id);
-    const subCategory = getProductSubCategory(product.id);
+    // Add current product as final breadcrumb
+    crumbs.push({ name: product.name, href: "#" });
 
-    return [
-      { name: "Home", href: "/" },
-      { name: category, href: `/${category.toLowerCase()}` },
-      ...(subCategory
-        ? [
-            {
-              name: subCategory,
-              href: `/${category.toLowerCase()}/${subCategory
-                .toLowerCase()
-                .replace(" ", "-")}`,
-            },
-          ]
-        : []),
-      { name: product.name, href: "#" },
-    ];
+    return crumbs;
   }, [product.id, product.name]);
 
   const renderStars = (rating: number) => {
@@ -327,12 +307,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               )}
 
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start"
                 variants={fadeInUp}
               >
                 <motion.button
                   onClick={() => setIsQuoteModalOpen(true)}
-                  className="bg-white text-blue-900 font-semibold px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors"
+                  className="bg-white text-blue-900 font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:bg-blue-50 transition-colors text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label={`Get a free quote for ${product.name}`}
@@ -341,7 +321,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                 </motion.button>
                 <motion.a
                   href="#gallery"
-                  className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-blue-900 transition-colors inline-flex items-center justify-center gap-2"
+                  onClick={(e) => smoothScroll(e, "gallery")}
+                  className="border-2 border-white text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:bg-white hover:text-blue-900 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -364,22 +345,22 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <motion.div className="text-center mb-10" variants={fadeInUp}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <motion.div className="text-center mb-8 sm:mb-10" variants={fadeInUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Product Gallery
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Explore detailed images of {product.name} to see the quality and
               craftsmanship up close.
             </p>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start"
             variants={cardVariants}
           >
             {/* Main Image */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {product.images && product.images.length > 0 ? (
                 <>
                   <motion.div
@@ -399,7 +380,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                       }`}
                       priority={selectedImage === 0}
                       itemProp="image"
-                      onLoadingComplete={() => setImageLoading(false)}
                       onLoad={() => setImageLoading(false)}
                     />
                   </motion.div>
@@ -409,15 +389,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                     {needsNavigation && canScrollLeft && (
                       <button
                         onClick={() => handleThumbnailScroll("left")}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-1.5 sm:p-2 transition-all duration-200 hover:shadow-xl"
                       >
                         <ChevronLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                       </button>
                     )}
 
                     <div
-                      className={`flex justify-center gap-3 overflow-hidden ${
-                        needsNavigation ? "px-8" : "px-0"
+                      className={`flex justify-center gap-2 sm:gap-3 overflow-hidden ${
+                        needsNavigation ? "px-6 sm:px-8" : "px-0"
                       }`}
                     >
                       {product.images
@@ -463,7 +443,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                     {needsNavigation && canScrollRight && (
                       <button
                         onClick={() => handleThumbnailScroll("right")}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-2 transition-all duration-200 hover:shadow-xl"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 hover:bg-white shadow-lg rounded-full p-1.5 sm:p-2 transition-all duration-200 hover:shadow-xl"
                       >
                         <ChevronRightIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                       </button>
@@ -480,17 +460,17 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             </div>
 
             {/* Product Information */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <motion.div
-                className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200"
+                className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200"
                 variants={cardVariants}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                   Product Features
                 </h3>
-                <ul className="space-y-4">
+                <ul className="space-y-3 sm:space-y-4">
                   {product.features.map((feature, index) => (
                     <motion.li
                       key={index}
@@ -500,35 +480,39 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                       transition={{ delay: index * 0.1 }}
                     >
                       <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-700">{feature}</span>
+                      <span className="text-gray-700 text-sm sm:text-base">
+                        {feature}
+                      </span>
                     </motion.li>
                   ))}
                 </ul>
               </motion.div>
 
               <motion.div
-                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200"
+                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-blue-200"
                 variants={cardVariants}
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Quality Guarantee
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">
+                    <span className="text-gray-700 text-sm sm:text-base">
                       Free measure and quote
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">
+                    <span className="text-gray-700 text-sm sm:text-base">
                       Professional installation
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">Lifetime warranty</span>
+                    <span className="text-gray-700 text-sm sm:text-base">
+                      Lifetime warranty
+                    </span>
                   </div>
                 </div>
               </motion.div>
@@ -546,24 +530,27 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <motion.div className="text-center mb-10" variants={fadeInUp}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <motion.div className="text-center mb-8 sm:mb-10" variants={fadeInUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Product Details
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Get all the technical information and specifications you need to
               make an informed decision.
             </p>
           </motion.div>
 
-          <motion.div className="mb-6" variants={cardVariants}>
-            <div className="border-b border-gray-200">
-              <nav className="flex space-x-8 justify-center" role="tablist">
+          <motion.div className="mb-4 sm:mb-6" variants={cardVariants}>
+            <div className="border-b border-gray-200 overflow-x-auto">
+              <nav
+                className="flex space-x-6 sm:space-x-8 justify-center min-w-max px-4"
+                role="tablist"
+              >
                 {["description", "specifications"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`py-4 px-6 border-b-2 font-medium text-lg transition-all duration-200 ${
+                    className={`py-3 sm:py-4 px-4 sm:px-6 border-b-2 font-medium text-base sm:text-lg transition-all duration-200 whitespace-nowrap ${
                       activeTab === tab
                         ? "border-blue-500 text-blue-600"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -587,13 +574,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-gray-50 rounded-2xl p-8"
+                  className="bg-gray-50 rounded-xl sm:rounded-2xl p-6 sm:p-8"
                 >
                   <div className="prose max-w-none">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                       Product Description
                     </h3>
-                    <div className="text-gray-700 text-lg leading-relaxed space-y-4">
+                    <div className="text-gray-700 text-base sm:text-lg leading-relaxed space-y-3 sm:space-y-4">
                       {product.description
                         .split("\n")
                         .map((paragraph, index) => (
@@ -611,23 +598,25 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-gray-50 rounded-2xl p-8"
+                  className="bg-gray-50 rounded-xl sm:rounded-2xl p-6 sm:p-8"
                 >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Technical Specifications
                   </h3>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
+                  <div className="bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-sm border border-gray-200">
                     <div className="divide-y divide-gray-200">
                       {Object.entries(product.specifications).map(
                         ([key, value]) => (
                           <div
                             key={key}
-                            className="px-6 py-4 flex justify-between items-center hover:bg-gray-50 transition-colors"
+                            className="px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center hover:bg-gray-50 transition-colors gap-1 sm:gap-0"
                           >
-                            <span className="font-medium text-gray-900">
+                            <span className="font-medium text-gray-900 text-sm sm:text-base">
                               {key}
                             </span>
-                            <span className="text-gray-700">{value}</span>
+                            <span className="text-gray-700 text-sm sm:text-base">
+                              {value}
+                            </span>
                           </div>
                         )
                       )}
@@ -649,11 +638,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         variants={staggerContainer}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <motion.div className="text-center mb-10" variants={fadeInUp}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <motion.div className="text-center mb-8 sm:mb-10" variants={fadeInUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               You May Also Like
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Discover other premium window treatments that complement your
               style.
             </p>
@@ -661,13 +650,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
           {product.relatedProducts && product.relatedProducts.length > 0 ? (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
               variants={staggerContainer}
             >
               {product.relatedProducts.map((relatedProduct) => (
                 <motion.article
                   key={relatedProduct.id}
-                  className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
+                  className="group bg-white rounded-xl sm:rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
                   variants={cardVariants}
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ duration: 0.3 }}
@@ -675,7 +664,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                   itemType="https://schema.org/Product"
                 >
                   <Link href={relatedProduct.href}>
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-48 sm:h-64 overflow-hidden">
                       {relatedProduct.image ? (
                         <Image
                           src={relatedProduct.image}
@@ -686,21 +675,21 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
                           itemProp="image"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400 text-sm">
                           No image available
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       <h3
-                        className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors"
+                        className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors"
                         itemProp="name"
                       >
                         {relatedProduct.name}
                       </h3>
                       <p
-                        className="text-gray-600 line-clamp-2"
+                        className="text-gray-600 line-clamp-2 text-sm sm:text-base"
                         itemProp="description"
                       >
                         {relatedProduct.shortDescription}

@@ -98,7 +98,7 @@ export default function NotFound() {
                 Go to Homepage
               </Link>
               <Link
-                href="#contact-quality-blinds"
+                href="/about#contact"
                 className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                 aria-label="Contact Quality Blinds Australia for assistance"
               >
@@ -113,7 +113,7 @@ export default function NotFound() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"
                   />
                 </svg>
                 Contact Us

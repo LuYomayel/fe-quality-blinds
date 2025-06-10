@@ -12,7 +12,7 @@ import {
   ShieldCheckIcon,
   CogIcon,
 } from "@heroicons/react/24/outline";
-// import { productData } from "@/data/productData";
+import { categoryConfigs } from "@/data/productData";
 
 const RollerBlindsPage = () => {
   const heroRef = useRef(null);
@@ -29,62 +29,29 @@ const RollerBlindsPage = () => {
     margin: "-100px",
   });
 
-  // Filter roller blind products from productData
-  // const rollerBlindProducts = productData.filter(
-  //   (product) =>
-  //     product.id.includes("roller") ||
-  //     product.name.toLowerCase().includes("roller")
-  // );
+  // Get data from centralized config
+  const config = categoryConfigs.rollerBlinds;
+  const rollerBlindCategories = config.products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    description: product.shortDescription,
+    image:
+      product.heroImage || product.images[0]?.src || "/images/placeholder.webp",
+    features: product.features,
+    href: `/blinds/roller/${product.id}`,
+  }));
 
-  const rollerBlindCategories = [
-    {
-      id: "blockout-roller-blinds",
-      name: "Blockout Roller Blinds",
-      description:
-        "Complete light control and privacy with our premium blockout roller blinds. Perfect for bedrooms and media rooms.",
-      image: "/images/blockout-roller-blinds.webp",
-      features: ["100% Light Blocking", "Energy Efficient", "Various Colours"],
-      href: "/blinds/roller/blockout-roller-blinds",
-    },
-    {
-      id: "sunscreen-roller-blinds",
-      name: "Sunscreen Roller Blinds",
-      description:
-        "Reduce glare while maintaining your view. Ideal for living areas and offices with UV protection.",
-      image: "/images/sunscreen-roller-blinds.webp",
-      features: ["UV Protection", "Glare Reduction", "View Preservation"],
-      href: "/blinds/roller/sunscreen-roller-blinds",
-    },
-    {
-      id: "translucent-roller-blinds",
-      name: "Translucent Roller Blinds",
-      description:
-        "Soft, filtered light with privacy. Perfect balance of natural light and discretion.",
-      image: "/images/translucent-roller-blinds.webp",
-      features: ["Soft Light Filtering", "Privacy Control", "Elegant Finish"],
-      href: "/blinds/roller/translucent-roller-blinds",
-    },
-  ];
-
-  const benefits = [
-    {
-      icon: <CogIcon className="h-8 w-8" />,
-      title: "Easy Operation",
-      description:
-        "Smooth chain or motorised operation for effortless daily use",
-    },
-    {
-      icon: <ShieldCheckIcon className="h-8 w-8" />,
-      title: "Durable Quality",
-      description:
-        "Premium materials and construction for long-lasting performance",
-    },
-    {
-      icon: <SparklesIcon className="h-8 w-8" />,
-      title: "Clean Design",
-      description: "Sleek, minimalist appearance that complements any décor",
-    },
-  ];
+  const benefits = config.benefits.map((benefit) => ({
+    ...benefit,
+    icon:
+      benefit.icon === "CogIcon" ? (
+        <CogIcon className="h-8 w-8" />
+      ) : benefit.icon === "ShieldCheckIcon" ? (
+        <ShieldCheckIcon className="h-8 w-8" />
+      ) : (
+        <SparklesIcon className="h-8 w-8" />
+      ),
+  }));
 
   // Animation variants
   const fadeInUp = {
@@ -167,11 +134,10 @@ const RollerBlindsPage = () => {
               </nav>
 
               <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                Roller Blinds
+                {config.title}
               </h1>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl">
-                Simple, stylish, and functional. Our roller blinds offer the
-                perfect combination of practicality and elegance for any space.
+                {config.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -204,33 +170,37 @@ const RollerBlindsPage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src="/images/roller-blinds-hero.webp"
-                    alt="Premium Roller Blinds by Quality Blinds Australia"
+                    src={config.heroImage}
+                    alt={`Premium ${config.title} by Quality Blinds Australia`}
                     fill
                     className="object-cover"
                     priority
                   />
                 </motion.div>
 
-                {/* Floating feature badges */}
+                {/* Floating feature badges - Hidden on mobile */}
                 <motion.div
-                  className="absolute -top-4 -right-4 bg-white text-blue-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white text-blue-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8, type: "spring" }}
                 >
-                  <SunIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">UV Protection</div>
+                  <SunIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    UV Protection
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  className="absolute -bottom-4 -left-4 bg-white text-blue-900 p-4 rounded-xl shadow-lg"
+                  className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 bg-white text-blue-900 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg hidden sm:block"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1, type: "spring" }}
                 >
-                  <EyeSlashIcon className="h-6 w-6 mb-1" />
-                  <div className="text-sm font-semibold">Privacy Control</div>
+                  <EyeSlashIcon className="h-4 w-4 sm:h-6 sm:w-6 mb-1" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    Privacy Control
+                  </div>
                 </motion.div>
               </div>
             </motion.div>

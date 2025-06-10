@@ -2,31 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ProductDetail from "@/components/ProductDetail";
-import { productData } from "@/data/productData";
-
-interface Product {
-  id: string;
-  name: string;
-  shortDescription: string;
-  description: string;
-  images: { src: string; alt: string }[];
-  relatedProducts: {
-    id: string;
-    name: string;
-    image: string;
-    href: string;
-    shortDescription: string;
-  }[];
-  variants: {
-    width: { id: string; name: string; stock: number }[];
-    height: { id: string; name: string; stock: number }[];
-    color: { id: string; name: string; stock: number }[];
-  };
-  rating: number;
-  stock: number;
-  features: string[];
-  specifications: Record<string, string>;
-}
+import { productData, Product } from "@/data/productData";
 
 // This would typically be generated dynamically based on the product
 const productId = "blockout-roller-blinds";
@@ -37,7 +13,7 @@ export default function BlockoutRollerBlindsPage() {
   useEffect(() => {
     const foundProduct = productData.find((p) => p.id === productId);
     if (foundProduct) {
-      setProduct(foundProduct as Product);
+      setProduct(foundProduct);
     }
   }, []);
 

@@ -1,4 +1,41 @@
-export const productData = [
+export interface Product {
+  id: string;
+  name: string;
+  shortDescription: string;
+  description: string;
+  images: Array<{
+    src: string;
+    alt: string;
+  }>;
+  relatedProducts: Array<{
+    id: string;
+    name: string;
+    image: string;
+    alt?: string;
+    href: string;
+    shortDescription: string;
+  }>;
+  variants: {
+    width: string[];
+    height: string[];
+    color: string[];
+  };
+  rating: number;
+  reviewCount: number;
+  stock: number;
+  features: string[];
+  specifications: Record<string, string>;
+  category?: string;
+  subcategory?: string;
+  heroImage?: string;
+  benefits?: Array<{
+    title: string;
+    description: string;
+    icon?: string;
+  }>;
+}
+
+export const productData: Product[] = [
   {
     id: "conservatory-awnings",
     name: "Conservatory Awnings",
@@ -1139,4 +1176,385 @@ export const productData = [
     features: [],
     specifications: {},
   },
+  {
+    id: "sunscreen-roller-blinds",
+    name: "Sunscreen Roller Blinds",
+    shortDescription:
+      "Reduce glare while maintaining your view. Ideal for living areas and offices with excellent UV protection and view preservation.",
+    description:
+      "Sunscreen Roller Blinds offer the perfect balance between sun protection and maintaining your view. Made from specially designed mesh fabrics, they reduce glare and heat while allowing natural light to filter through. Ideal for office spaces, living areas, and any room where you want to preserve your view while protecting against harmful UV rays.",
+    category: "blinds",
+    subcategory: "roller",
+    heroImage: "/images/sunscreen-roller-blind-1.webp",
+    images: [
+      {
+        src: "/images/sunscreen-roller-blind-1.webp",
+        alt: "Sunscreen Roller Blind",
+      },
+      {
+        src: "/images/sunscreen-roller-blind-2.webp",
+        alt: "Sunscreen Roller Blind in office",
+      },
+      { src: "/images/roller-blind-1.webp", alt: "Roller Blind detail" },
+    ],
+    features: [
+      "UV Protection",
+      "Glare Reduction",
+      "View Preservation",
+      "Office & Living Areas",
+    ],
+    benefits: [
+      {
+        title: "UV Protection",
+        description: "Blocks harmful UV rays while maintaining natural light",
+      },
+      {
+        title: "Glare Reduction",
+        description: "Reduces screen glare and eye strain",
+      },
+      {
+        title: "View Preservation",
+        description: "Maintains your view of the outdoors",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-roller-blinds",
+        name: "Blockout Roller Blinds",
+        image: "/images/blockout-roller-blind-1.webp",
+        href: "/blinds/roller/blockout-roller-blinds",
+        shortDescription: "Complete light control for bedrooms",
+      },
+      {
+        id: "translucent-roller-blinds",
+        name: "Translucent Roller Blinds",
+        image: "/images/translucent-roller-blind-1.webp",
+        href: "/blinds/roller/translucent-roller-blinds",
+        shortDescription: "Soft filtered light with privacy",
+      },
+    ],
+    variants: { width: [], height: [], color: [] },
+    rating: 4.8,
+    reviewCount: 156,
+    stock: 50,
+    specifications: {
+      "Fabric Type": "Sunscreen mesh",
+      "UV Protection": "95%",
+      Operation: "Chain or motorised",
+      Mounting: "Inside or outside mount",
+    },
+  },
+  {
+    id: "translucent-roller-blinds",
+    name: "Translucent Roller Blinds",
+    shortDescription:
+      "Soft, filtered light with privacy. Perfect balance of natural light and discretion for any room in your home.",
+    description:
+      "Translucent Roller Blinds provide the ideal solution when you want to maintain privacy while allowing soft, natural light to filter into your space. These blinds offer a gentle glow that creates a warm and inviting atmosphere while protecting your privacy during the day.",
+    category: "blinds",
+    subcategory: "roller",
+    heroImage: "/images/translucent-roller-blind-1.webp",
+    images: [
+      {
+        src: "/images/translucent-roller-blind-1.webp",
+        alt: "Translucent Roller Blind",
+      },
+      {
+        src: "/images/translucent-roller-blind-2.webp",
+        alt: "Translucent Roller Blind in bedroom",
+      },
+      { src: "/images/roller-blind-2.webp", alt: "Roller Blind mechanism" },
+    ],
+    features: [
+      "Light Filtering",
+      "Privacy Control",
+      "Elegant Finish",
+      "Versatile Design",
+    ],
+    benefits: [
+      {
+        title: "Light Filtering",
+        description: "Allows soft natural light while maintaining privacy",
+      },
+      {
+        title: "Privacy Control",
+        description: "Provides daytime privacy without blocking all light",
+      },
+      {
+        title: "Elegant Finish",
+        description: "Clean, sophisticated appearance",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-roller-blinds",
+        name: "Blockout Roller Blinds",
+        image: "/images/blockout-roller-blind-1.webp",
+        href: "/blinds/roller/blockout-roller-blinds",
+        shortDescription: "Complete light control for bedrooms",
+      },
+      {
+        id: "sunscreen-roller-blinds",
+        name: "Sunscreen Roller Blinds",
+        image: "/images/sunscreen-roller-blind-1.webp",
+        href: "/blinds/roller/sunscreen-roller-blinds",
+        shortDescription: "UV protection with view preservation",
+      },
+    ],
+    variants: { width: [], height: [], color: [] },
+    rating: 4.7,
+    reviewCount: 203,
+    stock: 35,
+    specifications: {
+      "Fabric Type": "Light filtering fabric",
+      "Light Transmission": "25-50%",
+      Privacy: "Daytime privacy",
+      Operation: "Chain or motorised",
+    },
+  },
+  {
+    id: "translucent-roman-blinds",
+    name: "Translucent Roman Blinds",
+    shortDescription:
+      "Soft, filtered light with sophisticated style. Ideal for living spaces where gentle illumination meets timeless elegance.",
+    description:
+      "Translucent Roman Blinds combine the classic elegance of roman styling with light-filtering capabilities. These blinds feature premium fabrics that allow gentle light diffusion while maintaining privacy, creating a sophisticated and inviting atmosphere in any room.",
+    category: "blinds",
+    subcategory: "roman",
+    heroImage: "/images/translucent-roman-blind-1.webp",
+    images: [
+      {
+        src: "/images/translucent-roman-blind-1.webp",
+        alt: "Translucent Roman Blind",
+      },
+      {
+        src: "/images/translucent-roman-blind-2.webp",
+        alt: "Translucent Roman Blind in living room",
+      },
+      { src: "/images/roman-blind-1.webp", alt: "Roman Blind detail" },
+    ],
+    features: [
+      "Light Filtering",
+      "Decorative Appeal",
+      "Versatile Design",
+      "Sophisticated Style",
+    ],
+    benefits: [
+      {
+        title: "Light Filtering",
+        description: "Soft diffused light creates warm ambiance",
+      },
+      {
+        title: "Decorative Appeal",
+        description: "Adds sophisticated style to any room",
+      },
+      {
+        title: "Versatile Design",
+        description: "Complements both traditional and modern décor",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "blockout-roman-blinds",
+        name: "Blockout Roman Blinds",
+        image: "/images/blockout-roman-blind-1.webp",
+        href: "/blinds/roman/blockout-roman-blinds",
+        shortDescription: "Complete privacy with classic style",
+      },
+    ],
+    variants: { width: [], height: [], color: [] },
+    rating: 4.9,
+    reviewCount: 127,
+    stock: 28,
+    specifications: {
+      "Fabric Type": "Premium light filtering fabrics",
+      Style: "Classic roman fold",
+      Operation: "Chain operated",
+      "Light Control": "Gentle diffusion",
+    },
+  },
+  {
+    id: "cedar-venetian-blinds",
+    name: "Cedar Venetian Blinds",
+    shortDescription:
+      "Luxurious cedar wood with rich grain patterns. The ultimate choice for those seeking premium quality and natural beauty.",
+    description:
+      "Cedar Venetian Blinds represent the pinnacle of natural wood window treatments. Crafted from premium cedar timber, these blinds feature rich grain patterns and natural beauty that brings warmth and luxury to any space. Cedar's natural properties provide excellent durability and resistance to moisture and insects.",
+    category: "blinds",
+    subcategory: "venetian",
+    heroImage: "/images/cedar-venetian-blind-1.webp",
+    images: [
+      {
+        src: "/images/cedar-venetian-blind-1.webp",
+        alt: "Cedar Venetian Blind",
+      },
+      {
+        src: "/images/cedar-venetian-blind-2.webp",
+        alt: "Cedar Venetian Blind detail",
+      },
+      { src: "/images/venetian-blind-1.webp", alt: "Venetian Blind mechanism" },
+    ],
+    features: [
+      "Luxury Wood",
+      "Rich Grain",
+      "Premium Craftsmanship",
+      "Natural Beauty",
+    ],
+    benefits: [
+      {
+        title: "Luxury Wood",
+        description: "Premium cedar timber with natural beauty",
+      },
+      { title: "Rich Grain", description: "Beautiful natural wood patterns" },
+      {
+        title: "Premium Craftsmanship",
+        description: "Expert construction and finishing",
+      },
+    ],
+    relatedProducts: [
+      {
+        id: "basswood-venetian-blinds",
+        name: "Basswood Venetian Blinds",
+        image: "/images/basswood-venetian-blind-1.webp",
+        href: "/blinds/venetian/basswood-venetian-blinds",
+        shortDescription: "Natural basswood with elegant finish",
+      },
+      {
+        id: "aluminium-venetian-blinds",
+        name: "Aluminium Venetian Blinds",
+        image: "/images/aluminium-venetian-blind-1.webp",
+        href: "/blinds/venetian/aluminium-venetian-blinds",
+        shortDescription: "Modern aluminium with precise control",
+      },
+    ],
+    variants: { width: [], height: [], color: [] },
+    rating: 4.9,
+    reviewCount: 89,
+    stock: 15,
+    specifications: {
+      Material: "Premium cedar timber",
+      "Slat Width": "25mm, 50mm",
+      Finish: "Natural stain, custom stains available",
+      Operation: "Cord tilt and lift",
+    },
+  },
 ];
+
+// Utility functions for working with product data
+export const getProductById = (id: string): Product | undefined => {
+  return productData.find((product) => product.id === id);
+};
+
+export const getProductsByCategory = (category: string): Product[] => {
+  return productData.filter((product) => product.category === category);
+};
+
+export const getProductsBySubcategory = (
+  category: string,
+  subcategory: string
+): Product[] => {
+  return productData.filter(
+    (product) =>
+      product.category === category && product.subcategory === subcategory
+  );
+};
+
+export const getRelatedProducts = (
+  productId: string,
+  limit: number = 3
+): Product[] => {
+  const product = getProductById(productId);
+  if (!product) return [];
+
+  return product.relatedProducts
+    .map((related) => getProductById(related.id))
+    .filter((p): p is Product => p !== undefined)
+    .slice(0, limit);
+};
+
+// Category configurations for pages
+export const categoryConfigs = {
+  rollerBlinds: {
+    title: "Roller Blinds",
+    description:
+      "Simple, stylish, and functional. Our roller blinds offer the perfect combination of practicality and elegance for any space.",
+    heroImage: "/images/roller-blind-1.webp",
+    gradient: "from-blue-900 via-blue-800 to-indigo-900",
+    products: getProductsBySubcategory("blinds", "roller"),
+    benefits: [
+      {
+        title: "Easy Operation",
+        description:
+          "Smooth chain or motorised operation for effortless daily use",
+        icon: "CogIcon",
+      },
+      {
+        title: "Durable Quality",
+        description:
+          "Premium materials and construction for long-lasting performance",
+        icon: "ShieldCheckIcon",
+      },
+      {
+        title: "Clean Design",
+        description: "Sleek, minimalist appearance that complements any décor",
+        icon: "SparklesIcon",
+      },
+    ],
+  },
+  romanBlinds: {
+    title: "Roman Blinds",
+    description:
+      "Timeless elegance meets modern functionality. Our roman blinds bring sophisticated style and premium quality to your windows.",
+    heroImage: "/images/roman-blinds-hero.webp",
+    gradient: "from-amber-900 via-orange-800 to-red-900",
+    products: getProductsBySubcategory("blinds", "roman"),
+    benefits: [
+      {
+        title: "Timeless Elegance",
+        description:
+          "Classic folding design that adds sophistication to any interior",
+        icon: "PaintBrushIcon",
+      },
+      {
+        title: "Premium Fabrics",
+        description:
+          "Wide selection of quality materials and designer patterns",
+        icon: "SwatchIcon",
+      },
+      {
+        title: "Superior Quality",
+        description:
+          "Precision engineering with smooth operation and lasting durability",
+        icon: "ShieldCheckIcon",
+      },
+    ],
+  },
+  venetianBlinds: {
+    title: "Venetian Blinds",
+    description:
+      "Precision meets style. Our venetian blinds offer unmatched control over light and privacy with timeless elegance.",
+    heroImage: "/images/venetian-blinds-hero.webp",
+    gradient: "from-slate-900 via-gray-800 to-zinc-900",
+    products: getProductsBySubcategory("blinds", "venetian"),
+    benefits: [
+      {
+        title: "Precise Control",
+        description:
+          "Adjustable slats provide exact light control and privacy levels",
+        icon: "AdjustmentsVerticalIcon",
+      },
+      {
+        title: "Versatile Operation",
+        description:
+          "Smooth tilting and lifting mechanisms for effortless daily use",
+        icon: "CogIcon",
+      },
+      {
+        title: "Timeless Style",
+        description:
+          "Classic design that complements both traditional and modern interiors",
+        icon: "SparklesIcon",
+      },
+    ],
+  },
+};

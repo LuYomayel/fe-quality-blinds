@@ -130,8 +130,6 @@ const ContactForm: React.FC = () => {
     }
   };
 
-  const inputClasses =
-    "p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300";
   const errorClasses = "border-red-500 focus:ring-red-500";
 
   return (
@@ -140,18 +138,18 @@ const ContactForm: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       onSubmit={handleSubmit}
-      className="bg-white p-8 rounded-xl shadow-xl border border-gray-200 space-y-6"
+      className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg sm:rounded-xl shadow-xl border border-gray-200 space-y-4 sm:space-y-6 w-full max-w-full"
     >
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-3xl font-extrabold text-center mb-8 text-gray-900"
+        className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center mb-4 sm:mb-6 lg:mb-8 text-gray-900"
       >
         Enquire For Measures & Quotes
       </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -163,14 +161,16 @@ const ContactForm: React.FC = () => {
             value={form.name}
             onChange={handleChange}
             placeholder="Your Name*"
-            className={`${inputClasses} ${errors.name ? errorClasses : ""}`}
+            className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
+              errors.name ? errorClasses : ""
+            }`}
             required
           />
           {errors.name && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600"
+              className="mt-1 text-xs sm:text-sm text-red-600"
             >
               {errors.name}
             </motion.p>
@@ -188,47 +188,53 @@ const ContactForm: React.FC = () => {
             value={form.phone}
             onChange={handleChange}
             placeholder="Your Number*"
-            className={`${inputClasses} ${errors.phone ? errorClasses : ""}`}
+            className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
+              errors.phone ? errorClasses : ""
+            }`}
             required
           />
           {errors.phone && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600"
+              className="mt-1 text-xs sm:text-sm text-red-600"
             >
               {errors.phone}
             </motion.p>
           )}
         </motion.div>
+      </div>
 
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Your Email*"
+          className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
+            errors.email ? errorClasses : ""
+          }`}
+          required
+        />
+        {errors.email && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-1 text-xs sm:text-sm text-red-600"
+          >
+            {errors.email}
+          </motion.p>
+        )}
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Your Email*"
-            className={`${inputClasses} ${errors.email ? errorClasses : ""}`}
-            required
-          />
-          {errors.email && (
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600"
-            >
-              {errors.email}
-            </motion.p>
-          )}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
@@ -237,50 +243,53 @@ const ContactForm: React.FC = () => {
             name="postcode"
             value={form.postcode}
             onChange={handleChange}
-            placeholder="Postcode"
-            className={inputClasses}
+            placeholder="Postcode (Optional)"
+            className="p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <input
+            type="text"
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+            placeholder="Address (Optional)"
+            className="p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
           />
         </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
-        <input
-          type="text"
-          name="address"
-          value={form.address}
-          onChange={handleChange}
-          placeholder="Your Address"
-          className={inputClasses}
-        />
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
         >
           <select
             name="service"
             value={form.service}
             onChange={handleChange}
-            className={`${inputClasses} ${errors.service ? errorClasses : ""}`}
+            className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
+              errors.service ? errorClasses : ""
+            }`}
             required
           >
-            <option value="">Choose Your Service</option>
-            <option value="measure">Measure & Quote</option>
-            <option value="installation">Installation</option>
-            <option value="repair">Repair</option>
+            <option value="">Select Service*</option>
+            <option value="measure-quote">Free Measure & Quote</option>
+            <option value="installation">Installation Service</option>
+            <option value="repair">Repair Service</option>
+            <option value="consultation">Design Consultation</option>
           </select>
           {errors.service && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600"
+              className="mt-1 text-xs sm:text-sm text-red-600"
             >
               {errors.service}
             </motion.p>
@@ -288,30 +297,33 @@ const ContactForm: React.FC = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
           <select
             name="product"
             value={form.product}
             onChange={handleChange}
-            className={`${inputClasses} ${errors.product ? errorClasses : ""}`}
+            className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
+              errors.product ? errorClasses : ""
+            }`}
             required
           >
-            <option value="">Choose Your Product</option>
-            <option value="roller">Roller Blinds</option>
-            <option value="roman">Roman Blinds</option>
-            <option value="venetian">Venetian Blinds</option>
-            <option value="curtains">Curtains</option>
+            <option value="">Select Product*</option>
+            <option value="roller-blinds">Roller Blinds</option>
+            <option value="roman-blinds">Roman Blinds</option>
+            <option value="venetian-blinds">Venetian Blinds</option>
+            <option value="curtains">Curtains & Drapes</option>
             <option value="shutters">Shutters</option>
             <option value="awnings">Awnings</option>
+            <option value="other">Other</option>
           </select>
           {errors.product && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600"
+              className="mt-1 text-xs sm:text-sm text-red-600"
             >
               {errors.product}
             </motion.p>
@@ -328,16 +340,18 @@ const ContactForm: React.FC = () => {
           name="message"
           value={form.message}
           onChange={handleChange}
-          placeholder="Your Message"
-          className={`${inputClasses} ${errors.message ? errorClasses : ""}`}
-          rows={5}
+          placeholder="Tell us about your project..."
+          rows={4}
+          className={`p-3 sm:p-4 rounded-lg border border-gray-300 w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none text-sm sm:text-base ${
+            errors.message ? errorClasses : ""
+          }`}
           required
         />
         {errors.message && (
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-1 text-sm text-red-600"
+            className="mt-1 text-xs sm:text-sm text-red-600"
           >
             {errors.message}
           </motion.p>
@@ -348,52 +362,56 @@ const ContactForm: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 1 }}
-        className="mt-6"
       >
-        <label className="block text-gray-700 mb-2 font-medium">
-          Upload Images (up to 4)
+        <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+          Upload Images (Optional) - Max 4 files
         </label>
         <input
           type="file"
-          accept="image/*"
           multiple
+          accept="image/*"
           onChange={handleFilesChange}
-          className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
-                 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all duration-300"
+          className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-xs sm:text-sm"
         />
       </motion.div>
 
       <motion.button
+        type="submit"
+        disabled={status === "sending"}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 1.1 }}
-        type="submit"
-        disabled={status === "sending"}
-        className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl text-lg tracking-wide hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 sm:py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed text-sm sm:text-base"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
         {status === "sending" ? (
-          <svg
-            className="animate-spin h-5 w-5 mr-3 text-white"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8z"
-            ></path>
-          </svg>
-        ) : null}
-        {status === "sending" ? "Sending..." : "Submit"}
+          <div className="flex items-center justify-center">
+            <svg
+              className="animate-spin -ml-1 mr-3 h-4 w-4 sm:h-5 sm:w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Sending...
+          </div>
+        ) : (
+          "Send Enquiry"
+        )}
       </motion.button>
 
       <AnimatePresence>

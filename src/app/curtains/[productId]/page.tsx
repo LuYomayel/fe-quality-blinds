@@ -2,30 +2,6 @@ import ProductDetail from "@/components/ProductDetail";
 import { productData } from "@/data/productData";
 import { notFound } from "next/navigation";
 
-interface Product {
-  id: string;
-  name: string;
-  shortDescription: string;
-  description: string;
-  images: { src: string; alt: string }[];
-  relatedProducts: {
-    id: string;
-    name: string;
-    image: string;
-    href: string;
-    shortDescription: string;
-  }[];
-  variants: {
-    width: { id: string; name: string; stock: number }[];
-    height: { id: string; name: string; stock: number }[];
-    color: { id: string; name: string; stock: number }[];
-  };
-  rating: number;
-  stock: number;
-  features: string[];
-  specifications: Record<string, string>;
-}
-
 // Generate static params for all Curtains products
 export async function generateStaticParams() {
   const curtainProducts = productData.filter(
@@ -33,7 +9,8 @@ export async function generateStaticParams() {
       product.id.includes("curtain") ||
       product.name.toLowerCase().includes("curtain") ||
       product.id.includes("sheer") ||
-      product.id.includes("veri-shade")
+      product.id.includes("veri-shade") ||
+      product.category === "Curtains"
   );
 
   return curtainProducts.map((product) => ({
@@ -53,11 +30,9 @@ export default async function CurtainsProductPage({
     notFound();
   }
 
-  const product = foundProduct as Product;
-
   return (
     <main>
-      <ProductDetail product={product} />
+      <ProductDetail product={foundProduct} />
     </main>
   );
 }
