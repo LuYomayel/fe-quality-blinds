@@ -308,6 +308,7 @@ const Home: React.FC = () => {
         }
       }, 50);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBrand]);
 
   // Funciones de navegación manual mejoradas

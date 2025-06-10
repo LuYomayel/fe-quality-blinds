@@ -145,6 +145,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
     } else {
       restartChat();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages.length]);
 
   // Handle initial message when chatbot opens
@@ -196,6 +197,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         setMessages((prev) => [...prev, response]);
       }, 800);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
