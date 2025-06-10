@@ -13,6 +13,7 @@
     "critters": "^0.0.25",
     "framer-motion": "^12.15.0",
     "next": "15.3.3",
+    "openai": "^5.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.16.0"

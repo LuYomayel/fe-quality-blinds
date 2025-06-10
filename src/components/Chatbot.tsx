@@ -14,9 +14,7 @@ import {
   PaperAirplaneIcon,
   SparklesIcon,
   QuestionMarkCircleIcon,
-  ClockIcon,
   PhoneIcon,
-  EnvelopeIcon,
   HomeIcon,
   CurrencyDollarIcon,
   ShoppingBagIcon,
@@ -119,6 +117,22 @@ const Chatbot: React.FC<ChatbotProps> = ({
     []
   );
 
+  // ── OpenAI helper ─────────────────────────────────────────
+  const askOpenAI = async (prompt: string): Promise<string> => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await res.json();
+      return data.answer ?? "Sorry, I couldn't get that right now.";
+    } catch {
+      return "Sorry, I'm having trouble connecting to our knowledge base.";
+    }
+  };
+  // ──────────────────────────────────────────────────────────
+
   const restartChat = () => {
     setMessages([]);
     setInputValue("");
@@ -197,7 +211,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         setMessages((prev) => [...prev, response]);
       }, 800);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     []
   );
 
@@ -353,129 +367,14 @@ const Chatbot: React.FC<ChatbotProps> = ({
     let suggestions: string[] = [];
     let quickActions: QuickAction[] = [];
 
-    // Intent detection with Quality Blinds specific responses
+    // Casos muy específicos que requieren acciones inmediatas (no IA)
     if (
-      lowerMessage.includes("quote") ||
-      lowerMessage.includes("price") ||
-      lowerMessage.includes("cost") ||
-      lowerMessage.includes("free")
-    ) {
-      content =
-        "I'd be happy to help you get a FREE quote! We provide completely free, no-obligation quotes with professional measurement.\n\n📞 Call (02) 9340 5050\n📍 131 Botany St, Randwick NSW\n✅ Free home consultation\n⚡ Many products ready in 1-2 weeks\n\nWhat type of window treatment interests you?";
-      suggestions = [
-        "Roller Blinds",
-        "Roman Blinds",
-        "Venetian Blinds",
-        "Curtains",
-        "Shutters",
-        "Awnings",
-      ];
-      quickActions = [
-        {
-          id: "quote-form",
-          label: "Book Free Consultation",
-          action: "BOOK_CONSULTATION",
-          icon: HomeIcon,
-        },
-        {
-          id: "call",
-          label: "Call (02) 9340 5050",
-          action: "CALL_US",
-          icon: PhoneIcon,
-        },
-      ];
-    } else if (
-      lowerMessage.includes("blockout") ||
-      lowerMessage.includes("block out")
-    ) {
-      content =
-        "Blockout products are perfect for complete light control!\n\n🌑 BLOCKOUT ROLLER BLINDS:\n• 100% light blocking coated fabric\n• Energy efficient - up to 24% heat reduction\n• Perfect for bedrooms, theaters\n\n🌑 BLOCKOUT ROMAN BLINDS:\n• Premium fabrics with chain operation\n• Can add blackout lining\n\n🌑 BLOCKOUT CURTAINS:\n• Triple-weave technology\n• 99% UV protection\n• Superior insulation\n\nWhich room are you looking to darken?";
-      suggestions = ["Bedroom", "Home Theater", "Living Room", "All Rooms"];
-    } else if (
-      lowerMessage.includes("sunscreen") ||
-      lowerMessage.includes("glare") ||
-      lowerMessage.includes("uv")
-    ) {
-      content =
-        "Sunscreen blinds are excellent for UV protection while maintaining views!\n\n☀️ SUNSCREEN ROLLER BLINDS:\n• Mesh fabric blocks 90%+ UV rays\n• Reduces glare and heat\n• Maintains outside view\n• Day privacy (transparent at night)\n• Often paired with blockout in 'Double Roller' system\n\nGreat for offices, living areas, and large windows!";
-      suggestions = [
-        "Double Roller System",
-        "Office Windows",
-        "Living Room",
-        "UV Protection",
-      ];
-    } else if (
-      lowerMessage.includes("shutter") ||
-      lowerMessage.includes("plantation")
-    ) {
-      content =
-        "Our shutters are a premium choice! We offer several materials:\n\n💧 ABS WATERPROOF: Perfect for bathrooms, kitchens\n• 100% waterproof, 23 colors, 5 louvre sizes\n\n🌿 BASSWOOD: Quality real timber, great value\n• 27 colors + stains, sustainable sourced\n\n⭐ PHOENIXWOOD: Premium hardwood luxury\n• 51 colors, hand-sanded, furniture-quality\n\n💰 PVC: Most affordable, moisture-proof\n• Rigid PVC with aluminum core\n\nWhich room are you considering shutters for?";
-      suggestions = [
-        "Bathroom (Waterproof)",
-        "Living Room",
-        "Bedroom",
-        "Kitchen",
-      ];
-      quickActions = [
-        {
-          id: "samples",
-          label: "Request Samples",
-          action: "REQUEST_SAMPLES",
-          icon: SparklesIcon,
-        },
-      ];
-    } else if (
-      lowerMessage.includes("venetian") ||
-      lowerMessage.includes("slat")
-    ) {
-      content =
-        "Venetian blinds offer excellent light control!\n\n🔧 ALUMINIUM VENETIANS:\n• 25mm or 50mm slats\n• Splash-resistant, ideal for kitchens/bathrooms\n• Huge range of colors and finishes\n\n🌿 BASSWOOD VENETIANS:\n• Natural timber, lightweight\n• Various stains and colors\n• Warm, natural aesthetic\n\n🌿 CEDAR VENETIANS:\n• Premium red cedar wood\n• Rich color, dimensionally stable\n• Perfect for living rooms, bedrooms\n\nMade in Australia with thicker-than-standard slats for extra durability!";
-      suggestions = [
-        "Kitchen/Bathroom",
-        "Living Areas",
-        "25mm Slats",
-        "50mm Slats",
-      ];
-    } else if (
-      lowerMessage.includes("awning") ||
-      lowerMessage.includes("outdoor") ||
-      lowerMessage.includes("patio")
-    ) {
-      content =
-        "We offer comprehensive outdoor shading solutions!\n\n🏠 FOLDING ARM AWNINGS:\n• Retractable, up to 7m wide\n• Semi-cassette or Full-cassette options\n• Manual crank or motorized with sensors\n\n📐 STRAIGHT DROP AWNINGS:\n• Vertical drop for windows/patios\n• Acrylic, mesh sunscreen, or clear PVC\n• Wind sensors for automatic retraction\n\n🏡 CONSERVATORY AWNINGS:\n• Motorized for glass roofs/skylights\n• Remote control operation\n• Retracts into discrete headbox\n\nWhich outdoor area needs shade?";
-      suggestions = ["Patio/Deck", "Window Awning", "Glass Roof", "Balcony"];
-    } else if (
-      lowerMessage.includes("roman") ||
-      lowerMessage.includes("fabric blind")
-    ) {
-      content =
-        "Roman blinds add elegant style with premium fabrics!\n\n✨ BLOCKOUT ROMANS:\n• Quality Australian fabrics\n• Chain-operated with aluminum battens\n• Can add blackout lining\n• Perfect for bedrooms, media rooms\n\n🌅 TRANSLUCENT ROMANS:\n• Light-filtering fabrics\n• Privacy with natural light\n• Ideal for living areas\n• Creates soft, filtered glow\n\nEasy operation - cord-drawn for small/medium, chain control for larger blinds. Made locally for quick turnaround!";
-      suggestions = [
-        "Blockout Roman",
-        "Translucent Roman",
-        "Living Room",
-        "Bedroom",
-      ];
-    } else if (
-      lowerMessage.includes("curtain") ||
-      lowerMessage.includes("drape")
-    ) {
-      content =
-        "Our custom curtains offer elegance and functionality!\n\n🌑 BLOCKOUT CURTAINS:\n• Triple-weave technology\n• 99% UV protection, 24% heat reduction\n• Energy efficient year-round\n• Perfect for bedrooms, theaters\n\n🌤️ SHEER CURTAINS:\n• Light, translucent fabrics\n• Diffuse sunlight beautifully\n• Day privacy (limited night privacy)\n• Often layered with blockouts\n\n🎛️ VERI SHADES:\n• Combine curtain elegance with blind control\n• Alternating opaque/sheer panels\n• Adjustable for light or privacy\n\nWhich style interests you most?";
-      suggestions = [
-        "Blockout for Bedroom",
-        "Sheer for Living",
-        "Veri Shades",
-        "Layered System",
-      ];
-    } else if (
-      lowerMessage.includes("contact") ||
+      lowerMessage.includes("call") ||
       lowerMessage.includes("phone") ||
-      lowerMessage.includes("address") ||
-      lowerMessage.includes("location")
+      lowerMessage.includes("contact")
     ) {
       content =
-        "Here are all the ways to reach Quality Blinds:\n\n📞 Phone: (02) 9340 5050\n✉️ Email: sales@qualityblinds.com.au\n📍 Address: 131 Botany St, Randwick NSW 2031\n\n🕒 Business Hours:\nMon-Fri: 9AM-5PM\nSaturday: 9AM-2PM (by appointment)\nSunday: Closed\n\n🏠 FREE home consultations available\n🌐 Live chat here anytime!\n\nEstablished 1989 - Family business serving Sydney & NSW";
+        "Here's how to reach Quality Blinds Australia:\n\n📞 PHONE: (02) 9340 5050\n✉️ EMAIL: sales@qualityblinds.com.au\n📍 SHOWROOM: 131 Botany St, Randwick NSW 2031\n\n🕒 BUSINESS HOURS:\nMonday-Friday: 9AM-5PM\nSaturday: 9AM-2PM (by appointment)\nSunday: Closed\n\n🏠 FREE home consultations available across Sydney & NSW";
       quickActions = [
         {
           id: "call",
@@ -484,135 +383,19 @@ const Chatbot: React.FC<ChatbotProps> = ({
           icon: PhoneIcon,
         },
         {
-          id: "email",
-          label: "Send Email",
-          action: "EMAIL_US",
-          icon: EnvelopeIcon,
-        },
-        {
-          id: "consultation",
+          id: "book-home-visit",
           label: "Book Home Visit",
-          action: "BOOK_CONSULTATION",
+          action: "BOOK_HOME_VISIT",
           icon: HomeIcon,
         },
       ];
-    } else if (
-      lowerMessage.includes("install") ||
-      lowerMessage.includes("measure") ||
-      lowerMessage.includes("how long") ||
-      lowerMessage.includes("lead time")
-    ) {
-      content =
-        "Our professional installation process:\n\n1️⃣ FREE consultation & precise measurement\n2️⃣ Quote provided within 24 hours\n3️⃣ Local manufacturing (1-2 weeks for blinds)\n4️⃣ Professional installation (1-3 hours)\n5️⃣ Quality check & complete cleanup\n\n⚡ LEAD TIMES:\n• Blinds & Roller Shades: 1-2 weeks\n• Shutters: 4-6 weeks (complex/timber)\n• Awnings: 2-4 weeks\n\nMost residential jobs completed in single visit by our professional team!";
-      quickActions = [
-        {
-          id: "book",
-          label: "Book Free Consultation",
-          action: "BOOK_CONSULTATION",
-          icon: ClockIcon,
-        },
-      ];
-    } else if (
-      lowerMessage.includes("warranty") ||
-      lowerMessage.includes("guarantee") ||
-      lowerMessage.includes("repair")
-    ) {
-      content =
-        "We stand behind our quality with comprehensive coverage:\n\n✅ 2+ years on mechanisms & components\n✅ Lifetime warranty on many fabrics\n✅ Professional workmanship guarantee\n✅ FREE service calls for warranty issues\n✅ Repair & maintenance even after warranty\n\n🔧 REPAIR SERVICES:\n• Genuine spare parts available\n• Professional repair technicians\n• DIY parts if you prefer\n\nWarranty covers manufacturing defects & workmanship. Report any issues within 5 days of delivery. We're committed to your satisfaction!";
-      quickActions = [
-        {
-          id: "repair",
-          label: "Request Repair",
-          action: "CONTACT_REPAIR",
-          icon: PhoneIcon,
-        },
-      ];
-    } else if (
-      lowerMessage.includes("sample") ||
-      lowerMessage.includes("fabric") ||
-      lowerMessage.includes("color") ||
-      lowerMessage.includes("swatch")
-    ) {
-      content =
-        "We'd love to send you FREE samples!\n\n📦 FREE fabric samples to your home\n📚 Professional sample books during consultation\n🎨 Extensive collections: Sorrento, Impulse, Avalon\n🌈 See colors in your actual lighting\n🏠 Consultant brings samples during free measure\n\n🎯 AVAILABLE SAMPLES:\n• Roller Blind fabrics (Blockout, Sunscreen, Translucent)\n• Roman Blind premium fabrics\n• Curtain materials\n• Shutter color swatches\n• Awning acrylic canvases\n\nWhich products are you considering?";
-      suggestions = [
-        "Roller Blind Fabrics",
-        "Shutter Colors",
-        "Curtain Materials",
-        "Awning Fabrics",
-      ];
-      quickActions = [
-        {
-          id: "samples",
-          label: "Request FREE Samples",
-          action: "REQUEST_SAMPLES",
-          icon: SparklesIcon,
-        },
-      ];
-    } else if (
-      lowerMessage.includes("difference") ||
-      lowerMessage.includes("compare") ||
-      lowerMessage.includes("vs") ||
-      lowerMessage.includes("which")
-    ) {
-      content =
-        "Great question! Here are key product comparisons:\n\n🆚 BLINDS vs CURTAINS:\n• Blinds: Precise light control, modern, space-efficient\n• Curtains: Soft elegance, insulation, decorative appeal\n\n🆚 BLOCKOUT vs SUNSCREEN:\n• Blockout: 100% light block, energy efficient\n• Sunscreen: UV protection + view, day privacy only\n\n🆚 VENETIAN vs ROLLER:\n• Venetian: Adjustable slats, precise control\n• Roller: Minimal space, clean lines, easy operation\n\n🆚 SHUTTERS vs BLINDS:\n• Shutters: Permanent, premium, excellent insulation\n• Blinds: More affordable, easier to replace\n\nWhat specific comparison interests you?";
-      suggestions = [
-        "Blockout vs Sunscreen",
-        "Shutters vs Blinds",
-        "Roman vs Roller",
-        "Indoor vs Outdoor",
-      ];
-    } else if (
-      lowerMessage.includes("motorized") ||
-      lowerMessage.includes("electric") ||
-      lowerMessage.includes("smart") ||
-      lowerMessage.includes("automation")
-    ) {
-      content =
-        "Smart motorization brings convenience and efficiency!\n\n🎮 REMOTE CONTROL:\n• Multi-blind control capability\n• Quiet motor operation\n• 5-year motor warranty\n\n📱 SMART HOME INTEGRATION:\n• Alexa, Google Home compatible\n• Smartphone app control\n• Voice activation\n\n🌤️ WEATHER SENSORS:\n• Automatic sun/wind response\n• Programmable schedules\n• Energy optimization\n\n🔧 UPGRADE OPTIONS:\n• Can motorize existing manual blinds\n• Professional installation included\n\nPerfect for large windows, awnings, or convenience. Which products interest you for motorization?";
-      suggestions = [
-        "Roller Blinds",
-        "Awnings",
-        "Curtains",
-        "Multiple Windows",
-      ];
-    } else if (
-      lowerMessage.includes("help") ||
-      lowerMessage.includes("faq") ||
-      lowerMessage.includes("question")
-    ) {
-      content =
-        "I'm here to help with all your window treatment questions!\n\n❓ COMMON QUESTIONS:\n• Product comparisons & recommendations\n• Free quotes & measurements\n• Installation process & timeframes\n• Warranty & repair services\n• Fabric samples & color options\n• Motorization & smart features\n\nWhat specific area can I help you with today?";
-      suggestions = faqs.slice(0, 3).map((faq) => faq.question);
-      quickActions = [
-        {
-          id: "faq",
-          label: "View All FAQs",
-          action: "SHOW_FAQ",
-          icon: QuestionMarkCircleIcon,
-        },
-      ];
-    } else if (
-      faqs.some((faq) => lowerMessage.includes(faq.question.toLowerCase()))
-    ) {
-      const matchedFaq = faqs.find((faq) =>
-        lowerMessage.includes(faq.question.toLowerCase())
-      );
-      if (matchedFaq) {
-        content = matchedFaq.answer;
-        suggestions = faqs
-          .filter((f) => f !== matchedFaq)
-          .slice(0, 2)
-          .map((f) => f.question);
-      }
     } else if (
       lowerMessage.includes("hello") ||
       lowerMessage.includes("hi") ||
       lowerMessage.includes("hey")
     ) {
       content =
-        "Hello! Welcome to Quality Blinds Australia! 👋\n\nI'm here to help you find perfect window treatments for your home. We've been serving Sydney & NSW since 1989 with:\n\n✅ FREE quotes & measurements\n✅ Local manufacturing (fast turnaround)\n✅ Professional installation\n✅ Comprehensive warranties\n\nAre you looking for blinds, curtains, shutters, or outdoor solutions?";
+        "Hello! Welcome to Quality Blinds Australia! 👋\n\nI'm here to help you find perfect window treatments for your home. We've been serving Sydney & NSW since 1989 with:\n\n✅ FREE quotes & measurements\n✅ Local manufacturing (fast turnaround)\n✅ Professional installation\n✅ Comprehensive warranties\n\nWhat can I help you with today?";
       quickActions = [
         {
           id: "quote",
@@ -632,36 +415,36 @@ const Chatbot: React.FC<ChatbotProps> = ({
           action: "REQUEST_SAMPLES",
           icon: SparklesIcon,
         },
+      ];
+    } else if (
+      lowerMessage.includes("help") ||
+      lowerMessage.includes("faq") ||
+      lowerMessage.includes("question")
+    ) {
+      content =
+        "I'm here to help with all your window treatment questions!\n\n❓ I CAN HELP WITH:\n• Product recommendations & comparisons\n• Free quotes & measurements\n• Installation process & timeframes\n• Warranty & repair services\n• Fabric samples & color options\n• Motorization & smart features\n\nWhat specific area can I help you with today?";
+      suggestions = [
+        "Get Quote",
+        "Product Comparison",
+        "Installation Info",
+        "Samples",
+      ];
+      quickActions = [
         {
-          id: "contact",
-          label: "Contact Us",
-          action: "CONTACT_INFO",
-          icon: PhoneIcon,
+          id: "faq",
+          label: "View Common Questions",
+          action: "SHOW_FAQ",
+          icon: QuestionMarkCircleIcon,
         },
       ];
     } else {
-      content =
-        "I'd love to help you with that! Quality Blinds offers expert guidance for all window treatment needs.\n\n🎯 I CAN HELP WITH:\n• Product recommendations & comparisons\n• Free quotes & consultations\n• Technical specifications\n• Installation & warranty info\n• Samples & color matching\n\nFor detailed quotes or technical questions, our specialist team at (02) 9340 5050 provides the best assistance. Would you like me to:\n\n• Connect you with a specialist\n• Show you our product range\n• Schedule a FREE home consultation";
-      quickActions = [
-        {
-          id: "specialist",
-          label: "Call Specialist",
-          action: "CALL_US",
-          icon: PhoneIcon,
-        },
-        {
-          id: "products",
-          label: "View Products",
-          action: "BROWSE_PRODUCTS",
-          icon: ShoppingBagIcon,
-        },
-        {
-          id: "consult",
-          label: "Free Consultation",
-          action: "BOOK_CONSULTATION",
-          icon: HomeIcon,
-        },
-      ];
+      // Para todo lo demás, usar IA
+      return {
+        id: Date.now().toString(),
+        type: "bot",
+        content: "__OPENAI_PLACEHOLDER__",
+        timestamp: new Date(),
+      };
     }
 
     return {
@@ -710,6 +493,16 @@ const Chatbot: React.FC<ChatbotProps> = ({
       setIsTyping(false);
       const response = botResponse(inputValue);
       addMessage(response);
+      if (response.content === "__OPENAI_PLACEHOLDER__") {
+        askOpenAI(inputValue).then((aiAnswer) => {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === response.id ? { ...m, content: aiAnswer } : m
+            )
+          );
+        });
+        return; // ya gestionado
+      }
     }, 800);
   };
 

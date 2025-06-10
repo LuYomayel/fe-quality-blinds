@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import { LoadingProvider } from "@/components/LoadingProvider";
+import Chatbot from "@/components/Chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -148,6 +149,7 @@ export default function RootLayout({
       >
         <LoadingProvider>
           <Header />
+          <Chatbot />
           {children}
           <Footer />
         </LoadingProvider>
