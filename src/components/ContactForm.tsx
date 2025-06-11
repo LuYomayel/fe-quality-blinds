@@ -41,6 +41,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
     "idle"
   );
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const [apiError, setApiError] = useState<string>("");
   const filesRef = useRef<File[]>([]);
 
   // Function to generate chat summary and pre-fill form based on conversation
@@ -172,6 +173,10 @@ Please contact me regarding the above discussion about your window treatments.`;
     if (errors[name as keyof ContactFormData]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
+    // Clear API error when user makes changes
+    if (apiError) {
+      setApiError("");
+    }
   };
 
   const handleFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -189,6 +194,7 @@ Please contact me regarding the above discussion about your window treatments.`;
     }
 
     setStatus("sending");
+    setApiError(""); // Clear previous API errors
 
     try {
       const formData = new FormData();
@@ -230,7 +236,24 @@ Please contact me regarding the above discussion about your window treatments.`;
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Error sending form");
+      const responseData = await res.json();
+
+      if (!res.ok) {
+        // Handle validation errors from backend
+        if (res.status === 400 && responseData.message) {
+          if (Array.isArray(responseData.message)) {
+            // Multiple validation errors
+            setApiError(responseData.message.join(", "));
+          } else {
+            // Single error message
+            setApiError(responseData.message);
+          }
+        } else {
+          setApiError("Error sending form. Please try again.");
+        }
+        setStatus("error");
+        return;
+      }
 
       setStatus("sent");
       setForm({
@@ -245,7 +268,8 @@ Please contact me regarding the above discussion about your window treatments.`;
       });
       filesRef.current = [];
     } catch (err) {
-      console.error(err);
+      console.error("Network error:", err);
+      setApiError("Network error. Please check your connection and try again.");
       setStatus("error");
     }
   };
@@ -546,14 +570,36 @@ Please contact me regarding the above discussion about your window treatments.`;
           </motion.p>
         )}
         {status === "error" && (
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mt-4 text-red-600 text-center font-medium"
+            className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg"
           >
-            An error occurred. Please try again later.
-          </motion.p>
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">
+                  Error sending form
+                </h3>
+                <div className="mt-1 text-sm text-red-700">
+                  {apiError || "An error occurred. Please try again later."}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.form>
