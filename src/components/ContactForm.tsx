@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, FormEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE_URL } from "../config";
 
 interface ContactFormData {
   name: string;
@@ -120,11 +121,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
       let conversationSummary = "";
       if (chatMessages.length > 0) {
         try {
-          const summaryResponse = await fetch("/api/chat-summary", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: chatMessages }),
-          });
+          const summaryResponse = await fetch(
+            `${API_BASE_URL}/api/chat/summary`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ messages: chatMessages }),
+            }
+          );
           const summaryData = await summaryResponse.json();
           conversationSummary =
             summaryData.summary || "Unable to generate automatic summary.";
@@ -138,7 +142,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
       // Agregar el resumen al FormData
       formData.append("chatSummary", conversationSummary);
 
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         body: formData,
       });

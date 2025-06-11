@@ -2,6 +2,7 @@
 
 import React, { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config";
 
 interface SamplesFormData {
   name: string;
@@ -119,11 +120,14 @@ const SamplesForm: React.FC<SamplesFormProps> = ({
       let conversationSummary = "";
       if (chatMessages.length > 0) {
         try {
-          const summaryResponse = await fetch("/api/chat-summary", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: chatMessages }),
-          });
+          const summaryResponse = await fetch(
+            `${API_BASE_URL}/api/chat/summary`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ messages: chatMessages }),
+            }
+          );
           const summaryData = await summaryResponse.json();
           conversationSummary =
             summaryData.summary || "Unable to generate automatic summary.";
@@ -135,20 +139,16 @@ const SamplesForm: React.FC<SamplesFormProps> = ({
       }
 
       // Crear FormData con todos los datos incluyendo el resumen
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (key === "productTypes") {
-          formData.append(key, JSON.stringify(value));
-        } else {
-          formData.append(key, value as string);
-        }
-      });
-      formData.append("chatSummary", conversationSummary);
+      const requestData = {
+        ...form,
+        chatSummary: conversationSummary,
+      };
 
       // Enviar a endpoint de samples
-      const res = await fetch("/api/samples", {
+      const res = await fetch(`${API_BASE_URL}/api/samples`, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
       });
 
       if (!res.ok) throw new Error("Error sending samples request");

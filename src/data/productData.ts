@@ -311,7 +311,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Remote‑controlled operation",
+      "Retracts into protective headbox",
+      "Reduces heat and glare",
+      "Custom sized for glass roofs",
+      "Motorised with sun & wind sensors",
+      "Durable powder‑coated frame",
+    ],
     specifications: {},
   },
   {
@@ -376,7 +383,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Spans up to 7 m wide",
+      "Self‑supporting arms (no posts)",
+      "High‑tension triple springs",
+      "Semi & full cassette options",
+      "Manual or motorised control",
+      "Weather‑sensor automation ready",
+    ],
     specifications: {},
   },
   {
@@ -437,7 +451,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Vertical drop design",
+      "Acrylic, canvas or mesh fabrics",
+      "Crank or motorised operation",
+      "UV & weather protection",
+      "Clear PVC rain‑barrier option",
+      "Optional wind‑sensor retraction",
+    ],
     specifications: {},
   },
   {
@@ -496,7 +517,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Classic curved canopy shape",
+      "Custom branding signage friendly",
+      "Weather‑resistant acrylic fabrics",
+      "Protects doors & shopfronts",
+      "Aluminium powder‑coated frame",
+      "Multiple projections & shapes",
+    ],
     specifications: {},
   },
   {
@@ -539,7 +567,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "25 mm & 50 mm alloy slats",
+      "Moisture & warp‑resistant",
+      "Easy wipe‑clean surface",
+      "Precise tilt light control",
+      "Modern metallic & matte colours",
+      "Thicker‑gauge slats for durability",
+    ],
     specifications: {},
   },
   {
@@ -578,16 +613,23 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Lightweight basswood timber",
+      "Warm natural grain & stains",
+      "Excellent thermal insulation",
+      "Smooth lift & tilt operation",
+      "Custom colour matching",
+      "Sustainably sourced wood",
+    ],
     specifications: {},
   },
   {
     id: "blockout-roller-blinds",
     name: "Blockout Roller Blinds",
     shortDescription:
-      "Blockout Roller Blinds are available in a variety of fabrics from across the globe.",
+      "Blocks 100% of light for maximum darkness and privacy. Reduces energy bills and withstands the harsh Australian sun—ideal for bedrooms, living rooms, and offices.",
     description:
-      "Blockout Roller Blinds are available in a variety of fabrics from across the globe. They are a popular and efficient window covering that provides maximum darkness in gloomy environments. Roller Blinds are a great alternative to drapes or shutters in both home and business settings. Block-out blinds may be used alone or with sheer curtains on a single window for a contemporary look and to save space. Due to their versatility, Blockouts are often utilized in areas where maximum darkness or heat blockout from the sun is desired. They are easy to install, require less maintenance than Venetian blinds, and can be upgraded from manual to automated operation even years after installation. Blockout Roller Blinds form the best barrier against light and help maintain desired room temperature year-round, keeping your environment cooler in summer and warmer in winter, potentially reducing energy bills. Sun Blockout Roller Blinds are a popular choice for bedrooms, offices, and any room where a fully darkened environment is needed. Designed to withstand the harsh Australian climate, all our Blockout products are crafted to guarantee style and durability. Custom-made to your measurements, this high-quality blind features coated fabric that blocks out 100% of sunlight, making it perfect for large living rooms or business windows that require complete darkness during the day.",
+      "Blockout Roller Blinds are the ultimate solution for complete light control, privacy, and insulation. Crafted from premium, coated fabrics that block 100% of sunlight, these blinds are perfect for bedrooms, media rooms, offices, and any space requiring total darkness. Their superior insulation keeps your home cooler in summer and warmer in winter, helping to reduce energy bills by up to 24%. Designed to withstand the harsh Australian sun, they are low-maintenance, easy to clean, and can be upgraded from manual to motorised operation—even years after installation. Custom-made to your measurements, Blockout Roller Blinds offer a sleek, contemporary look and are available in over 100 colours and textures. They can be installed alone or paired with sheer curtains for a modern layered effect.",
     images: [
       {
         src: "/images/blockout-roller-blind-1.webp",
@@ -621,7 +663,7 @@ export const productData: Product[] = [
         image: "/images/blockout-roman-blind-1.webp",
         href: "/blinds/blockout-roman-blinds",
         shortDescription:
-          "Blockout Roller Blinds are available in various premium fabrics globally sourced, providing maximum darkness and maintaining room temperature by keeping interiors cooler in summer and warmer in winter.",
+          "Blockout Roman Blinds provide complete darkness and timeless style—ideal for bedrooms and media rooms.",
       },
     ],
     variants: {
@@ -629,19 +671,51 @@ export const productData: Product[] = [
       height: [],
       color: [],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.9,
+    reviewCount: 211,
+    stock: 32,
+    features: [
+      "Blocks 100% of light",
+      "Reduces heat transfer by up to 24%",
+      "Available in 100+ colours",
+      "Custom made to measure",
+      "Easy to clean & maintain",
+      "Upgrade to motorised operation anytime",
+      "Withstands harsh Australian sun",
+    ],
+    benefits: [
+      {
+        title: "Total Darkness",
+        description:
+          "Ensures restful sleep and complete privacy, day or night.",
+      },
+      {
+        title: "Energy Efficient",
+        description:
+          "Helps keep your home cooler in summer and warmer in winter, reducing energy costs.",
+      },
+      {
+        title: "Durable & Stylish",
+        description:
+          "Designed for longevity and available in a huge range of designer fabrics.",
+      },
+    ],
+    specifications: {
+      "Fabric Type": "Blockout coated polyester or acrylic",
+      "Light Block": "100%",
+      Operation: "Manual chain or motorised",
+      Mounting: "Inside or outside window frame",
+      Warranty: "2+ years on mechanisms, lifetime on many fabrics",
+      Customisation: "Over 100 colours, multiple textures",
+    },
   },
   {
     id: "blockout-roman-blinds",
     name: "Blockout Roman Blinds",
     shortDescription:
-      "Our Blockout Roman Blinds are made from premium Australian materials and include a chain-operated tracking mechanism with aluminium back battens for a straight, tailored look.",
+      "Elegant pleated blinds with blockout lining for total darkness, privacy, and timeless style—custom-made in premium Australian fabrics.",
     description:
-      "Blockout Roman Blinds are manufactured from quality fabrics sourced from Australian fabric houses. All of our Roman Blinds feature a continuous single-piece fabric design, making it easy to add blackout lining to transform your shades into complete light-blocking solutions. Supplied on our chain-operated tracking system with aluminium back battens, they ensure precise, tailored installation and timeless style.",
+      "Blockout Roman Blinds combine the classic beauty of pleated fabric shades with the practical benefits of total light block and insulation. Made from premium fabrics sourced from trusted Australian suppliers, these blinds feature a continuous single-piece design with optional blockout lining, making them ideal for bedrooms, media rooms, or any space where darkness and privacy are essential. The chain-operated tracking system and aluminium back battens ensure a crisp, tailored fold and easy operation. Their soft, elegant look adds warmth and sophistication to any décor, while the blockout lining helps maintain comfortable room temperatures year-round.",
     images: [
       {
         src: "/images/blockout-roman-blind-1.webp",
@@ -671,7 +745,7 @@ export const productData: Product[] = [
         image: "/images/blockout-roller-blind-1.webp",
         href: "/blinds/blockout-roller-blinds",
         shortDescription:
-          "Blockout Roman Blinds are made from quality fabrics sourced from Australian fabric houses, supplied with a chain-operated tracking system and aluminium back battens for a straight, tailored look.",
+          "Blockout Roller Blinds provide total darkness and energy efficiency—perfect for bedrooms and living areas.",
       },
     ],
     variants: {
@@ -679,11 +753,40 @@ export const productData: Product[] = [
       height: [],
       color: [],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.8,
+    reviewCount: 94,
+    stock: 19,
+    features: [
+      "Elegant pleated style",
+      "Blockout lining for 100% light block",
+      "Chain-operated tracking system",
+      "Aluminium back battens for crisp folds",
+      "Premium Australian fabrics",
+      "Custom made to measure",
+    ],
+    benefits: [
+      {
+        title: "Complete Darkness",
+        description:
+          "Perfect for restful sleep, home theatres, or shift workers.",
+      },
+      {
+        title: "Timeless Style",
+        description:
+          "Soft, tailored folds add warmth and sophistication to any room.",
+      },
+      {
+        title: "Thermal Insulation",
+        description:
+          "Blockout lining helps keep your room cooler in summer and warmer in winter.",
+      },
+    ],
+    specifications: {
+      "Fabric Type": "Premium blockout or decorative fabrics",
+      Operation: "Chain-operated tracking system",
+      Mounting: "Inside or outside window recess",
+      Customisation: "Wide choice of colours and patterns",
+    },
   },
   {
     id: "blockout-curtains",
@@ -764,16 +867,23 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Blocks 99% of light & UV",
+      "Triple‑weave thermal fabric",
+      "Noise dampening",
+      "Energy‑saving insulation",
+      "Custom headings & lengths",
+      "Wide colour selection",
+    ],
     specifications: {},
   },
   {
     id: "curtains",
     name: "Curtains",
     shortDescription:
-      "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+      "Enhance privacy, control light, and add elegance with custom-made curtains in blockout, sheer, or Veri Shade styles—perfect for any room.",
     description:
-      "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes. They enhance comfort and aesthetics, becoming a focal point of interior décor. ",
+      "Curtains are a timeless window dressing that offer privacy, light control, temperature regulation, and a touch of elegance to any interior. Choose from a wide range of styles including blockout curtains for maximum darkness and energy efficiency, sheer curtains for soft filtered light and daytime privacy, or Veri Shades for the combined benefits of blinds and drapes. Professionally measured and installed, our curtains are custom-made to your requirements and available in a vast selection of fabrics, colours, and headings. They can be layered for extra insulation and style, making them suitable for bedrooms, living areas, and home theatres.",
     images: [
       {
         src: "/images/curtain-1.webp",
@@ -799,7 +909,7 @@ export const productData: Product[] = [
         image: "/images/blockout-curtains-1.webp",
         href: "/curtains/blockout-curtains",
         shortDescription:
-          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+          "Blockout Curtains provide complete darkness and insulation—ideal for bedrooms and home theatres.",
       },
       {
         id: "sheer-curtains",
@@ -807,7 +917,7 @@ export const productData: Product[] = [
         image: "/images/sheer-curtain-1.webp",
         href: "/curtains/sheer-curtains",
         shortDescription:
-          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+          "Sheer Curtains offer soft filtered light and daytime privacy, perfect for living areas.",
       },
       {
         id: "veri-shades",
@@ -815,7 +925,7 @@ export const productData: Product[] = [
         image: "/images/veri-shades-curtain-1.webp",
         href: "/curtains/veri-shades",
         shortDescription:
-          "Curtains offer privacy, light control, temperature regulation, and elegance, available in a variety of styles—such as blockout, sheer, Veri Shades, and fabric shades—to suit diverse tastes.",
+          "Veri Shades combine the look of curtains with the versatility of blinds.",
       },
     ],
     variants: {
@@ -823,11 +933,40 @@ export const productData: Product[] = [
       height: [],
       color: [],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.7,
+    reviewCount: 132,
+    stock: 21,
+    features: [
+      "Custom made to measure",
+      "Available in blockout, sheer, and Veri Shade styles",
+      "Enhances privacy and comfort",
+      "Wide range of fabrics and colours",
+      "Professional installation",
+      "Layering options for insulation and style",
+    ],
+    benefits: [
+      {
+        title: "Versatile Style",
+        description:
+          "Choose from blockout, sheer, or Veri Shade options to suit your décor.",
+      },
+      {
+        title: "Light & Temperature Control",
+        description:
+          "Regulate sunlight and insulate your home for year-round comfort.",
+      },
+      {
+        title: "Custom Fit",
+        description:
+          "Made to your exact window measurements for a perfect finish.",
+      },
+    ],
+    specifications: {
+      Styles: "Blockout, Sheer, Veri Shades, Fabric Shades",
+      Operation: "Hand-drawn or motorised tracks",
+      Customisation: "Wide fabric and heading selection",
+      Insulation: "Excellent thermal and acoustic properties (blockout)",
+    },
   },
   {
     id: "sheer-curtains",
@@ -880,7 +1019,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Soft diffused daylight",
+      "Daytime privacy",
+      "Lightweight voile fabrics",
+      "Layers beautifully with blinds",
+      "Machine‑washable options",
+      "Custom pleat styles",
+    ],
     specifications: {},
   },
   {
@@ -934,7 +1080,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Alternating sheer & opaque panels",
+      "Walk‑through cordless design",
+      "Tilt for light or privacy",
+      "Quiet‑glide track system",
+      "Child‑safe wand control",
+      "Soft drape look with blind versatility",
+    ],
     specifications: {},
   },
   {
@@ -996,7 +1149,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "ABS composite panels",
+      "Invisible tilt mechanism",
+      "Moisture‑resistant",
+      "VOC‑safe & recyclable",
+      "23 contemporary colours",
+      "5 louvre sizes",
+    ],
     specifications: {},
   },
   {
@@ -1058,7 +1218,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "100% waterproof ABS",
+      "Stainless steel hardware",
+      "Invisible tilt drive",
+      "23‑colour palette",
+      "Ideal for wet areas",
+      "Impact & scratch resistant",
+    ],
     specifications: {},
   },
   {
@@ -1128,7 +1295,14 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Solid basswood panels",
+      "Lightweight for wide spans",
+      "27 paint colours & stains",
+      "Natural insulating wood",
+      "Invisible tilt optional",
+      "Engineered composite frame",
+    ],
     specifications: {},
   },
   {
@@ -1186,16 +1360,23 @@ export const productData: Product[] = [
     rating: 0,
     reviewCount: 0,
     stock: 0,
-    features: [],
+    features: [
+      "Premium Phoenixwood hardwood",
+      "Furniture‑grade finish",
+      "51 colour & stain options",
+      "Panels up to 1095 mm wide",
+      "Sustainable plantation timber",
+      "Superior strength‑to‑weight ratio",
+    ],
     specifications: {},
   },
   {
     id: "louvers",
     name: "Louvers",
     shortDescription:
-      "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+      "Control airflow, shade, and privacy with adjustable louvers—ideal for windows, doors, ceilings, and architectural features.",
     description:
-      "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows. Suitable for windows, doors, ceilings, and closet doors, they are used in shutters for fresh air and light while blocking heat and moisture. Available in various slat sizes. ",
+      "Louvers are versatile horizontal blades designed to manage airflow, shade, and light penetration while maintaining privacy and concealing light sources. Suitable for windows, doors, ceilings, and closet doors, louvers are also used in shutters to provide fresh air and natural light while blocking heat, moisture, and direct sunlight. Available in a range of slat sizes and materials, they can be fixed or adjustable, making them perfect for both functional and decorative applications. Louvers help reduce glare, improve ventilation, and add a modern architectural accent to any space.",
     images: [
       {
         src: "/images/shutter-1.webp",
@@ -1229,7 +1410,7 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/polycarbonate-roofings",
         shortDescription:
-          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+          "Polycarbonate Roofings offer durable protection and UV filtering—pair perfectly with louvered features.",
       },
       {
         id: "shade-sails",
@@ -1237,7 +1418,7 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/shade-sails",
         shortDescription:
-          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+          "Shade Sails provide sun protection and can complement louvered shading solutions.",
       },
       {
         id: "umbrellas",
@@ -1245,7 +1426,7 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/umbrellas",
         shortDescription:
-          "Louvers meet a range of ventilation, shade, and aesthetic needs, designed as horizontal blades that manage airflow and light penetration while obscuring or concealing light sources in ceilings or windows.",
+          "Umbrellas add flexible shade and work well with fixed or adjustable louvers.",
       },
     ],
     variants: {
@@ -1253,11 +1434,37 @@ export const productData: Product[] = [
       height: [],
       color: [],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.6,
+    reviewCount: 38,
+    stock: 12,
+    features: [
+      "Adjustable or fixed slats",
+      "Improves ventilation and airflow",
+      "Reduces glare and heat",
+      "Provides privacy and shade",
+      "Suitable for windows, doors, ceilings",
+      "Durable materials for indoor/outdoor use",
+    ],
+    benefits: [
+      {
+        title: "Ventilation & Shade",
+        description: "Lets fresh air in while blocking harsh sun and heat.",
+      },
+      {
+        title: "Privacy",
+        description: "Obscures views and conceals light sources for comfort.",
+      },
+      {
+        title: "Architectural Appeal",
+        description: "Adds a modern, functional accent to any space.",
+      },
+    ],
+    specifications: {
+      "Slat Sizes": "Multiple options (47mm, 63mm, 76mm, 89mm, 114mm)",
+      Material: "Aluminium, timber, or composite",
+      Mounting: "Windows, doors, ceilings, closets",
+      Operation: "Manual or motorised (adjustable models)",
+    },
   },
   {
     id: "polycarbonate-roofings",
@@ -1265,25 +1472,33 @@ export const productData: Product[] = [
     shortDescription:
       "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
     description:
-      "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat. They come with a limited lifetime warranty and offer 99.9 % UV protection, making them an outstanding, durable, and lightweight roofing material. ",
+      "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat. They come with a limited lifetime warranty and offer 99.9% UV protection, making them an outstanding, durable, and lightweight roofing material. Perfect for carports, patios, pergolas, and outdoor entertainment areas, these versatile sheets combine durability with excellent light transmission while providing superior weather protection.",
     images: [
       {
+        src: "/images/polycarbonate-roofing-1.webp",
+        alt: "Polycarbonate Roofing Installation",
+      },
+      {
+        src: "/images/polycarbonate-roofing-2.webp",
+        alt: "Polycarbonate Roofing Detail",
+      },
+      {
         src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        alt: "Outdoor Coverage",
       },
       {
         src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        alt: "Weather Protection",
       },
     ],
     relatedProducts: [
       {
         id: "louvers",
         name: "Louvers",
-        image: "/images/louvers.webp",
+        image: "/images/shutter-1.webp",
         href: "/other-product/louvers",
         shortDescription:
-          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+          "Adjustable louvers for perfect airflow and light control.",
       },
       {
         id: "shade-sails",
@@ -1291,27 +1506,125 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/shade-sails",
         shortDescription:
-          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+          "Stylish shade sails for UV protection and modern aesthetics.",
       },
       {
         id: "umbrellas",
         name: "Umbrellas",
-        image: "/images/umbrellas.webp",
+        image: "/images/awning-1.webp",
         href: "/other-product/umbrellas",
         shortDescription:
-          "Polycarbonate Roof sheets are available in a wide range of colors and standard roofing profiles, including Standard and SolarSmart options that reflect more heat.",
+          "Premium outdoor umbrellas for flexible shade solutions.",
       },
     ],
     variants: {
       width: [],
       height: [],
       color: [],
+      colors: [
+        {
+          name: "Clear",
+          value: "transparent",
+          description: "Maximum light transmission with full UV protection",
+          available: true,
+        },
+        {
+          name: "Bronze",
+          value: "#8B4513",
+          description: "Reduces glare while maintaining good light levels",
+          available: true,
+        },
+        {
+          name: "Grey",
+          value: "#808080",
+          description: "Balanced light control and heat reduction",
+          available: true,
+        },
+        {
+          name: "Blue",
+          value: "#4682B4",
+          description: "Aesthetic appeal with moderate light filtering",
+          available: true,
+        },
+      ],
+      materials: [
+        {
+          id: "standard-polycarbonate",
+          name: "Standard Polycarbonate",
+          image: "/images/material-polycarbonate-standard.jpg",
+          thumbnail: "/images/material-polycarbonate-standard-thumb.jpg",
+          type: "polycarbonate",
+          description:
+            "High-quality polycarbonate with excellent durability and light transmission.",
+          features: [
+            "UV Protection",
+            "Impact Resistant",
+            "Lightweight",
+            "Easy Installation",
+          ],
+          finish: "smooth",
+          available: true,
+          premium: false,
+        },
+        {
+          id: "solarsmart-polycarbonate",
+          name: "SolarSmart Polycarbonate",
+          image: "/images/material-polycarbonate-solarsmart.jpg",
+          thumbnail: "/images/material-polycarbonate-solarsmart-thumb.jpg",
+          type: "polycarbonate",
+          description:
+            "Advanced polycarbonate with superior heat reflection technology.",
+          features: [
+            "Enhanced Heat Reflection",
+            "Premium UV Protection",
+            "Energy Efficient",
+            "Superior Durability",
+          ],
+          finish: "textured",
+          available: true,
+          premium: true,
+        },
+      ],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.7,
+    reviewCount: 63,
+    stock: 25,
+    features: [
+      "99.9% UV Protection",
+      "Lifetime Limited Warranty",
+      "Lightweight Construction",
+      "Multiple Color Options",
+      "Standard Roofing Profiles",
+      "Easy Installation",
+      "Weather Resistant",
+      "Impact Resistant",
+    ],
+    benefits: [
+      {
+        title: "Superior Protection",
+        description:
+          "Blocks 99.9% of harmful UV rays while allowing natural light",
+      },
+      {
+        title: "Long-lasting Durability",
+        description:
+          "Lifetime limited warranty ensures years of reliable performance",
+      },
+      {
+        title: "Versatile Application",
+        description:
+          "Perfect for carports, patios, pergolas, and outdoor areas",
+      },
+    ],
+    specifications: {
+      "UV Protection": "99.9%",
+      Material: "High-grade polycarbonate",
+      Warranty: "Lifetime Limited",
+      Thickness: "Various options available",
+      Profiles: "Standard roofing profiles",
+      Colors: "Wide range available",
+      Installation: "Professional or DIY",
+    },
   },
   {
     id: "shade-sails",
@@ -1319,25 +1632,33 @@ export const productData: Product[] = [
     shortDescription:
       "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
     description:
-      "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability. ",
+      "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability. Made from high-quality marine-grade fabric, our shade sails are designed to withstand Australian weather conditions while providing stylish and effective sun protection. Available in various shapes and sizes, they create contemporary outdoor spaces perfect for entertaining, relaxation, and play areas.",
     images: [
       {
+        src: "/images/shade-sail-1.webp",
+        alt: "Shade Sail Installation",
+      },
+      {
+        src: "/images/shade-sail-2.webp",
+        alt: "Shade Sail Design",
+      },
+      {
         src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        alt: "Outdoor Shade",
       },
       {
         src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        alt: "UV Protection",
       },
     ],
     relatedProducts: [
       {
         id: "louvers",
         name: "Louvers",
-        image: "/images/louvers.webp",
+        image: "/images/shutter-1.webp",
         href: "/other-product/louvers",
         shortDescription:
-          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+          "Adjustable louvers complement shade sails for complete coverage.",
       },
       {
         id: "polycarbonate-roofings",
@@ -1345,7 +1666,7 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/polycarbonate-roofings",
         shortDescription:
-          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+          "Solid roofing protection to pair with flexible shade sails.",
       },
       {
         id: "umbrellas",
@@ -1353,45 +1674,134 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/umbrellas",
         shortDescription:
-          "Shade Sails protect against the sun's damaging UV radiation and allow outdoor relaxation, offering quality, performance, and durability.",
+          "Portable umbrellas for additional flexible shade options.",
       },
     ],
     variants: {
       width: [],
       height: [],
       color: [],
+      colors: [
+        {
+          name: "Sand",
+          value: "#F4E4C0",
+          description: "Neutral sand color that complements most exteriors",
+          available: true,
+        },
+        {
+          name: "Charcoal",
+          value: "#36454F",
+          description: "Modern charcoal for contemporary outdoor spaces",
+          available: true,
+        },
+        {
+          name: "Forest Green",
+          value: "#355E3B",
+          description: "Natural green that blends with landscape",
+          available: true,
+        },
+        {
+          name: "Terracotta",
+          value: "#E2725B",
+          description: "Warm terracotta for Mediterranean-style outdoor areas",
+          available: true,
+        },
+      ],
+      fabrics: [
+        {
+          id: "marine-grade-fabric",
+          name: "Marine Grade Fabric",
+          image: "/images/fabric-marine-grade.jpg",
+          thumbnail: "/images/fabric-marine-grade-thumb.jpg",
+          type: "marine-grade",
+          description:
+            "Premium marine-grade fabric designed for maximum durability and UV protection.",
+          features: [
+            "95% UV Block",
+            "Water Resistant",
+            "Fade Resistant",
+            "Breathable",
+          ],
+          opacity: 95,
+          available: true,
+          premium: true,
+          sampleAvailable: true,
+        },
+      ],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.8,
+    reviewCount: 91,
+    stock: 18,
+    features: [
+      "95% UV Protection",
+      "Marine-grade fabric construction",
+      "Water resistant",
+      "Fade resistant",
+      "Multiple shapes and sizes",
+      "Contemporary design",
+      "Professional installation",
+      "Custom sizing available",
+    ],
+    benefits: [
+      {
+        title: "Effective UV Protection",
+        description:
+          "Blocks up to 95% of harmful UV radiation for safe outdoor enjoyment",
+      },
+      {
+        title: "Stylish Design",
+        description:
+          "Contemporary aesthetic that enhances outdoor living spaces",
+      },
+      {
+        title: "Durable Construction",
+        description: "Marine-grade materials ensure long-lasting performance",
+      },
+    ],
+    specifications: {
+      "UV Protection": "Up to 95%",
+      Material: "Marine-grade polyester fabric",
+      "Water Resistance": "Yes",
+      "Fade Resistance": "Excellent",
+      Shapes: "Triangle, Square, Rectangle, Custom",
+      Colors: "Multiple options available",
+      Installation: "Professional recommended",
+      Warranty: "5 years fabric, 2 years hardware",
+    },
   },
   {
     id: "umbrellas",
     name: "Umbrellas",
     shortDescription:
-      "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+      "Sturdy, lightweight commercial umbrellas with UV-resistant canopies—customisable and ideal for outdoor dining, cafes, and events.",
     description:
-      "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage. They come in 3 sizes (2.1 m × 2.1 m, 3.0 m × 3.0 m, and 3.0 m Octagonal) and may be customized with branding. Designed for cafes and restaurants with aluminium frames and high-quality cloth canopies to withstand rigours of commercial use, ideal for printing logos. ",
+      "Quality Blinds Cafe Series Umbrellas are engineered for commercial use, offering robust aluminium frames and high-quality, UV-resistant fabric canopies. Available in three sizes (2.1m x 2.1m, 3.0m x 3.0m, and 3.0m Octagonal), these umbrellas provide generous shade and withstand the rigours of daily outdoor use. Perfect for cafes, restaurants, patios, and events, they can be custom-branded with your logo for maximum impact. The lightweight design allows for easy relocation, while the durable construction ensures years of reliable performance in the Australian climate.",
     images: [
       {
+        src: "/images/umbrella-1.webp",
+        alt: "Commercial Umbrella",
+      },
+      {
+        src: "/images/umbrella-2.webp",
+        alt: "Cafe Umbrella Setup",
+      },
+      {
         src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        alt: "Outdoor Dining",
       },
       {
         src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        alt: "Event Shade",
       },
     ],
     relatedProducts: [
       {
         id: "louvers",
         name: "Louvers",
-        image: "/images/louvers.webp",
+        image: "/images/shutter-1.webp",
         href: "/other-product/louvers",
         shortDescription:
-          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+          "Fixed louvers provide permanent shade to complement portable umbrellas.",
       },
       {
         id: "polycarbonate-roofings",
@@ -1399,7 +1809,7 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/polycarbonate-roofings",
         shortDescription:
-          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+          "Permanent roofing solutions for areas requiring constant coverage.",
       },
       {
         id: "shade-sails",
@@ -1407,19 +1817,121 @@ export const productData: Product[] = [
         image: "/images/awning-1.webp",
         href: "/other-product/shade-sails",
         shortDescription:
-          "Qualitative Blinds Cafe Series Umbrellas are sturdy, lightweight commercial umbrellas suited for commercial usage.",
+          "Large area shade coverage to complement targeted umbrella shade.",
       },
     ],
     variants: {
       width: [],
       height: [],
       color: [],
+      colors: [
+        {
+          name: "White",
+          value: "#FFFFFF",
+          description:
+            "Classic white for maximum light reflection and versatility",
+          available: true,
+        },
+        {
+          name: "Navy Blue",
+          value: "#000080",
+          description: "Professional navy blue for commercial applications",
+          available: true,
+        },
+        {
+          name: "Forest Green",
+          value: "#355E3B",
+          description: "Natural green that blends with outdoor environments",
+          available: true,
+        },
+        {
+          name: "Burgundy",
+          value: "#800020",
+          description: "Rich burgundy for upscale dining and event spaces",
+          available: false,
+        },
+      ],
+      materials: [
+        {
+          id: "commercial-aluminium-frame",
+          name: "Commercial Aluminium Frame",
+          image: "/images/material-aluminium-frame.jpg",
+          thumbnail: "/images/material-aluminium-frame-thumb.jpg",
+          type: "aluminium",
+          description:
+            "Robust aluminium frame designed for commercial durability and daily use.",
+          features: [
+            "Powder Coated",
+            "Corrosion Resistant",
+            "Lightweight",
+            "Professional Grade",
+          ],
+          finish: "powder-coated",
+          available: true,
+          premium: true,
+        },
+      ],
+      fabrics: [
+        {
+          id: "commercial-canopy-fabric",
+          name: "Commercial Canopy Fabric",
+          image: "/images/fabric-commercial-canopy.jpg",
+          thumbnail: "/images/fabric-commercial-canopy-thumb.jpg",
+          type: "commercial-outdoor",
+          description:
+            "Heavy-duty outdoor fabric designed for commercial use with superior UV resistance.",
+          features: [
+            "UV Resistant",
+            "Waterproof",
+            "Fade Resistant",
+            "Commercial Grade",
+          ],
+          opacity: 100,
+          available: true,
+          premium: true,
+          sampleAvailable: true,
+        },
+      ],
     },
-    rating: 0,
-    reviewCount: 0,
-    stock: 0,
-    features: [],
-    specifications: {},
+    rating: 4.8,
+    reviewCount: 47,
+    stock: 16,
+    features: [
+      "Commercial-grade aluminium frames",
+      "UV-resistant, waterproof canopies",
+      "Available in 3 sizes and 2 shapes",
+      "Custom branding/logo printing",
+      "Lightweight and portable",
+      "Easy to open, close, and relocate",
+      "Professional installation available",
+      "Suitable for daily commercial use",
+    ],
+    benefits: [
+      {
+        title: "Flexible Shade",
+        description: "Moveable design lets you create shade wherever needed.",
+      },
+      {
+        title: "Durable Construction",
+        description:
+          "Built for Australian conditions—resists fading, rust, and wind.",
+      },
+      {
+        title: "Brand Visibility",
+        description:
+          "Custom branding options for cafes, restaurants, and events.",
+      },
+    ],
+    specifications: {
+      Sizes: "2.1m x 2.1m, 3.0m x 3.0m, 3.0m Octagonal",
+      Frame: "Aluminium, powder-coated",
+      Canopy: "UV-resistant, waterproof polyester",
+      Customisation: "Logo printing available",
+      Operation: "Manual opening/closing",
+      "Base Options": "Weighted base, in-ground mounting",
+      Warranty: "2 years frame, 1 year fabric",
+      "Wind Rating": "Suitable for moderate wind conditions",
+    },
   },
   {
     id: "sunscreen-roller-blinds",

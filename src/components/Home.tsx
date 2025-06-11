@@ -11,6 +11,7 @@ import {
   // useAnimation,
   useTransform,
 } from "framer-motion";
+import { API_BASE_URL } from "../config";
 
 // Configuración de scroll suave
 // const smoothScroll = (
@@ -397,7 +398,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchGoogleReviews = async () => {
       try {
-        const response = await fetch("/api/reviews/google");
+        const response = await fetch(`${API_BASE_URL}/api/reviews/google`);
         const data = await response.json();
 
         if (data.success) {

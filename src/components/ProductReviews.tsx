@@ -13,6 +13,7 @@ import {
   HandThumbUpIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
+import { API_BASE_URL } from "../config";
 
 interface GoogleReview {
   author_name: string;
@@ -90,12 +91,12 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
       setLoading(true);
 
       // Fetch Google reviews
-      const googleResponse = await fetch("/api/reviews/google");
+      const googleResponse = await fetch(`${API_BASE_URL}/api/reviews/google`);
       const googleData = await googleResponse.json();
 
       // Fetch user reviews for this product
       const userResponse = await fetch(
-        `/api/reviews/user?productId=${productId}`
+        `${API_BASE_URL}/api/reviews/user?productId=${productId}`
       );
       const userData = await userResponse.json();
 
@@ -165,7 +166,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
     setSubmitting(true);
 
     try {
-      const response = await fetch("/api/reviews/user", {
+      const response = await fetch(`${API_BASE_URL}/api/reviews/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

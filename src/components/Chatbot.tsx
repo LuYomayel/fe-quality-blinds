@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ContactForm from "./ContactForm";
 import SamplesForm from "./SamplesForm";
+import { API_BASE_URL } from "../config";
 
 interface Message {
   id: string;
@@ -196,7 +197,7 @@ IMPORTANT INSTRUCTIONS:
         },
       ];
 
-      const res = await fetch("/api/chat", {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

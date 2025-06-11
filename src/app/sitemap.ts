@@ -76,6 +76,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     },
+    // Other Products
+    {
+      url: `${baseUrl}/other-products`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
   ];
 
   // Product-specific pages
@@ -190,6 +197,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/awnings/canopy-awning`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    // Other Products
+    {
+      url: `${baseUrl}/other-product/louvers`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/other-product/polycarbonate-roofings`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/other-product/shade-sails`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/other-product/umbrellas`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
