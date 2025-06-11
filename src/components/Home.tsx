@@ -80,33 +80,48 @@ const featuredCollections = [
 const projectCategories = [
   {
     name: "BUILDERS",
-    image: "/images/projects/builders.jpg",
+    image: "/projects/04-Builders.webp",
     description: "Custom solutions for residential and commercial builders",
   },
   {
     name: "SCHOOLS",
-    image: "/images/projects/schools.jpg",
+    image: "/projects/05-SCHOOLS.webp",
     description:
       "Safe and durable window treatments for educational facilities",
   },
   {
     name: "UNIVERSITIES",
-    image: "/images/projects/universities.jpg",
+    image: "/projects/06-University.webp",
     description: "Professional installations for higher education campuses",
   },
   {
     name: "ARCHITECTS/DESIGNERS",
-    image: "/images/projects/architects.jpg",
+    image: "/projects/07-ARCHITECTS-DESIGNERS.webp",
     description: "Collaborative solutions with design professionals",
   },
   {
     name: "HOSPITALS",
-    image: "/images/projects/hospitals.jpg",
+    image: "/projects/08-Hospital.webp",
     description: "Healthcare-compliant window treatments",
   },
   {
+    name: "DEVELOPMENTS",
+    image: "/projects/01-DEVELOPMENTS.webp",
+    description: "Large-scale development projects and installations",
+  },
+  {
+    name: "DEVELOPERS",
+    image: "/projects/02-DEVELOPERS.webp",
+    description: "Working with property developers across Sydney",
+  },
+  {
+    name: "HOMEOWNERS/TENANTS",
+    image: "/projects/03-HOMEOWNERS-TENANTS.webp",
+    description: "Residential solutions for homeowners and tenants",
+  },
+  {
     name: "OTHER PROJECTS",
-    image: "/images/projects/other.jpg",
+    image: "/projects/12-Other-Projects.webp",
     description: "Diverse commercial and specialty installations",
   },
 ];
@@ -159,33 +174,69 @@ const Home: React.FC = () => {
   const brandPartners = [
     {
       name: "ACMEDA",
-      logo: "/images/brands/acmeda.png",
+      logo: "/brands/acmeda.jpg",
       description: "Premium window covering solutions",
       link: "/brands/acmeda",
     },
     {
       name: "ALUXOR",
-      logo: "/images/brands/aluxor.png",
+      logo: "/brands/aluxor.jpg",
       description: "Innovative awning systems",
       link: "/brands/aluxor",
     },
     {
       name: "Carbolite",
-      logo: "/images/brands/carbolite.png",
+      logo: "/brands/carbolite.jpg",
       description: "Quality awnings & louvres",
       link: "/brands/carbolite",
     },
     {
       name: "ESR Blinds",
-      logo: "/images/brands/esr-blinds.png",
+      logo: "/brands/esr.jpg",
       description: "Professional blind solutions",
       link: "/brands/esr-blinds",
     },
     {
       name: "FOREST",
-      logo: "/images/brands/forest.png",
+      logo: "/brands/forest.jpg",
       description: "Drapery hardware specialists",
       link: "/brands/forest",
+    },
+    {
+      name: "Norman Australia",
+      logo: "/brands/norman-australia.webp",
+      description: "Premium plantation shutters & blinds",
+      link: "/brands/norman-australia",
+    },
+    {
+      name: "Helio Screen",
+      logo: "/brands/helio-screen.jpg",
+      description: "Advanced screening solutions",
+      link: "/brands/helio-screen",
+    },
+    {
+      name: "Hunter Douglas",
+      logo: "/brands/hunter-douglas.jpg",
+      description: "Innovative window fashions",
+      link: "/brands/hunter-douglas",
+    },
+    {
+      name: "Issey",
+      logo: "/brands/issey.jpg",
+      description: "Contemporary blind designs",
+      link: "/brands/issey",
+    },
+    {
+      name: "JAI Products",
+      logo: "/brands/jai-products.jpg",
+      description: "Quality hardware & accessories",
+      link: "/brands/jai-products",
+    },
+    {
+      name: "Lifestyle Blinds",
+      logo: "/brands/lifestyle-blinds.jpg",
+      description: "Modern lifestyle solutions",
+      link: "/brands/lifestyle-blinds",
     },
   ];
 

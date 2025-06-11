@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,14 +18,18 @@ import QuoteDialog from "../../components/QuoteDialog";
 const AboutUs = () => {
   const [showContactForm, setShowContactForm] = useState(false);
   const [showQuoteDialog, setShowQuoteDialog] = useState(false);
+  // State para el carousel de brands
+  const [currentBrand, setCurrentBrand] = useState(0);
 
   // Refs para las animaciones basadas en scroll
   const heroRef = useRef(null);
   const experienceRef = useRef(null);
   const historyRef = useRef(null);
   const pillarsRef = useRef(null);
+
   const partnersRef = useRef(null);
   const ctaRef = useRef(null);
+  const brandsRef = useRef<HTMLDivElement>(null);
 
   const isHeroInView = useInView(heroRef, { once: true });
   const isExperienceInView = useInView(experienceRef, {
@@ -40,6 +44,7 @@ const AboutUs = () => {
     once: true,
     margin: "-100px",
   });
+
   const isPartnersInView = useInView(partnersRef, {
     once: true,
     margin: "-100px",
@@ -88,13 +93,78 @@ const AboutUs = () => {
     },
   ];
 
-  const partners = [
-    { name: "ACMEDA", logo: "/images/partners/acmeda.png" },
-    { name: "ALUXOR", logo: "/images/partners/aluxor.png" },
-    { name: "Carbolite", logo: "/images/partners/carbolite.png" },
-    { name: "ESR Blinds", logo: "/images/partners/esr-blinds.png" },
-    { name: "FOREST", logo: "/images/partners/forest.png" },
+  // Datos de marcas - igual al Home
+  const brandPartners = [
+    {
+      name: "ACMEDA",
+      logo: "/brands/acmeda.jpg",
+      description: "Premium window covering solutions",
+      link: "/brands/acmeda",
+    },
+    {
+      name: "ALUXOR",
+      logo: "/brands/aluxor.jpg",
+      description: "Innovative awning systems",
+      link: "/brands/aluxor",
+    },
+    {
+      name: "Carbolite",
+      logo: "/brands/carbolite.jpg",
+      description: "Quality awnings & louvres",
+      link: "/brands/carbolite",
+    },
+    {
+      name: "ESR Blinds",
+      logo: "/brands/esr.jpg",
+      description: "Professional blind solutions",
+      link: "/brands/esr-blinds",
+    },
+    {
+      name: "FOREST",
+      logo: "/brands/forest.jpg",
+      description: "Drapery hardware specialists",
+      link: "/brands/forest",
+    },
+    {
+      name: "Norman Australia",
+      logo: "/brands/norman-australia.webp",
+      description: "Premium plantation shutters & blinds",
+      link: "/brands/norman-australia",
+    },
+    {
+      name: "Helio Screen",
+      logo: "/brands/helio-screen.jpg",
+      description: "Advanced screening solutions",
+      link: "/brands/helio-screen",
+    },
+    {
+      name: "Hunter Douglas",
+      logo: "/brands/hunter-douglas.jpg",
+      description: "Innovative window fashions",
+      link: "/brands/hunter-douglas",
+    },
+    {
+      name: "Issey",
+      logo: "/brands/issey.jpg",
+      description: "Contemporary blind designs",
+      link: "/brands/issey",
+    },
+    {
+      name: "JAI Products",
+      logo: "/brands/jai-products.jpg",
+      description: "Quality hardware & accessories",
+      link: "/brands/jai-products",
+    },
+    {
+      name: "Lifestyle Blinds",
+      logo: "/brands/lifestyle-blinds.jpg",
+      description: "Modern lifestyle solutions",
+      link: "/brands/lifestyle-blinds",
+    },
   ];
+
+  // Array infinito para el carousel
+  const infiniteBrands = [...brandPartners, ...brandPartners, ...brandPartners];
 
   // Variantes de animación
   const fadeInUp = {
@@ -133,6 +203,55 @@ const AboutUs = () => {
         delayChildren: 0.1,
       },
     },
+  };
+
+  // Auto-play para brands - movimiento infinito suave
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBrand((prev) => prev + 1);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [brandPartners.length]);
+
+  // Efecto para resetear posición cuando se completa un ciclo (sin animación visible)
+  useEffect(() => {
+    if (currentBrand >= brandPartners.length * 2) {
+      setTimeout(() => {
+        if (brandsRef.current) {
+          brandsRef.current.style.transition = "none";
+          setCurrentBrand(brandPartners.length);
+          setTimeout(() => {
+            if (brandsRef.current) {
+              brandsRef.current.style.transition = "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+      }, 50);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentBrand]);
+
+  // Funciones de navegación manual
+  const nextBrand = () => {
+    setCurrentBrand((prev) => prev + 1);
+  };
+
+  const prevBrand = () => {
+    setCurrentBrand((prev) => {
+      if (prev <= brandPartners.length) {
+        if (brandsRef.current) {
+          brandsRef.current.style.transition = "none";
+          setTimeout(() => {
+            setCurrentBrand(brandPartners.length * 2 - 1);
+            if (brandsRef.current) {
+              brandsRef.current.style.transition = "transform 0.8s ease-in-out";
+            }
+          }, 50);
+        }
+        return prev;
+      }
+      return prev - 1;
+    });
   };
 
   const handleQuoteRequest = () => {
@@ -256,7 +375,7 @@ const AboutUs = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Image
-                  src="/images/blinds-experience.jpg"
+                  src="/images/experience.webp"
                   alt="Quality Blinds Experience - Professional window treatments"
                   fill
                   className="object-cover"
@@ -436,7 +555,7 @@ const AboutUs = () => {
         </div>
       </motion.section>
 
-      {/* Partners Section */}
+      {/* Partners Section - Brands Carousel */}
       <motion.section
         ref={partnersRef}
         className="py-20 bg-white"
@@ -451,41 +570,146 @@ const AboutUs = () => {
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We&rsquo;re proud to be working with some of Australia&rsquo;s
-              leading suppliers
+              leading suppliers and premium brands in the window treatment
+              industry
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center"
-            variants={staggerContainer}
-          >
-            {partners.map((partner, index) => (
-              <motion.div
-                key={index}
-                className="flex items-center justify-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-                variants={fadeInUp}
-                whileHover={{
-                  scale: 1.05,
-                  backgroundColor: "#f9fafb",
-                  transition: { duration: 0.2 },
-                }}
-                whileTap={{ scale: 0.95 }}
+          {/* Brands Slider */}
+          <div className="relative">
+            {/* Navigation Arrows - Hidden on mobile, show on larger screens */}
+            <button
+              onClick={prevBrand}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
+              aria-label="Marca anterior"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <div className="text-center">
-                  {/* Placeholder para logos - reemplazar con imágenes reales */}
-                  <motion.div
-                    className="h-16 w-24 bg-gray-300 rounded flex items-center justify-center mb-2"
-                    whileHover={{ backgroundColor: "#d1d5db" }}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={nextBrand}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-3 hover:bg-gray-50 transition-colors hidden lg:block"
+              aria-label="Siguiente marca"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            {/* Mobile/Tablet: Grid optimizado */}
+            <div className="lg:hidden">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+                {brandPartners.slice(0, 9).map((brand, index) => (
+                  <motion.article
+                    key={`mobile-${brand.name}-${index}`}
+                    className="group"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    <span className="text-xs text-gray-600">LOGO</span>
-                  </motion.div>
-                  <div className="text-sm font-medium text-gray-700">
-                    {partner.name}
-                  </div>
-                </div>
+                    <div className="relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                      <Link
+                        href={brand.link}
+                        aria-label={`Learn more about ${brand.name}`}
+                        className="block"
+                      >
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <Image
+                            src={brand.logo}
+                            alt={`${brand.name} - ${brand.description}`}
+                            fill
+                            sizes="(max-width: 640px) 50vw, 33vw"
+                            className="object-contain p-6 transition-transform duration-300 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-transparent to-transparent" />
+                          <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
+                            <h3 className="text-sm font-bold text-gray-800 mb-1">
+                              {brand.name}
+                            </h3>
+                            <p className="text-xs text-gray-600 line-clamp-2">
+                              {brand.description}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Slider - Solo visible en lg+ */}
+            <div className="hidden lg:block overflow-hidden px-12 xl:px-16">
+              <motion.div
+                ref={brandsRef}
+                className="flex transition-transform duration-700 ease-in-out"
+                style={{
+                  transform: `translateX(-${(currentBrand * 100) / 3}%)`,
+                }}
+              >
+                {infiniteBrands.map((brand, index) => (
+                  <motion.article
+                    key={`${brand.name}-${index}`}
+                    className="w-1/3 flex-shrink-0 px-3"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: (index % 3) * 0.1 }}
+                  >
+                    <div className="group relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                      <Link
+                        href={brand.link}
+                        aria-label={`Learn more about ${brand.name} - ${brand.description}`}
+                      >
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <Image
+                            src={brand.logo}
+                            alt={`${brand.name} - ${brand.description}`}
+                            fill
+                            sizes="33vw"
+                            className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-blue-50/80 via-transparent to-transparent" />
+                          <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                            <h3 className="text-lg font-bold mb-1 text-gray-800">
+                              {brand.name}
+                            </h3>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              {brand.description}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.article>
+                ))}
               </motion.div>
-            ))}
-          </motion.div>
+            </div>
+          </div>
         </div>
       </motion.section>
 
