@@ -28,27 +28,44 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default:
-      "Quality Blinds Australia | Premium Window Treatments & Custom Solutions",
-    template: "%s | Quality Blinds Australia",
+      "Quality Blinds Australia | Premium Blinds Sydney | Randwick Showroom | Roller Blinds & Awnings",
+    template: "%s | Quality Blinds Australia Sydney",
   },
   description:
-    "Quality Blinds is Australia's leading manufacturer and installer of premium blinds, curtains, shutters, and awnings. Custom window treatment solutions for homes and businesses since 1998. Free consultation and professional installation across Australia.",
+    "Quality Blinds Australia - Sydney's premier blinds specialists since 1989. Located in Randwick, we offer roller blinds, venetian blinds, roman blinds, curtains, shutters, awnings, canopies and motorised blinds. Expert repair services for blinds, awnings and curtains across Sydney. Free consultation and professional installation.",
   keywords: [
-    "blinds Australia",
-    "custom blinds",
-    "window treatments",
-    "curtains",
-    "shutters",
-    "awnings",
-    "roller blinds",
-    "venetian blinds",
-    "roman blinds",
-    "Quality Blinds",
-    "window coverings",
-    "custom shutters",
-    "professional installation",
-    "home improvement",
-    "interior design",
+    "blinds sydney",
+    "blinds randwick",
+    "roller blinds sydney",
+    "venetian blinds sydney",
+    "roman blinds sydney",
+    "curtains sydney",
+    "shutters sydney",
+    "awnings sydney",
+    "canopies sydney",
+    "motorised blinds sydney",
+    "repair blinds sydney",
+    "repair awnings sydney",
+    "repair curtains sydney",
+    "blind repairs randwick",
+    "awning repairs sydney",
+    "curtain repairs sydney",
+    "Quality Blinds Randwick",
+    "blinds showroom sydney",
+    "custom blinds sydney",
+    "window treatments sydney",
+    "motorized blinds sydney",
+    "electric blinds sydney",
+    "automated blinds sydney",
+    "blind installation sydney",
+    "awning installation sydney",
+    "curtain installation sydney",
+    "sydney blind company",
+    "randwick blinds",
+    "eastern suburbs blinds",
+    "professional blind repairs",
+    "blind maintenance sydney",
+    "awning maintenance sydney",
   ],
   authors: [{ name: "Quality Blinds Australia" }],
   creator: "Quality Blinds Australia",
@@ -64,11 +81,11 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "Quality Blinds Australia | Premium Window Treatments & Custom Solutions",
+      "Quality Blinds Australia | Premium Blinds Sydney | Randwick Showroom | Roller Blinds & Awnings",
     description:
-      "Australia's leading manufacturer of premium blinds, curtains, shutters, and awnings. Custom window treatment solutions with professional installation since 1998.",
+      "Sydney's premier blinds specialists since 1989. Located in Randwick, we offer roller blinds, venetian blinds, roman blinds, curtains, shutters, awnings, canopies and motorised blinds. Expert repair services across Sydney.",
     url: "https://www.qualityblinds.com.au",
-    siteName: "Quality Blinds Australia",
+    siteName: "Quality Blinds Australia Sydney",
     locale: "en_AU",
     type: "website",
     images: [
@@ -76,16 +93,17 @@ export const metadata: Metadata = {
         url: "/images/og-quality-blinds.webp",
         width: 1200,
         height: 630,
-        alt: "Quality Blinds Australia - Premium Window Treatments",
+        alt: "Quality Blinds Australia Sydney - Premium Blinds, Awnings & Curtains in Randwick",
         type: "image/webp",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Quality Blinds Australia | Premium Window Treatments",
+    title:
+      "Quality Blinds Australia Sydney | Premium Blinds & Awnings Randwick",
     description:
-      "Australia's leading manufacturer of premium blinds, curtains, shutters, and awnings. Custom solutions with professional installation.",
+      "Sydney's premier blinds specialists since 1989. Roller blinds, awnings, curtains, shutters, motorised blinds and repair services across Sydney.",
     images: ["/images/og-quality-blinds.webp"],
     creator: "@QualityBlindsAU",
   },
@@ -161,7 +179,11 @@ export default function RootLayout({
               "@type": "Organization",
               "@id": "https://www.qualityblinds.com.au/#organization",
               name: "Quality Blinds Australia",
-              alternateName: ["Quality Blinds", "QB Australia"],
+              alternateName: [
+                "Quality Blinds Sydney",
+                "Quality Blinds Randwick",
+                "QB Australia",
+              ],
               url: "https://www.qualityblinds.com.au",
               logo: {
                 "@type": "ImageObject",
@@ -170,61 +192,146 @@ export default function RootLayout({
                 height: 100,
               },
               description:
-                "Australia's leading manufacturer and installer of premium blinds, curtains, shutters, and awnings. Custom window treatment solutions since 1998.",
-              foundingDate: "1998",
+                "Sydney's leading manufacturer and installer of premium blinds, curtains, shutters, awnings and motorised blinds since 1989. Located in Randwick, serving all of Sydney with expert repair services for blinds, awnings and curtains.",
+              foundingDate: "1989",
               founder: {
                 "@type": "Person",
                 name: "Quality Blinds Founder",
               },
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "131 Botany Street",
+                addressLocality: "Randwick",
+                addressRegion: "NSW",
+                postalCode: "2031",
+                addressCountry: "AU",
+              },
               areaServed: [
                 {
-                  "@type": "Country",
-                  name: "Australia",
+                  "@type": "City",
+                  name: "Sydney",
+                  "@id": "https://www.wikidata.org/wiki/Q3130",
+                },
+                {
+                  "@type": "State",
+                  name: "New South Wales",
                 },
               ],
-              serviceArea: {
-                "@type": "Country",
-                name: "Australia",
-              },
+              serviceArea: [
+                {
+                  "@type": "City",
+                  name: "Sydney",
+                },
+                {
+                  "@type": "City",
+                  name: "Randwick",
+                },
+                {
+                  "@type": "State",
+                  name: "New South Wales",
+                },
+              ],
               hasOfferCatalog: {
                 "@type": "OfferCatalog",
-                name: "Window Treatment Services",
+                name: "Blinds, Awnings and Curtain Services Sydney",
                 itemListElement: [
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "Custom Blinds Manufacturing and Installation",
+                      name: "Roller Blinds Sydney - Manufacturing and Installation",
+                      description:
+                        "Custom roller blinds including blockout, sunscreen and translucent options",
                     },
                   },
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "Premium Curtains and Drapes",
+                      name: "Venetian Blinds Sydney - Aluminium and Timber",
+                      description:
+                        "Premium venetian blinds in aluminium and timber finishes",
                     },
                   },
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "Window Shutters Installation",
+                      name: "Roman Blinds Sydney - Custom Fabric Solutions",
+                      description:
+                        "Elegant roman blinds with blockout and translucent fabric options",
                     },
                   },
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "Outdoor Awnings Solutions",
+                      name: "Curtains Sydney - Premium Fabrics and Installation",
+                      description:
+                        "Custom curtains including blockout curtains, sheer curtains and veri-shades",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Shutters Sydney - ABS and Timber Installation",
+                      description:
+                        "Window shutters including waterproof ABS and premium timber options",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Awnings Sydney - Folding Arm and Fixed Canopies",
+                      description:
+                        "Outdoor awnings including folding arm, straight drop and canopy awnings",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Motorised Blinds Sydney - Electric and Smart Controls",
+                      description:
+                        "Automated and motorised blinds with remote and smart home integration",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Blind Repairs Sydney - Professional Maintenance",
+                      description:
+                        "Expert repair services for all types of blinds, awnings and curtains",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Awning Repairs Sydney - Maintenance and Parts",
+                      description:
+                        "Professional awning repair and maintenance services across Sydney",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Curtain Repairs Sydney - Restoration Services",
+                      description:
+                        "Expert curtain repair and restoration services",
                     },
                   },
                 ],
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+61-XXX-XXX-XXX",
+                telephone: "+61-2-9340-5050",
                 contactType: "Customer Service",
-                areaServed: "AU",
+                areaServed: ["Sydney", "NSW"],
                 availableLanguage: "English",
               },
               sameAs: [
