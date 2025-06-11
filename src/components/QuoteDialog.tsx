@@ -122,6 +122,7 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     "idle"
   );
   const [errors, setErrors] = useState<Partial<QuoteFormData>>({});
+  const [apiError, setApiError] = useState<string>("");
   const [showIncentive, setShowIncentive] = useState(true);
 
   // Auto-populate room type based on product category
@@ -211,6 +212,11 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     if (errors[name as keyof QuoteFormData]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
+
+    // Clear API error when user makes changes
+    if (apiError) {
+      setApiError("");
+    }
   };
 
   const nextStep = () => {
@@ -231,6 +237,7 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     }
 
     setStatus("sending");
+    setApiError(""); // Clear previous API errors
 
     try {
       // Filtrar solo los campos que acepta el QuoteDto del backend
@@ -262,8 +269,6 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
         productCategory: productCategory || undefined,
       };
 
-      console.log("Sending quote data to backend:", quoteData);
-
       // Send quote request to backend
       const response = await fetch(`${API_BASE_URL}/api/quotes`, {
         method: "POST",
@@ -273,14 +278,24 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
         body: JSON.stringify(quoteData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Backend error:", errorData);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const responseData = await response.json();
 
-      const result = await response.json();
-      console.log("Quote request sent successfully:", result);
+      if (!response.ok) {
+        // Handle validation errors from backend
+        if (response.status === 400 && responseData.message) {
+          if (Array.isArray(responseData.message)) {
+            // Multiple validation errors
+            setApiError(responseData.message.join(", "));
+          } else {
+            // Single error message
+            setApiError(responseData.message);
+          }
+        } else {
+          setApiError("Error sending quote request. Please try again.");
+        }
+        setStatus("error");
+        return;
+      }
 
       setStatus("sent");
 
@@ -290,7 +305,8 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
         onClose();
       }, 3000);
     } catch (error) {
-      console.error("Error sending quote:", error);
+      console.error("Network error:", error);
+      setApiError("Network error. Please check your connection and try again.");
       setStatus("error");
     }
   };
@@ -321,6 +337,7 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     setCurrentStep(0);
     setStatus("idle");
     setErrors({});
+    setApiError(""); // Clear API errors
   };
 
   const handleClose = () => {
@@ -1064,10 +1081,30 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
                   exit={{ opacity: 0, y: -20 }}
                   className="absolute top-4 left-4 right-4 bg-red-50 border border-red-200 p-4 rounded-lg"
                 >
-                  <p className="text-red-700 text-center font-medium">
-                    An error occurred. Please try again or call us at (02) 1234
-                    5678
-                  </p>
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        Error sending quote request
+                      </h3>
+                      <div className="mt-1 text-sm text-red-700">
+                        {apiError ||
+                          "An error occurred. Please try again or call us at (02) 1234 5678"}
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
