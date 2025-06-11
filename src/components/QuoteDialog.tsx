@@ -233,22 +233,36 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     setStatus("sending");
 
     try {
-      // Enhanced quote data with more context
+      // Filtrar solo los campos que acepta el QuoteDto del backend
       const quoteData = {
-        ...formData,
+        // Campos de BaseContactDto
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+
+        // Campos específicos de QuoteDto
+        address: formData.address,
+        city: formData.city,
+        postcode: formData.postcode,
+        state: formData.state,
+        roomType: formData.roomType,
+        width: formData.width || undefined,
+        height: formData.height || undefined,
+        windowCount: formData.windowCount,
+        installationType: formData.installationType || undefined,
+        budget: formData.budget,
+        urgency: formData.urgency,
+        preferredDate: formData.preferredDate || undefined,
+        preferredTime: formData.preferredTime || undefined,
+        comments: formData.comments || undefined,
+        referralSource: formData.referralSource || undefined,
+        isNewCustomer: formData.isNewCustomer,
+        wantsNewsletter: formData.wantsNewsletter,
         product: productName,
-        productCategory,
-        timestamp: new Date().toISOString(),
-        formVersion: "2.0",
-        stepCompleted: currentStep + 1,
-        totalSteps: formSteps.length,
-        // Add estimated quote value based on budget
-        estimatedValue: getBudgetValue(formData.budget),
-        // Add lead score based on completeness and urgency
-        leadScore: calculateLeadScore(formData),
+        productCategory: productCategory || undefined,
       };
 
-      console.log("Enhanced quote form submitted:", quoteData);
+      console.log("Sending quote data to backend:", quoteData);
 
       // Send quote request to backend
       const response = await fetch(`${API_BASE_URL}/api/quotes`, {
@@ -260,6 +274,8 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Backend error:", errorData);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -277,40 +293,6 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
       console.error("Error sending quote:", error);
       setStatus("error");
     }
-  };
-
-  const getBudgetValue = (budget: string): number => {
-    const budgetMap: Record<string, number> = {
-      "under-500": 400,
-      "500-1000": 750,
-      "1000-2000": 1500,
-      "2000-5000": 3500,
-      "over-5000": 7500,
-    };
-    return budgetMap[budget] || 0;
-  };
-
-  const calculateLeadScore = (data: QuoteFormData): number => {
-    let score = 0;
-
-    // Contact completeness (30 points)
-    if (data.name && data.email && data.phone) score += 30;
-
-    // Location completeness (20 points)
-    if (data.address && data.city && data.postcode) score += 20;
-
-    // Project details (25 points)
-    if (data.roomType && data.windowCount && data.installationType) score += 25;
-
-    // Budget provided (15 points)
-    if (data.budget) score += 15;
-
-    // Urgency (10 points - higher for urgent)
-    if (data.urgency === "asap") score += 10;
-    else if (data.urgency === "this-month") score += 8;
-    else if (data.urgency === "next-month") score += 5;
-
-    return score;
   };
 
   const resetForm = () => {
