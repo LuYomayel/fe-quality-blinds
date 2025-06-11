@@ -113,12 +113,20 @@ export const productData: Product[] = [
         alt: "Conservatory Awning",
       },
       {
-        src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        src: "/images/conservatory-awning-2.webp",
+        alt: "Conservatory Awning Installation",
       },
       {
-        src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        src: "/images/conservatory-awning-3.webp",
+        alt: "Conservatory Awning Side View",
+      },
+      {
+        src: "/images/conservatory-awning-4.webp",
+        alt: "Conservatory Awning Detail",
+      },
+      {
+        src: "/images/conservatory-awning-5.webp",
+        alt: "Conservatory Awning Extended",
       },
     ],
     relatedProducts: [
@@ -330,20 +338,20 @@ export const productData: Product[] = [
       "Folding Arm Awnings allow you to choose how much shade the awning provides; they retract into a compact headbox when closed, offering a neat appearance. Available in manual (gear) or motorised operation (motorisation recommended due to arm tension), constructed with high-tension triple spring arms and PVC-coated stainless steel cables. Frames are powder-coated in Dulux Duralloy range; optional wind, sun, rain, and motion sensors allow automatic operation. ",
     images: [
       {
-        src: "/images/folding-arm-awning.webp",
+        src: "/images/folding-arm-awning-1.webp",
         alt: "Folding Arm Awning",
       },
       {
         src: "/images/folding-arm-awning-2.webp",
-        alt: "Folding Arm Awning 2",
+        alt: "Folding Arm Awning Extended",
       },
       {
         src: "/images/folding-arm-awning-3.webp",
-        alt: "Folding Arm Awning 3",
+        alt: "Folding Arm Awning Detail",
       },
       {
         src: "/images/folding-arm-awning-4.webp",
-        alt: "Folding Arm Awning 4",
+        alt: "Folding Arm Awning Installation",
       },
     ],
     relatedProducts: [
@@ -406,12 +414,16 @@ export const productData: Product[] = [
         alt: "Straight Drop Awning",
       },
       {
-        src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        src: "/images/straight-drop-awning-2.webp",
+        alt: "Straight Drop Awning Extended",
       },
       {
-        src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        src: "/images/straight-drop-awning-3.webp",
+        alt: "Straight Drop Awning Detail",
+      },
+      {
+        src: "/images/straight-drop-awning-4.webp",
+        alt: "Straight Drop Awning Installation",
       },
     ],
     relatedProducts: [
@@ -474,12 +486,16 @@ export const productData: Product[] = [
         alt: "Fixed Canopy Awning",
       },
       {
+        src: "/images/canopy-1.webp",
+        alt: "Canopy Awning Style",
+      },
+      {
         src: "/images/awning-1.webp",
-        alt: "Awning 1",
+        alt: "Awning Installation",
       },
       {
         src: "/images/awning-2.webp",
-        alt: "Awning 2",
+        alt: "Awning Detail",
       },
     ],
     relatedProducts: [
@@ -530,22 +546,32 @@ export const productData: Product[] = [
   {
     id: "aluminium-venetian-blinds",
     name: "Aluminium Venetian Blinds",
+    category: "blinds",
+    subcategory: "venetian",
     shortDescription:
       "Aluminium Venetian Blinds are splash-resistant, warp-proof, and easy to clean, available in 25 mm and 50 mm slat widths with a thicker alloy for enhanced strength and longevity.",
     description:
       "Constructed from a specialised aluminium alloy (not PVC), our Aluminium Venetian Blinds come in 25 mm and 50 mm slat widths and a wide colour palette—from pastels to metallic and wood-effect finishes. Their thicker slats provide extra durability, while the splash-proof, warp-resistant surface makes them ideal for kitchens, bathrooms, and high-humidity areas.",
     images: [
       {
-        src: "/images/aluminium-venetian-blind-1.webp",
+        src: "/images/external-venetian-1.webp",
         alt: "Aluminium Venetian Blind 1",
       },
       {
-        src: "/images/aluminium-venetian-blind-2.webp",
+        src: "/images/external-venetian-2.webp",
         alt: "Aluminium Venetian Blind 2",
       },
       {
-        src: "/images/venetian-blind-1.webp",
-        alt: "Venetian Blind 1",
+        src: "/images/external-venetian-3.webp",
+        alt: "Aluminium Venetian Blind 3",
+      },
+      {
+        src: "/images/external-venetian-4.webp",
+        alt: "Aluminium Venetian Blind 4",
+      },
+      {
+        src: "/images/external-venetian-5.webp",
+        alt: "Aluminium Venetian Blind 5",
       },
     ],
     relatedProducts: [
@@ -580,18 +606,28 @@ export const productData: Product[] = [
   {
     id: "basswood-venetian-blinds",
     name: "Basswood Venetian Blinds",
+    category: "blinds",
+    subcategory: "venetian",
     shortDescription:
       "Basswood Venetian Blinds are lightweight timber blinds available in a wide choice of colours and stains to complement any décor, and are easy to clean and maintain.",
     description:
       "Our Basswood Venetian Blinds enhance your home's natural charm with robust timber stability and a broad palette of colours and stains. Easy to operate, clean, and install, these blinds bring the outdoors inside and suit any décor effortlessly.",
     images: [
       {
-        src: "/images/basswood-venetian-blind-1.webp",
+        src: "/images/timber-venetian-1.jpg",
         alt: "Basswood Venetian Blind 1",
       },
       {
-        src: "/images/venetian-blind-1.webp",
-        alt: "Venetian Blind 1",
+        src: "/images/timber-venetian-2.jpg",
+        alt: "Basswood Venetian Blind 2",
+      },
+      {
+        src: "/images/timber-venetian-3.jpg",
+        alt: "Basswood Venetian Blind 3",
+      },
+      {
+        src: "/images/basswood-shutter-1.webp",
+        alt: "Basswood Style Detail",
       },
     ],
     relatedProducts: [
@@ -626,34 +662,28 @@ export const productData: Product[] = [
   {
     id: "blockout-roller-blinds",
     name: "Blockout Roller Blinds",
+    category: "blinds",
+    subcategory: "roller",
     shortDescription:
       "Blocks 100% of light for maximum darkness and privacy. Reduces energy bills and withstands the harsh Australian sun—ideal for bedrooms, living rooms, and offices.",
     description:
       "Blockout Roller Blinds are the ultimate solution for complete light control, privacy, and insulation. Crafted from premium, coated fabrics that block 100% of sunlight, these blinds are perfect for bedrooms, media rooms, offices, and any space requiring total darkness. Their superior insulation keeps your home cooler in summer and warmer in winter, helping to reduce energy bills by up to 24%. Designed to withstand the harsh Australian sun, they are low-maintenance, easy to clean, and can be upgraded from manual to motorised operation—even years after installation. Custom-made to your measurements, Blockout Roller Blinds offer a sleek, contemporary look and are available in over 100 colours and textures. They can be installed alone or paired with sheer curtains for a modern layered effect.",
     images: [
       {
-        src: "/images/blockout-roller-blind-1.webp",
+        src: "/images/blockout-roller-blind-5.webp",
         alt: "Blockout Roller Blind 1",
       },
       {
-        src: "/images/blockout-roller-blind-2.webp",
+        src: "/images/blockout-roller-blind-6.webp",
         alt: "Blockout Roller Blind 2",
       },
       {
-        src: "/images/blockout-roller-blind-3.webp",
+        src: "/images/blockout-roller-blind-7.webp",
         alt: "Blockout Roller Blind 3",
       },
       {
-        src: "/images/blockout-roller-blind-4.webp",
+        src: "/images/blockout-roller-blind-8.webp",
         alt: "Blockout Roller Blind 4",
-      },
-      {
-        src: "/images/roller-blind-1.webp",
-        alt: "Roller Blind 1",
-      },
-      {
-        src: "/images/roller-blind-2.webp",
-        alt: "Roller Blind 2",
       },
     ],
     relatedProducts: [
@@ -712,30 +742,24 @@ export const productData: Product[] = [
   {
     id: "blockout-roman-blinds",
     name: "Blockout Roman Blinds",
+    category: "blinds",
+    subcategory: "roman",
     shortDescription:
       "Elegant pleated blinds with blockout lining for total darkness, privacy, and timeless style—custom-made in premium Australian fabrics.",
     description:
       "Blockout Roman Blinds combine the classic beauty of pleated fabric shades with the practical benefits of total light block and insulation. Made from premium fabrics sourced from trusted Australian suppliers, these blinds feature a continuous single-piece design with optional blockout lining, making them ideal for bedrooms, media rooms, or any space where darkness and privacy are essential. The chain-operated tracking system and aluminium back battens ensure a crisp, tailored fold and easy operation. Their soft, elegant look adds warmth and sophistication to any décor, while the blockout lining helps maintain comfortable room temperatures year-round.",
     images: [
       {
-        src: "/images/blockout-roman-blind-1.webp",
-        alt: "Blockout Roman Blind 1",
+        src: "/images/blockout-roller-blind-5.webp",
+        alt: "Blockout Roman Blind Style",
       },
       {
-        src: "/images/roman-blind-1.webp",
-        alt: "Roman Blind 1",
+        src: "/images/blockout-curtain-1.webp",
+        alt: "Blockout Fabric Detail",
       },
       {
-        src: "/images/roman-blind-2.webp",
-        alt: "Roman Blind 2",
-      },
-      {
-        src: "/images/roman-blind-3.webp",
-        alt: "Roman Blind 3",
-      },
-      {
-        src: "/images/roman-blind-4.webp",
-        alt: "Roman Blind 4",
+        src: "/images/blockout-curtain-2.webp",
+        alt: "Blockout Material Close-up",
       },
     ],
     relatedProducts: [
@@ -795,49 +819,29 @@ export const productData: Product[] = [
       "Blockout Curtains use proprietary three-weave technology to block 99% of harmful UV rays and 100% of harsh sunlight, improving energy efficiency year-round.",
     description:
       "Blockout Curtains minimize heat transfer through windows by up to 24%, keeping rooms cooler in summer and warmer in winter. Made with a proprietary three-weave fabric, they block nearly all sunlight and UV radiation, enhance privacy, reduce noise, and help lower energy bills. Ideal for bedrooms, home theaters, and any space requiring complete light control and insulation.",
-    faqs: [
-      {
-        question: "Why choose blockout curtains?",
-        answer:
-          "Blockout curtains offer superior light control, privacy, noise reduction, and energy efficiency, making them ideal for bedrooms and home theaters.",
-      },
-      {
-        question: "Are blockout curtains energy efficient?",
-        answer:
-          "Yes, they can reduce heat transfer by up to 24%, helping keep rooms cooler in summer and warmer in winter.",
-      },
-      {
-        question: "Can blockout curtains improve sleep?",
-        answer:
-          "By blocking external light, they create a darker sleep environment, which can lead to better sleep quality.",
-      },
-      {
-        question:
-          "What is the difference between blockout and regular curtains?",
-        answer:
-          "Blockout curtains use dense, proprietary fabrics to block nearly all light, while regular curtains allow some light to filter through.",
-      },
-      {
-        question: "Are eyelet blockout curtains a good choice?",
-        answer:
-          "Eyelet blockout curtains combine easy installation with a stylish, modern look, offering full light control and privacy.",
-      },
-    ],
     images: [
       {
-        src: "/images/blockout-curtains-1.webp",
+        src: "/images/blockout-curtain-1.webp",
         alt: "Blockout Curtains 1",
       },
       {
-        src: "/images/curtain-1.webp",
-        alt: "Curtain 1",
+        src: "/images/blockout-curtain-2.webp",
+        alt: "Blockout Curtains 2",
+      },
+      {
+        src: "/images/blockout-curtain-3.webp",
+        alt: "Blockout Curtains 3",
+      },
+      {
+        src: "/images/blockout-curtain-4.webp",
+        alt: "Blockout Curtains 4",
       },
     ],
     relatedProducts: [
       {
         id: "curtains",
         name: "Curtains",
-        image: "/images/curtain-1.webp",
+        image: "/images/curtain-2.webp",
         href: "/curtains/curtains",
         shortDescription:
           "Blockout Curtains are manufactured using a proprietary three-weave technology that blocks 99 % of harmful UV rays and 100 % of harsh sunlight.",
@@ -886,27 +890,27 @@ export const productData: Product[] = [
       "Curtains are a timeless window dressing that offer privacy, light control, temperature regulation, and a touch of elegance to any interior. Choose from a wide range of styles including blockout curtains for maximum darkness and energy efficiency, sheer curtains for soft filtered light and daytime privacy, or Veri Shades for the combined benefits of blinds and drapes. Professionally measured and installed, our curtains are custom-made to your requirements and available in a vast selection of fabrics, colours, and headings. They can be layered for extra insulation and style, making them suitable for bedrooms, living areas, and home theatres.",
     images: [
       {
-        src: "/images/curtain-1.webp",
+        src: "/images/curtain-2.webp",
         alt: "Curtain 1",
       },
       {
-        src: "/images/blockout-curtains-1.webp",
-        alt: "Blockout Curtains 1",
+        src: "/images/curtain-3.webp",
+        alt: "Curtain 2",
       },
       {
-        src: "/images/sheer-curtain-1.webp",
-        alt: "Sheer Curtain 1",
+        src: "/images/curtain-4.webp",
+        alt: "Curtain 3",
       },
       {
-        src: "/images/veri-shades-curtain-1.webp",
-        alt: "Veri Shades Curtain 1",
+        src: "/images/blockout-curtain-1.webp",
+        alt: "Blockout Curtains Style",
       },
     ],
     relatedProducts: [
       {
         id: "blockout-curtains",
         name: "Blockout Curtains",
-        image: "/images/blockout-curtains-1.webp",
+        image: "/images/blockout-curtain-1.webp",
         href: "/curtains/blockout-curtains",
         shortDescription:
           "Blockout Curtains provide complete darkness and insulation—ideal for bedrooms and home theatres.",
@@ -977,19 +981,27 @@ export const productData: Product[] = [
       "Lightweight sheer curtains soften natural light and add instant style to any décor. They provide daytime privacy and work beautifully as part of layered window treatments. When interior lights are on at night, they become more transparent, so consider pairing with blockout curtains for full privacy. Their versatile, gauzy fabrics create a serene, airy atmosphere in living rooms, bedrooms, or any space.",
     images: [
       {
-        src: "/images/sheer-curtain-1.webp",
+        src: "/images/sheer-curtain-2.webp",
         alt: "Sheer Curtain 1",
       },
       {
-        src: "/images/curtain-1.webp",
-        alt: "Curtain 1",
+        src: "/images/sheer-curtain-3.webp",
+        alt: "Sheer Curtain 2",
+      },
+      {
+        src: "/images/sheer-curtain-4.webp",
+        alt: "Sheer Curtain 3",
+      },
+      {
+        src: "/images/sheer-curtain-5.webp",
+        alt: "Sheer Curtain 4",
       },
     ],
     relatedProducts: [
       {
         id: "blockout-curtains",
         name: "Blockout Curtains",
-        image: "/images/blockout-curtains-1.webp",
+        image: "/images/blockout-curtain-1.webp",
         href: "/curtains/blockout-curtains",
         shortDescription:
           "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
@@ -997,7 +1009,7 @@ export const productData: Product[] = [
       {
         id: "curtains",
         name: "Curtains",
-        image: "/images/curtain-1.webp",
+        image: "/images/curtain-2.webp",
         href: "/curtains/curtains",
         shortDescription:
           "Sheer Curtains are lightweight fabrics that soften incoming light and add style to home décor.",
@@ -1050,7 +1062,7 @@ export const productData: Product[] = [
       {
         id: "blockout-curtains",
         name: "Blockout Curtains",
-        image: "/images/blockout-curtains-1.webp",
+        image: "/images/blockout-curtain-1.webp",
         href: "/curtains/blockout-curtains",
         shortDescription:
           "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
@@ -1058,7 +1070,7 @@ export const productData: Product[] = [
       {
         id: "curtains",
         name: "Curtains",
-        image: "/images/curtain-1.webp",
+        image: "/images/curtain-2.webp",
         href: "/curtains/curtains",
         shortDescription:
           "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
@@ -1066,7 +1078,7 @@ export const productData: Product[] = [
       {
         id: "sheer-curtains",
         name: "Sheer Curtains",
-        image: "/images/sheer-curtain-1.webp",
+        image: "/images/sheer-curtain-2.webp",
         href: "/curtains/sheer-curtains",
         shortDescription:
           "Veri Shades combine the elegance of sheer fabrics, the privacy of curtains, and the adaptability of blinds.",
@@ -1100,19 +1112,19 @@ export const productData: Product[] = [
     images: [
       {
         src: "/images/pvc-shutter-1.webp",
-        alt: "PVC Shutter 1",
+        alt: "ABS Shutter 1",
       },
       {
         src: "/images/pvc-shutter-2.webp",
-        alt: "PVC Shutter 2",
+        alt: "ABS Shutter 2",
       },
       {
         src: "/images/shutter-1.webp",
-        alt: "Shutter 1",
+        alt: "ABS Shutter Installation",
       },
       {
         src: "/images/shutter-2.webp",
-        alt: "Shutter 2",
+        alt: "ABS Shutter Detail",
       },
     ],
     relatedProducts: [
@@ -1169,19 +1181,19 @@ export const productData: Product[] = [
     images: [
       {
         src: "/images/pvc-shutter-1.webp",
-        alt: "PVC Shutter 1",
+        alt: "ABS Waterproof Shutter 1",
       },
       {
         src: "/images/pvc-shutter-2.webp",
-        alt: "PVC Shutter 2",
+        alt: "ABS Waterproof Shutter 2",
       },
       {
-        src: "/images/shutter-1.webp",
-        alt: "Shutter 1",
+        src: "/images/aluminium-shutter-1.webp",
+        alt: "Waterproof Shutter Installation",
       },
       {
-        src: "/images/shutter-2.webp",
-        alt: "Shutter 2",
+        src: "/images/aluminium-shutter-2.webp",
+        alt: "Waterproof Shutter Detail",
       },
     ],
     relatedProducts: [
@@ -1253,12 +1265,12 @@ export const productData: Product[] = [
         alt: "Basswood Shutter 4",
       },
       {
-        src: "/images/shutter-1.webp",
-        alt: "Shutter 1",
+        src: "/images/timber-shutter-1.webp",
+        alt: "Timber Shutter Style",
       },
       {
-        src: "/images/shutter-2.webp",
-        alt: "Shutter 2",
+        src: "/images/timber-shutter-2.webp",
+        alt: "Timber Shutter Detail",
       },
     ],
     relatedProducts: [
@@ -1314,16 +1326,24 @@ export const productData: Product[] = [
       "Phoenixwood Shutters are 100 % premium hardwood shutters offering luxurious timber grain and durability. Sustainably sourced from well-managed hardwood forests and plantations, available in 51 paint and stain colours plus custom options. Features multiple hand sanding and finishing for a fine, furniture-grade surface, wider panel options (1095 mm) for expansive views, and invisible Easy Tilt drive. Available in louvre sizes 47 mm, 63 mm, 76 mm, 89 mm, and 114 mm. ",
     images: [
       {
-        src: "/images/phoenixwood-shutter.webp",
-        alt: "Phoenixwood Shutter",
+        src: "/images/timber-shutter-1.webp",
+        alt: "Phoenixwood Shutter 1",
+      },
+      {
+        src: "/images/timber-shutter-2.webp",
+        alt: "Phoenixwood Shutter 2",
+      },
+      {
+        src: "/images/plantation-shutterr-1.webp",
+        alt: "Plantation Shutter Style",
       },
       {
         src: "/images/shutter-1.webp",
-        alt: "Shutter 1",
+        alt: "Premium Shutter Installation",
       },
       {
         src: "/images/shutter-2.webp",
-        alt: "Shutter 2",
+        alt: "Luxury Shutter Detail",
       },
     ],
     relatedProducts: [
@@ -1379,28 +1399,28 @@ export const productData: Product[] = [
       "Louvers are versatile horizontal blades designed to manage airflow, shade, and light penetration while maintaining privacy and concealing light sources. Suitable for windows, doors, ceilings, and closet doors, louvers are also used in shutters to provide fresh air and natural light while blocking heat, moisture, and direct sunlight. Available in a range of slat sizes and materials, they can be fixed or adjustable, making them perfect for both functional and decorative applications. Louvers help reduce glare, improve ventilation, and add a modern architectural accent to any space.",
     images: [
       {
+        src: "/images/louver-1.webp",
+        alt: "Louver Design 1",
+      },
+      {
+        src: "/images/louver-2.webp",
+        alt: "Louver Installation 2",
+      },
+      {
+        src: "/images/louver-3.webp",
+        alt: "Louver Detail 3",
+      },
+      {
+        src: "/images/louver-4.webp",
+        alt: "Louver Application 4",
+      },
+      {
         src: "/images/shutter-1.webp",
-        alt: "Shutter 1",
+        alt: "Louver in Shutter",
       },
       {
-        src: "/images/shutter-2.webp",
-        alt: "Shutter 2",
-      },
-      {
-        src: "/images/roller-shutter-1.webp",
-        alt: "Roller Shutter 1",
-      },
-      {
-        src: "/images/roller-shutter-2.webp",
-        alt: "Roller Shutter 2",
-      },
-      {
-        src: "/images/roller-shutter-3.webp",
-        alt: "Roller Shutter 3",
-      },
-      {
-        src: "/images/roller-shutter-4.webp",
-        alt: "Roller Shutter 4",
+        src: "/images/external-venetian-1.webp",
+        alt: "External Louver Style",
       },
     ],
     relatedProducts: [
@@ -1483,12 +1503,12 @@ export const productData: Product[] = [
         alt: "Polycarbonate Roofing Detail",
       },
       {
-        src: "/images/awning-1.webp",
-        alt: "Outdoor Coverage",
+        src: "/images/polycarbonate-roofing-3.webp",
+        alt: "Polycarbonate Roofing Application",
       },
       {
-        src: "/images/awning-2.webp",
-        alt: "Weather Protection",
+        src: "/images/polycarbonate-roofing-4.webp",
+        alt: "Polycarbonate Roofing Style",
       },
     ],
     relatedProducts: [
@@ -1643,12 +1663,12 @@ export const productData: Product[] = [
         alt: "Shade Sail Design",
       },
       {
-        src: "/images/awning-1.webp",
-        alt: "Outdoor Shade",
+        src: "/images/shade-sail-4.webp",
+        alt: "Shade Sail Application",
       },
       {
-        src: "/images/awning-2.webp",
-        alt: "UV Protection",
+        src: "/images/shade-sail-1-3.webp",
+        alt: "Shade Sail Style",
       },
     ],
     relatedProducts: [
@@ -1786,12 +1806,40 @@ export const productData: Product[] = [
         alt: "Cafe Umbrella Setup",
       },
       {
-        src: "/images/awning-1.webp",
-        alt: "Outdoor Dining",
+        src: "/images/umbrella-3.webp",
+        alt: "Outdoor Umbrella",
       },
       {
-        src: "/images/awning-2.webp",
-        alt: "Event Shade",
+        src: "/images/umbrella-4.webp",
+        alt: "Restaurant Umbrella",
+      },
+      {
+        src: "/images/umbrella-5.webp",
+        alt: "Event Umbrella",
+      },
+      {
+        src: "/images/umbrella-6.webp",
+        alt: "Patio Umbrella",
+      },
+      {
+        src: "/images/umbrella-7.webp",
+        alt: "Large Umbrella",
+      },
+      {
+        src: "/images/umbrella-8.webp",
+        alt: "Premium Umbrella",
+      },
+      {
+        src: "/images/umbrella-9.webp",
+        alt: "Quality Umbrella",
+      },
+      {
+        src: "/images/umbrella-10.webp",
+        alt: "Professional Umbrella",
+      },
+      {
+        src: "/images/umbrella-11.webp",
+        alt: "Commercial Grade Umbrella",
       },
     ],
     relatedProducts: [
@@ -1940,20 +1988,35 @@ export const productData: Product[] = [
       "Sunscreen Roller Blinds are made of mesh-like fabric that blocks glare and UV rays, keeping your space cool and protecting furniture from fading.",
     description:
       "Sunscreen Roller Blinds are made of mesh-like fabric that blocks glare and UV rays, keeping your space cool and protecting furniture from fading. They are best used where privacy is not required or combined with a Blockout Blind in a Double Roller Blind system for maximum relaxation. Available in a variety of materials and colors to suit any setting, our custom-made blinds help prevent heat, glare, and UV damage, saving on energy costs. They offer privacy during the day but become revealing at night with interior lights on, so pairing with Blockout is recommended for optimal privacy.",
-    category: "blinds",
-    subcategory: "roller",
-    heroImage: "/images/sunscreen-roller-blind-1.webp",
     images: [
       {
-        src: "/images/sunscreen-roller-blind-1.webp",
+        src: "/images/sunscreen-roller-blind-2.webp",
         alt: "Sunscreen Roller Blind",
       },
       {
-        src: "/images/sunscreen-roller-blind-2.webp",
+        src: "/images/sunscreen-roller-blind-3.webp",
         alt: "Sunscreen Roller Blind in office",
       },
-      { src: "/images/roller-blind-1.webp", alt: "Roller Blind detail" },
+      {
+        src: "/images/sunscreen-roller-blind-4.webp",
+        alt: "Sunscreen Roller Blind Detail",
+      },
+      {
+        src: "/images/sunscreen-roller-blind-5.webp",
+        alt: "Sunscreen Roller Blind Application",
+      },
+      {
+        src: "/images/sunscreen-roller-blind-6.webp",
+        alt: "Sunscreen Roller Blind Style",
+      },
+      {
+        src: "/images/sunscreen-roller-blind-7.webp",
+        alt: "Sunscreen Roller Blind Installation",
+      },
     ],
+    category: "blinds",
+    subcategory: "roller",
+    heroImage: "/images/sunscreen-roller-blind-1.webp",
     features: [
       "UV Protection",
       "Glare Reduction",
@@ -2008,20 +2071,23 @@ export const productData: Product[] = [
       "Translucent Roller Blinds allow you to create a private, pleasant atmosphere without obstructing natural light.",
     description:
       "Translucent Roller Blinds allow you to create a private, pleasant atmosphere without obstructing natural light, providing 100% daytime privacy while reducing heat and glare. These semi-transparent fabrics offer an opaque shade that lets light filter through, maintaining a clear appearance. Ideal for living areas and bathrooms, they allow natural light to fill your room without sacrificing comfort. Also known as Light Filtering Roller Blinds, they combine elegance, privacy, and sophisticated aesthetic by balancing light and shading.",
-    category: "blinds",
-    subcategory: "roller",
-    heroImage: "/images/translucent-roller-blind-1.webp",
     images: [
       {
-        src: "/images/translucent-roller-blind-1.webp",
+        src: "/images/translucent-roller-blind-2.webp",
         alt: "Translucent Roller Blind",
       },
       {
-        src: "/images/translucent-roller-blind-2.webp",
+        src: "/images/blockout-roller-blind-5.webp",
         alt: "Translucent Roller Blind in bedroom",
       },
-      { src: "/images/roller-blind-2.webp", alt: "Roller Blind mechanism" },
+      {
+        src: "/images/sunscreen-roller-blind-2.webp",
+        alt: "Light Filtering Detail",
+      },
     ],
+    category: "blinds",
+    subcategory: "roller",
+    heroImage: "/images/translucent-roller-blind-1.webp",
     features: [
       "Light Filtering",
       "Privacy Control",
@@ -2081,14 +2147,17 @@ export const productData: Product[] = [
     heroImage: "/images/translucent-roman-blind-1.webp",
     images: [
       {
-        src: "/images/translucent-roman-blind-1.webp",
+        src: "/images/translucent-roller-blind-2.webp",
         alt: "Translucent Roman Blind",
       },
       {
-        src: "/images/translucent-roman-blind-2.webp",
+        src: "/images/sheer-curtain-2.webp",
         alt: "Translucent Roman Blind in living room",
       },
-      { src: "/images/roman-blind-1.webp", alt: "Roman Blind detail" },
+      {
+        src: "/images/curtain-2.webp",
+        alt: "Roman Blind detail",
+      },
     ],
     features: [
       "Light Filtering",
@@ -2142,14 +2211,17 @@ export const productData: Product[] = [
     heroImage: "/images/cedar-venetian-blind-1.webp",
     images: [
       {
-        src: "/images/cedar-venetian-blind-1.webp",
+        src: "/images/cedar-shutter-2.webp",
         alt: "Cedar Venetian Blind",
       },
       {
-        src: "/images/cedar-venetian-blind-2.webp",
+        src: "/images/timber-venetian-1.jpg",
         alt: "Cedar Venetian Blind detail",
       },
-      { src: "/images/venetian-blind-1.webp", alt: "Venetian Blind mechanism" },
+      {
+        src: "/images/timber-venetian-2.jpg",
+        alt: "Cedar Venetian Blind mechanism",
+      },
     ],
     features: [
       "Luxury Wood",

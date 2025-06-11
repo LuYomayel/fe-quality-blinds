@@ -394,7 +394,7 @@ const menuItems: MenuItem[] = [
         name: "Canopy Awning",
         href: "/awnings/canopy-awning",
         preview: {
-          image: "/images/canopy-awning-1.webp",
+          image: "/images/canopy-1.webp",
           description:
             "Fixed canopy awnings that provide permanent sun protection and architectural enhancement to your property.",
           features: [
@@ -412,7 +412,7 @@ const menuItems: MenuItem[] = [
     href: "/other-products",
     icon: WrenchScrewdriverIcon,
     preview: {
-      image: "/images/other-product-1.webp",
+      image: "/images/louver-2.webp",
       description:
         "Additional outdoor solutions including louvers, shade sails, and specialty products for complete home coverage.",
       features: ["Versatile Solutions", "Quality Materials", "Custom Design"],
