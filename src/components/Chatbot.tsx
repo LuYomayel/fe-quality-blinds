@@ -1369,6 +1369,7 @@ IMPORTANT INSTRUCTIONS:
                     .replace(/\s+/g, "-") || ""
                 }
                 prefilledInfo={extractInfoFromChat()}
+                chatMessages={messages}
               />
             </motion.div>
           </motion.div>

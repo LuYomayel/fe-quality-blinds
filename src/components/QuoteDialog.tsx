@@ -50,12 +50,20 @@ interface QuoteFormData {
   wantsNewsletter: boolean;
 }
 
+interface ChatMessage {
+  id: string;
+  type: "user" | "bot";
+  content: string;
+  timestamp: Date;
+}
+
 interface QuoteDialogProps {
   isOpen: boolean;
   onClose: () => void;
   productName: string;
   productCategory?: string;
   prefilledInfo?: Partial<QuoteFormData>;
+  chatMessages?: ChatMessage[];
 }
 
 // Form steps for better UX
@@ -92,6 +100,7 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
   productName,
   productCategory = "",
   prefilledInfo = {},
+  chatMessages = [],
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<QuoteFormData>({
@@ -240,6 +249,28 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
     setApiError(""); // Clear previous API errors
 
     try {
+      // Generar resumen de conversación si hay mensajes del chatbot
+      let conversationSummary = "";
+      if (chatMessages.length > 0) {
+        try {
+          const summaryResponse = await fetch(
+            `${API_BASE_URL}/api/chat/summary`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ messages: chatMessages }),
+            }
+          );
+          const summaryData = await summaryResponse.json();
+          conversationSummary =
+            summaryData.summary || "Unable to generate automatic summary.";
+        } catch (error) {
+          console.error("Error generating summary:", error);
+          conversationSummary =
+            "Error generating chatbot conversation summary.";
+        }
+      }
+
       // Filtrar solo los campos que acepta el QuoteDto del backend
       const quoteData = {
         // Campos de BaseContactDto
@@ -267,6 +298,7 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
         wantsNewsletter: formData.wantsNewsletter,
         product: productName,
         productCategory: productCategory || undefined,
+        chatSummary: conversationSummary, // Agregar el resumen al QuoteData
       };
 
       // Send quote request to backend
