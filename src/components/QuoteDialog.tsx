@@ -19,6 +19,7 @@ import {
   CalendarIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
+import { API_BASE_URL } from "../config";
 
 interface QuoteFormData {
   // Personal Info
@@ -249,8 +250,21 @@ const QuoteDialog: React.FC<QuoteDialogProps> = ({
 
       console.log("Enhanced quote form submitted:", quoteData);
 
-      // TODO: Implement actual API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Send quote request to backend
+      const response = await fetch(`${API_BASE_URL}/api/quotes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(quoteData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Quote request sent successfully:", result);
 
       setStatus("sent");
 
