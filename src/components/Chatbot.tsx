@@ -203,8 +203,6 @@ IMPORTANT INSTRUCTIONS:
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + process.env.OPENAI_API_KEY,
         },
         body: JSON.stringify({
           message: currentMessage,
