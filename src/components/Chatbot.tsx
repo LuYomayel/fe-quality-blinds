@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ContactForm from "./ContactForm";
 import SamplesForm from "./SamplesForm";
+import QuoteDialog from "./QuoteDialog";
 import { API_BASE_URL } from "../config";
 
 interface Message {
@@ -75,6 +76,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
   const [showRestartConfirm, setShowRestartConfirm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showSamplesForm, setShowSamplesForm] = useState(false);
+  const [showQuoteDialog, setShowQuoteDialog] = useState(false);
   const [conversationContext, setConversationContext] = useState({
     lastProductMentioned: "",
     userIntent: "",
@@ -199,7 +201,11 @@ IMPORTANT INSTRUCTIONS:
 
       const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + process.env.OPENAI_API_KEY,
+        },
         body: JSON.stringify({
           message: currentMessage,
           conversation: openAIMessages, // Enviar conversación completa
@@ -660,12 +666,12 @@ IMPORTANT INSTRUCTIONS:
 
       case "BOOK_HOME_VISIT":
       case "BOOK_CONSULTATION":
-        setShowContactForm(true);
+        setShowQuoteDialog(true);
         const visitMessage: Message = {
           id: Date.now().toString(),
           type: "bot",
           content:
-            "Great choice! I've opened our booking form for you. This will arrange a FREE home consultation where our expert will:\n\n✅ Measure your windows professionally\n✅ Show you samples in your actual lighting\n✅ Provide a detailed quote within 24 hours\n✅ Give design advice\n\nPlease fill out the form and we'll contact you to arrange a convenient time.",
+            "Perfect! I've opened our quote form for you with some information pre-filled from our conversation. This will arrange a FREE home consultation where our expert will:\n\n✅ Measure your windows professionally\n✅ Show you samples in your actual lighting\n✅ Provide a detailed quote within 24 hours\n✅ Give design advice\n\nI've automatically filled in some details based on what we discussed - please review and complete the form!",
           timestamp: new Date(),
         };
         addMessage(visitMessage);
@@ -822,6 +828,172 @@ IMPORTANT INSTRUCTIONS:
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
+
+  // Function to extract information from chat conversation for auto-filling forms
+  const extractInfoFromChat = useCallback(() => {
+    const allMessages = messages
+      .map((m) => m.content)
+      .join(" ")
+      .toLowerCase();
+
+    // Extract product information
+    let detectedProduct = conversationContext.lastProductMentioned;
+    const productMentions = [
+      { keyword: "roller blind", product: "Roller Blinds" },
+      { keyword: "roman blind", product: "Roman Blinds" },
+      { keyword: "venetian blind", product: "Venetian Blinds" },
+      { keyword: "shutter", product: "Shutters" },
+      { keyword: "curtain", product: "Curtains" },
+      { keyword: "awning", product: "Awnings" },
+      { keyword: "folding arm", product: "Awnings" },
+    ];
+
+    for (const mention of productMentions) {
+      if (allMessages.includes(mention.keyword)) {
+        detectedProduct = mention.product;
+        break;
+      }
+    }
+
+    // Extract room information
+    let detectedRoom = "";
+    const roomMentions = [
+      { keyword: "bedroom", room: "Bedroom" },
+      { keyword: "living room", room: "Living Room" },
+      { keyword: "kitchen", room: "Kitchen" },
+      { keyword: "bathroom", room: "Bathroom" },
+      { keyword: "office", room: "Office" },
+      { keyword: "dining", room: "Dining Room" },
+      { keyword: "outdoor", room: "Outdoor" },
+      { keyword: "patio", room: "Outdoor" },
+      { keyword: "balcony", room: "Outdoor" },
+    ];
+
+    for (const mention of roomMentions) {
+      if (allMessages.includes(mention.keyword)) {
+        detectedRoom = mention.room;
+        break;
+      }
+    }
+
+    // Extract quantity information
+    let windowCount = "1";
+    const quantityMatches = allMessages.match(
+      /(\d+)\s*(window|blind|shutter|awning)/
+    );
+    if (quantityMatches) {
+      const num = parseInt(quantityMatches[1]);
+      if (num <= 5) {
+        windowCount = num.toString();
+      } else {
+        windowCount = "5+";
+      }
+    }
+
+    // Extract measurements if mentioned
+    let width = "";
+    let height = "";
+    const measurementMatches = allMessages.match(
+      /(\d+)\s*(mm|cm|m)\s*(wide|width|by|x)\s*(\d+)\s*(mm|cm|m)/
+    );
+    if (measurementMatches) {
+      width = measurementMatches[1];
+      height = measurementMatches[4];
+
+      // Convert to mm if needed
+      if (measurementMatches[2] === "cm")
+        width = (parseInt(width) * 10).toString();
+      if (measurementMatches[2] === "m")
+        width = (parseInt(width) * 1000).toString();
+      if (measurementMatches[5] === "cm")
+        height = (parseInt(height) * 10).toString();
+      if (measurementMatches[5] === "m")
+        height = (parseInt(height) * 1000).toString();
+    }
+
+    // Extract budget if mentioned
+    let budget = "";
+    if (
+      allMessages.includes("under $500") ||
+      allMessages.includes("less than $500")
+    )
+      budget = "under-500";
+    else if (
+      allMessages.includes("$500") ||
+      (allMessages.includes("500") && allMessages.includes("1000"))
+    )
+      budget = "500-1000";
+    else if (
+      allMessages.includes("$1000") ||
+      (allMessages.includes("1000") && allMessages.includes("2000"))
+    )
+      budget = "1000-2000";
+    else if (
+      allMessages.includes("$2000") ||
+      (allMessages.includes("2000") && allMessages.includes("5000"))
+    )
+      budget = "2000-5000";
+    else if (
+      allMessages.includes("over $5000") ||
+      allMessages.includes("more than $5000")
+    )
+      budget = "over-5000";
+
+    // Extract urgency
+    let urgency = "";
+    if (
+      allMessages.includes("urgent") ||
+      allMessages.includes("asap") ||
+      allMessages.includes("immediately")
+    )
+      urgency = "asap";
+    else if (allMessages.includes("this month") || allMessages.includes("soon"))
+      urgency = "this-month";
+    else if (allMessages.includes("next month")) urgency = "next-month";
+    else if (
+      allMessages.includes("no rush") ||
+      allMessages.includes("planning") ||
+      allMessages.includes("browsing")
+    )
+      urgency = "just-browsing";
+
+    // Extract location info if mentioned
+    const address = "";
+    let postcode = "";
+    let city = "";
+
+    // Look for postcode pattern (4 digits)
+    const postcodeMatch = allMessages.match(/\b(\d{4})\b/);
+    if (postcodeMatch) {
+      postcode = postcodeMatch[1];
+    }
+
+    // Look for suburb/city mentions
+    const suburbMatch = allMessages.match(
+      /(sydney|melbourne|brisbane|perth|adelaide|hobart|darwin|canberra|bondi|randwick|surry hills|paddington|manly|parramatta)/i
+    );
+    if (suburbMatch) {
+      city =
+        suburbMatch[1].charAt(0).toUpperCase() +
+        suburbMatch[1].slice(1).toLowerCase();
+    }
+
+    return {
+      detectedProduct,
+      roomType: detectedRoom,
+      windowCount,
+      width,
+      height,
+      budget,
+      urgency,
+      address,
+      postcode,
+      city,
+      comments: `Auto-filled from chat conversation. Customer mentioned: ${detectedProduct}${
+        detectedRoom ? ` for ${detectedRoom}` : ""
+      }${windowCount !== "1" ? ` (${windowCount} windows)` : ""}.`,
+    };
+  }, [messages, conversationContext.lastProductMentioned]);
 
   return (
     <>
@@ -1158,6 +1330,47 @@ IMPORTANT INSTRUCTIONS:
               <SamplesForm
                 onClose={() => setShowSamplesForm(false)}
                 chatMessages={messages}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quote Dialog */}
+      <AnimatePresence>
+        {showQuoteDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowQuoteDialog(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowQuoteDialog(false)}
+                className="absolute top-4 right-4 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100"
+              >
+                <XMarkIcon className="h-5 w-5 text-gray-600" />
+              </button>
+              <QuoteDialog
+                isOpen={true}
+                onClose={() => setShowQuoteDialog(false)}
+                productName={
+                  extractInfoFromChat().detectedProduct || "Window Treatments"
+                }
+                productCategory={
+                  extractInfoFromChat()
+                    .detectedProduct?.toLowerCase()
+                    .replace(/\s+/g, "-") || ""
+                }
+                prefilledInfo={extractInfoFromChat()}
               />
             </motion.div>
           </motion.div>

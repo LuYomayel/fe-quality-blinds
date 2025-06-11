@@ -43,6 +43,89 @@ const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
   const filesRef = useRef<File[]>([]);
 
+  // Function to generate chat summary and pre-fill form based on conversation
+  React.useEffect(() => {
+    if (chatMessages.length > 0) {
+      const chatSummary = generateChatSummary(chatMessages);
+      const extractedInfo = extractInfoFromChat(chatMessages);
+
+      setForm((prev) => ({
+        ...prev,
+        message: chatSummary,
+        product: extractedInfo.product,
+        service: extractedInfo.service,
+        address: extractedInfo.address,
+        postcode: extractedInfo.postcode,
+      }));
+    }
+  }, [chatMessages]);
+
+  const generateChatSummary = (messages: typeof chatMessages): string => {
+    if (messages.length === 0) return "";
+
+    const conversation = messages
+      .filter(
+        (msg) => msg.content.trim() && !msg.content.includes("I've opened")
+      )
+      .map(
+        (msg) =>
+          `${msg.type === "user" ? "Customer" : "Assistant"}: ${msg.content}`
+      )
+      .join("\n\n");
+
+    const summary = `CHAT CONVERSATION SUMMARY:
+${conversation}
+
+---
+Please contact me regarding the above discussion about your window treatments.`;
+
+    return summary;
+  };
+
+  const extractInfoFromChat = (messages: typeof chatMessages) => {
+    const allText = messages
+      .map((m) => m.content)
+      .join(" ")
+      .toLowerCase();
+
+    // Extract product
+    let product = "";
+    if (allText.includes("roller blind")) product = "roller-blinds";
+    else if (allText.includes("roman blind")) product = "roman-blinds";
+    else if (allText.includes("venetian blind")) product = "venetian-blinds";
+    else if (allText.includes("curtain")) product = "curtains";
+    else if (allText.includes("shutter")) product = "shutters";
+    else if (allText.includes("awning")) product = "awnings";
+    else product = "other";
+
+    // Extract service intent
+    let service = "";
+    if (
+      allText.includes("quote") ||
+      allText.includes("measure") ||
+      allText.includes("price")
+    ) {
+      service = "measure-quote";
+    } else if (allText.includes("install")) {
+      service = "installation";
+    } else if (allText.includes("repair") || allText.includes("fix")) {
+      service = "repair";
+    } else {
+      service = "consultation";
+    }
+
+    // Extract location info
+    const address = "";
+    let postcode = "";
+
+    const postcodeMatch = allText.match(/\b(\d{4})\b/);
+    if (postcodeMatch) {
+      postcode = postcodeMatch[1];
+    }
+
+    return { product, service, address, postcode };
+  };
+
   const validateForm = () => {
     const newErrors: Partial<ContactFormData> = {};
 
