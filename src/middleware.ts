@@ -20,6 +20,7 @@ export function middleware(request: NextRequest) {
     "https://api.openai.com",
     "https://fonts.googleapis.com",
     "https://fonts.gstatic.com",
+    "https://quality-blinds-api.luciano-yomayel.com", // Tu API de producción
   ];
 
   // En desarrollo, agregar localhost para API externo
