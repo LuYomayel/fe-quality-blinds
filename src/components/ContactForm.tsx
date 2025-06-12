@@ -3,6 +3,14 @@
 import React, { useState, useRef, FormEvent, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { API_BASE_URL } from "../config";
+import {
+  ContactFormSchema,
+  sanitizeFormData,
+  validateFile,
+  clientRateLimit,
+  detectSuspiciousContent,
+  useFormValidation,
+} from "@/lib/frontend-validation";
 
 interface ContactFormData {
   name: string;
@@ -42,7 +50,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ chatMessages = [] }) => {
   );
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
   const [apiError, setApiError] = useState<string>("");
+  const [fileErrors, setFileErrors] = useState<string[]>([]);
+  const [rateLimitWarning, setRateLimitWarning] = useState<string>("");
   const filesRef = useRef<File[]>([]);
+
+  // Usar el hook de validación personalizado
+  const { validateForm: validateFormSecure } =
+    useFormValidation(ContactFormSchema);
 
   // Function to generate chat summary and pre-fill form based on conversation
   React.useEffect(() => {
@@ -128,38 +142,29 @@ Please contact me regarding the above discussion about your window treatments.`;
   };
 
   const validateForm = () => {
-    const newErrors: Partial<ContactFormData> = {};
+    // Sanitizar datos antes de validar (convertir correctamente)
+    const formAsRecord: Record<string, unknown> = { ...form };
+    const sanitizedFormRecord = sanitizeFormData(formAsRecord);
 
-    if (!form.name.trim()) {
-      newErrors.name = "Name is required";
+    // Usar validación de seguridad con zod
+    const validation = validateFormSecure(sanitizedFormRecord);
+
+    if (!validation.valid) {
+      setErrors(validation.errors as Partial<ContactFormData>);
+      return false;
     }
 
-    if (!form.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Invalid email format";
+    // Detectar contenido sospechoso
+    const suspiciousCheck = detectSuspiciousContent(form.message);
+    if (suspiciousCheck.suspicious) {
+      setApiError(
+        `Contenido sospechoso detectado: ${suspiciousCheck.reasons.join(", ")}`
+      );
+      return false;
     }
 
-    if (!form.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(form.phone)) {
-      newErrors.phone = "Invalid phone number format";
-    }
-
-    if (!form.service) {
-      newErrors.service = "Please select a service";
-    }
-
-    if (!form.product) {
-      newErrors.product = "Please select a product";
-    }
-
-    if (!form.message.trim()) {
-      newErrors.message = "Message is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors({});
+    return true;
   };
 
   const handleChange = (
@@ -182,12 +187,42 @@ Please contact me regarding the above discussion about your window treatments.`;
   const handleFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files).slice(0, 4);
-      filesRef.current = selectedFiles;
+      const validFiles: File[] = [];
+      const errors: string[] = [];
+
+      // Validar cada archivo
+      selectedFiles.forEach((file) => {
+        const validation = validateFile(file);
+        if (validation.valid) {
+          validFiles.push(file);
+        } else {
+          errors.push(`${file.name}: ${validation.error}`);
+        }
+      });
+
+      filesRef.current = validFiles;
+      setFileErrors(errors);
     }
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Verificar rate limiting
+    const rateLimitCheck = clientRateLimit.check("contact-form", 3, 300000); // 3 intentos por 5 minutos
+    if (!rateLimitCheck.allowed) {
+      const resetTime = new Date(rateLimitCheck.resetTime).toLocaleTimeString();
+      setRateLimitWarning(
+        `Demasiados intentos. Intenta nuevamente después de las ${resetTime}`
+      );
+      return;
+    } else if (rateLimitCheck.remaining <= 1) {
+      setRateLimitWarning(
+        `Quedan ${rateLimitCheck.remaining} intentos restantes`
+      );
+    } else {
+      setRateLimitWarning("");
+    }
 
     if (!validateForm()) {
       return;
@@ -517,7 +552,60 @@ Please contact me regarding the above discussion about your window treatments.`;
           onChange={handleFilesChange}
           className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-xs sm:text-sm"
         />
+
+        {/* Errores de archivos */}
+        {fileErrors.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-2 space-y-1"
+          >
+            {fileErrors.map((error, index) => (
+              <p
+                key={index}
+                className="text-xs sm:text-sm text-red-600 flex items-center"
+              >
+                <svg
+                  className="h-4 w-4 mr-1 flex-shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {error}
+              </p>
+            ))}
+          </motion.div>
+        )}
       </motion.div>
+
+      {/* Warning de Rate Limiting */}
+      {rateLimitWarning && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+        >
+          <div className="flex items-center">
+            <svg
+              className="h-5 w-5 text-yellow-400 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="text-sm text-yellow-800">{rateLimitWarning}</p>
+          </div>
+        </motion.div>
+      )}
 
       <motion.button
         type="submit"
