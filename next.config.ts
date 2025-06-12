@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   // Configuración para Netlify con server-side functions
@@ -22,6 +23,17 @@ const nextConfig: NextConfig = {
 
   // Compression
   compress: true,
+
+  // Configuración de Webpack para resolver path mappings explícitamente
+  webpack: (config) => {
+    // Configurar alias para path mapping
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.resolve(__dirname, "src"),
+    };
+
+    return config;
+  },
 
   // Headers y redirects se manejan en netlify.toml
 };
