@@ -14,6 +14,7 @@ import {
   SunIcon,
   WrenchScrewdriverIcon,
   ChevronRightIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import ContactForm from "./ContactForm";
 import LoadingLink from "./LoadingLink";
@@ -480,6 +481,7 @@ const menuItems: MenuItem[] = [
       },
     ],
   },
+  { name: "Terms & Conditions", href: "/terms", icon: DocumentTextIcon },
 ];
 
 export default function Header() {
@@ -599,7 +601,7 @@ export default function Header() {
       scale: 0.8,
       y: 50,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
         ease: "easeIn",
       },
     },
@@ -642,58 +644,94 @@ export default function Header() {
       </motion.button>
 
       {/* Preview Overlay - Solo desktop (lg+) */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {hoveredPreview && isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-60 lg:flex items-center justify-center pointer-events-none p-4 hidden"
+            key={hoveredPreview.name}
+            className="fixed inset-0 z-[9999] lg:flex items-center justify-center pointer-events-none p-4 hidden"
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={previewVariants}
           >
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-lg xl:max-w-xl border border-gray-200">
+            <motion.div
+              className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-lg xl:max-w-xl border border-gray-200"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
               {/* Preview Image */}
               <div className="relative h-64 xl:h-80 overflow-hidden">
-                <Image
-                  src={
-                    hoveredPreview.preview?.image || "/images/placeholder.webp"
-                  }
-                  alt={hoveredPreview.name}
-                  fill
-                  className="object-cover"
-                />
+                <motion.div
+                  initial={{ scale: 1.1, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-full h-full"
+                >
+                  <Image
+                    src={
+                      hoveredPreview.preview?.image ||
+                      "/images/placeholder.webp"
+                    }
+                    alt={hoveredPreview.name}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-xl xl:text-2xl font-bold text-white mb-2">
+                  <motion.h3
+                    className="text-xl xl:text-2xl font-bold text-white mb-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                  >
                     {hoveredPreview.name}
-                  </h3>
+                  </motion.h3>
                 </div>
               </div>
 
               {/* Preview Content */}
               <div className="p-6">
-                <p className="text-gray-600 mb-4 leading-relaxed">
+                <motion.p
+                  className="text-gray-600 mb-4 leading-relaxed"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+                >
                   {hoveredPreview.preview?.description}
-                </p>
+                </motion.p>
 
                 {/* Features */}
-                <div className="space-y-2">
+                <motion.div
+                  className="space-y-2"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+                >
                   <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
                     Key Features:
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {hoveredPreview.preview?.features.map((feature, idx) => (
-                      <span
+                      <motion.span
                         key={idx}
                         className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          duration: 0.3,
+                          delay: 0.4 + idx * 0.05,
+                          ease: "easeOut",
+                        }}
                       >
                         {feature}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -707,7 +745,7 @@ export default function Header() {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed top-0 left-0 bottom-0 w-full sm:w-80 lg:w-96 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-2xl overflow-y-auto z-50 border-r border-gray-200/50"
+              className="fixed top-0 left-0 bottom-0 w-full sm:w-80 lg:w-96 bg-gradient-to-br from-slate-50 via-white to-blue-50 shadow-2xl overflow-y-auto z-[9998] border-r border-gray-200/50"
             >
               {/* Header del menú - Mejorado para móvil */}
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 lg:p-6 text-white">
@@ -860,7 +898,7 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 z-[9997] bg-black/40 backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
             />
           </>

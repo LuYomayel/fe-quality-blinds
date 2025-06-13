@@ -1,19 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
+import ContactForm from "./ContactForm";
 
 const Footer = () => {
+  const [showContactForm, setShowContactForm] = useState(false);
+
   const quickLinks = [
     { name: "Home", href: "/" },
-    { name: "Products", href: "/products" },
+    { name: "Products", href: "/shop" },
     { name: "About Us", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Contact Us", href: "#", action: () => setShowContactForm(true) },
     { name: "Terms & Conditions", href: "/terms" },
   ];
 
@@ -48,127 +51,161 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* About Us */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold mb-6 text-white">About Us</h3>
-            <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
-              <p>
-                <span className="font-semibold text-blue-400">
-                  &ldquo;Create Memories!&rdquo;
-                </span>{" "}
-                24/7 Blinds is a family-owned and operated business since 1990.
-                Our highly valued reputation grows with each window treatment we
-                sell.
-              </p>
-              <p>
-                Our customer referrals and repeat business have greatly
-                contributed to us becoming one of the leaders in the window
-                treatment industry!
-              </p>
-              <p>
-                We are committed to giving our clients excellent service and
-                superior finishes – this distinguishes us and our quality
-                products.
-              </p>
+    <>
+      <footer className="bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* About Us */}
+            <div className="lg:col-span-1">
+              <h3 className="text-xl font-bold mb-6 text-white">About Us</h3>
+              <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
+                <p>
+                  <span className="font-semibold text-blue-400">
+                    &ldquo;Create Memories!&rdquo;
+                  </span>{" "}
+                  24/7 Blinds is a family-owned and operated business since
+                  1990. Our highly valued reputation grows with each window
+                  treatment we sell.
+                </p>
+                <p>
+                  Our customer referrals and repeat business have greatly
+                  contributed to us becoming one of the leaders in the window
+                  treatment industry!
+                </p>
+                <p>
+                  We are committed to giving our clients excellent service and
+                  superior finishes – this distinguishes us and our quality
+                  products.
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div className="lg:col-span-1">
+              <h3 className="text-xl font-bold mb-6 text-white">Quick Links</h3>
+              <nav className="space-y-3">
+                {quickLinks.map((link) =>
+                  link.action ? (
+                    <button
+                      key={link.name}
+                      onClick={link.action}
+                      className="block text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm text-left"
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      className="block text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm"
+                    >
+                      {link.name}
+                    </Link>
+                  )
+                )}
+              </nav>
+            </div>
+
+            {/* Contact Info */}
+            <div className="lg:col-span-1">
+              <h3 className="text-xl font-bold mb-6 text-white">
+                Contact Info
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <MapPinIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-gray-300 text-sm">
+                    <p className="font-semibold text-white">Address</p>
+                    <p>131 Botany St Randwick</p>
+                    <p>NSW 2031</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <EnvelopeIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-gray-300 text-sm">
+                    <p className="font-semibold text-white">Email</p>
+                    <a
+                      href="mailto:sales@qualityblinds.com.au"
+                      className="hover:text-blue-400 transition-colors"
+                    >
+                      sales@qualityblinds.com.au
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <PhoneIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-gray-300 text-sm">
+                    <p className="font-semibold text-white">Mobile</p>
+                    <a
+                      href="tel:+61029340505"
+                      className="hover:text-blue-400 transition-colors"
+                    >
+                      +61 (02) 9340 5050
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold mb-6 text-white">Quick Links</h3>
-            <nav className="space-y-3">
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="block text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          {/* Contact Info */}
-          <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold mb-6 text-white">Contact Info</h3>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPinIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div className="text-gray-300 text-sm">
-                  <p className="font-semibold text-white">Address</p>
-                  <p>131 Botany St Randwick</p>
-                  <p>NSW 2031</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <EnvelopeIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div className="text-gray-300 text-sm">
-                  <p className="font-semibold text-white">Email</p>
+          {/* Social Media Section */}
+          <div className="mt-16 pt-8 border-t border-gray-800">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-6">
+                <span className="text-white">FOLLOW US</span>{" "}
+                <span className="text-blue-400">TO GET A DISCOUNT</span>
+              </h3>
+              <div className="flex justify-center space-x-6">
+                {socialLinks.map((social) => (
                   <a
-                    href="mailto:sales@qualityblinds.com.au"
-                    className="hover:text-blue-400 transition-colors"
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white text-gray-900 p-3 rounded-full hover:bg-blue-50 hover:scale-110 transition-all duration-300 shadow-lg"
+                    aria-label={`Follow us on ${social.name}`}
                   >
-                    sales@qualityblinds.com.au
+                    {social.icon}
                   </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <PhoneIcon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div className="text-gray-300 text-sm">
-                  <p className="font-semibold text-white">Mobile</p>
-                  <a
-                    href="tel:+61029340505"
-                    className="hover:text-blue-400 transition-colors"
-                  >
-                    +61 (02) 9340 5050
-                  </a>
-                </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Social Media Section */}
-        <div className="mt-16 pt-8 border-t border-gray-800">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-6">
-              <span className="text-white">FOLLOW US</span>{" "}
-              <span className="text-blue-400">TO GET A DISCOUNT</span>
-            </h3>
-            <div className="flex justify-center space-x-6">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white text-gray-900 p-3 rounded-full hover:bg-blue-50 hover:scale-110 transition-all duration-300 shadow-lg"
-                  aria-label={`Follow us on ${social.name}`}
-                >
-                  {social.icon}
-                </a>
-              ))}
+          {/* Copyright */}
+          <div className="mt-12 pt-8 border-t border-gray-800">
+            <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+              <p>© 2024 Quality Blinds Australia. All rights reserved.</p>
+              <p className="mt-2 md:mt-0">
+                Made with ❤️ for better window treatments
+              </p>
             </div>
           </div>
         </div>
+      </footer>
 
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-            <p>© 2024 Quality Blinds Australia. All rights reserved.</p>
-            <p className="mt-2 md:mt-0">
-              Made with ❤️ for better window treatments
-            </p>
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-30">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center p-6 border-b">
+              <h2 className="text-2xl font-bold text-gray-900">Contact Us</h2>
+              <button
+                onClick={() => setShowContactForm(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <div className="p-6">
+              <ContactForm />
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      )}
+    </>
   );
 };
 

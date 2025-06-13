@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import {
@@ -14,8 +14,7 @@ import {
 export default function TermsPage() {
   const [viewMode, setViewMode] = useState<
     "redirect" | "embed" | "newTab" | "download"
-  >("redirect");
-  const [hasRedirected, setHasRedirected] = useState(false);
+  >("newTab");
 
   // Refs para las animaciones basadas en scroll
   const heroRef = useRef(null);
@@ -30,18 +29,6 @@ export default function TermsPage() {
       transition: { duration: 0.8, ease: "easeOut" },
     },
   };
-
-  // Auto-redirect to PDF on page load
-  useEffect(() => {
-    if (!hasRedirected && viewMode === "redirect") {
-      const timer = setTimeout(() => {
-        window.open("/terms-and-con-qb-1.pdf", "_blank", "noopener,noreferrer");
-        setHasRedirected(true);
-      }, 1500); // Wait 1.5 seconds for page to load
-
-      return () => clearTimeout(timer);
-    }
-  }, [hasRedirected, viewMode]);
 
   const handleViewModeChange = (
     mode: "redirect" | "embed" | "newTab" | "download"
@@ -104,9 +91,8 @@ export default function TermsPage() {
               transition={{ delay: 0.2 }}
               className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
             >
-              Our comprehensive terms of service and commercial conditions. The
-              PDF will open automatically in a new tab for the best viewing
-              experience.
+              Our comprehensive terms of service and commercial conditions.
+              Choose your preferred viewing method below to access the document.
             </motion.p>
           </div>
         </div>
@@ -114,24 +100,6 @@ export default function TermsPage() {
 
       {/* PDF Container */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Auto-redirect notification */}
-        {viewMode === "redirect" && !hasRedirected && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <div className="flex items-center space-x-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-              <div>
-                <h3 className="text-lg font-semibold text-blue-900">
-                  Opening PDF in New Tab...
-                </h3>
-                <p className="text-blue-800">
-                  The Terms & Conditions PDF will open automatically. If it
-                  doesn&apos;t open, use the options below.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           {/* PDF Header with View Options */}
           <div className="bg-blue-600 text-white p-4">
